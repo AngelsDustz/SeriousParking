@@ -3,6 +3,8 @@ package SeriousParking;
 public class SeriousParking {
 
     public static void main(String[] args) {
-        // Main class.
+        Parkeersimulator.Simulator sim = new Parkeersimulator.Simulator();
+        sim.run();
+
     }
 }

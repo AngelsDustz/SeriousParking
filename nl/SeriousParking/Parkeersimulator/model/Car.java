@@ -1,19 +1,24 @@
-package Parkeersimulator;
+package nl.SeriousParking.Parkeersimulator.model;
 
-import java.awt.*;
 
-public abstract class Car {
+import java.util.Random;
 
+public class Car extends Model{
     private Location location;
     private int minutesLeft;
     private boolean isPaying;
     private boolean hasToPay;
+    private boolean hasPass;
 
     /**
      * Constructor for objects of class Car
      */
-    public Car() {
-
+    public void Car() {
+        Random random = new Random();
+        if (this.hasPass) this.setHasToPay(false);
+        else this.setHasToPay(true);
+        int stayMinutes = (int) (15 + random.nextFloat() * 3 * 60);
+        this.setMinutesLeft(stayMinutes);
     }
 
     public Location getLocation() {
@@ -51,6 +56,10 @@ public abstract class Car {
     public void tick() {
         minutesLeft--;
     }
-    
-    public abstract Color getColor();
+    public boolean sethasPass(boolean hasPass){
+        this.hasPass = hasPass();
+    }
+    public boolean gethasPass()
+    {return this.hasPass;}
+
 }

@@ -156,7 +156,7 @@ public class SimulatorView extends JFrame {
         }
     
         /**
-         * Overriden. The car park view component needs to be redisplayed. Copy the
+         * Overriden. The car park View component needs to be redisplayed. Copy the
          * internal image to screen.
          */
         public void paintComponent(Graphics g) {
@@ -195,7 +195,7 @@ public class SimulatorView extends JFrame {
         }
     
         /**
-         * Paint a place on this car park view in a given color.
+         * Paint a place on this car park View in a given color.
          */
         private void drawPlace(Graphics graphics, Location location, Color color) {
             graphics.setColor(color);

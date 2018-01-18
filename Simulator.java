@@ -87,7 +87,7 @@ public class Simulator {
     
     private void updateViews(){
     	simulatorView.tick();
-        // Update the car park view.
+        // Update the car park View.
         simulatorView.updateView();	
     }
     

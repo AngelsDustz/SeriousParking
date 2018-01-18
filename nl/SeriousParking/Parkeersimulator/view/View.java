@@ -1,4 +1,5 @@
 package nl.SeriousParking.Parkeersimulator.view;
 
-public abstract class view {
+public abstract class View {
+
 }

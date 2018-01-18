@@ -1,18 +1,27 @@
-package Parkeersimulator;
+package nl.SeriousParking.Parkeersimulator.model;
+
+import nl.SeriousParking.Parkeersimulator.SimulatorView;
 
 import java.util.Random;
 
-public class Simulator {
+public class Simulator extends Model {
 
-	private static final String AD_HOC = "1";
-	private static final String PASS = "2";
+
 	
-	
-	private CarQueue entranceCarQueue;
-    private CarQueue entrancePassQueue;
-    private CarQueue paymentCarQueue;
-    private CarQueue exitCarQueue;
+	private boolean run;
+	private Queue entranceCarQueue;
+    private Queue entrancePassQueue;
+    private Queue paymentCarQueue;
+    private Queue exitCarQueue;
+    private Location location;
     private SimulatorView simulatorView;
+
+    private int numberOfFloors;
+    private int numberOfRows;
+    private int numberOfPlaces;
+    private int numberOfOpenSpots;
+    private Car[][][] cars;
+
 
     private int day     = 0;
     private int hour    = 0;
@@ -30,19 +39,25 @@ public class Simulator {
     int exitSpeed = 5; // number of cars that can leave per minute
 
     public Simulator() {
-        entranceCarQueue = new CarQueue();
-        entrancePassQueue = new CarQueue();
-        paymentCarQueue = new CarQueue();
-        exitCarQueue = new CarQueue();
-        simulatorView = new SimulatorView(3, 6, 30);
+        entranceCarQueue = new Queue();
+        entrancePassQueue = new Queue();
+        paymentCarQueue = new Queue();
+        exitCarQueue = new Queue();
+        cars = new Car[numberOfFloors][numberOfRows][numberOfPlaces];
+        //location = new Location(numberOfFloors,numberOfRows,numberOfPlaces);
+
+       //simulatorView = new SimulatorView(3, 6, 30);
     }
 
     public void run() {
-        for (int i = 0; i < 10000; i++) {
+       while (run)
+       {
             tick();
-        }
+       }
     }
-
+    public void setRun(boolean run){
+        this.run =run;
+    }
     private void tick() {
     	advanceTime();
     	handleExit();
@@ -85,24 +100,24 @@ public class Simulator {
         carsLeaving();
     }
     
-    private void updateViews(){
+    /*private void updateViews(){
     	simulatorView.tick();
         // Update the car park View.
         simulatorView.updateView();	
     }
-    
+    */
     private void carsArriving(){
     	int numberOfCars=getNumberOfCars(weekDayArrivals, weekendArrivals);
-        addArrivingCars(numberOfCars, AD_HOC);    	
+        addArrivingCars(numberOfCars, false);
     	numberOfCars=getNumberOfCars(weekDayPassArrivals, weekendPassArrivals);
-        addArrivingCars(numberOfCars, PASS);    	
+        addArrivingCars(numberOfCars, true);
     }
 
-    private void carsEntering(CarQueue queue){
+    private void carsEntering(Queue queue){
         int i=0;
         // Remove car from the front of the queue and assign to a parking space.
     	while (queue.carsInQueue()>0 && 
-    			simulatorView.getNumberOfOpenSpots()>0 && 
+    			simulatorView.getNumberOfOpenSpots()>0 &&
     			i<enterSpeed) {
             Car car = queue.removeCar();
             Location freeLocation = simulatorView.getFirstFreeLocation();
@@ -160,25 +175,23 @@ public class Simulator {
         return (int)Math.round(numberOfCarsPerHour / 60);	
     }
     
-    private void addArrivingCars(int numberOfCars, String type){
+    private void addArrivingCars(int numberOfCars, boolean hasPass){
         // Add the cars to the back of the queue.
-    	switch(type) {
-    	case AD_HOC: 
+
             for (int i = 0; i < numberOfCars; i++) {
-            	entranceCarQueue.addCar(new AdHocCar());
+                Car car =new Car();
+                car.sethasPass(hasPass);
+            	entrancePassQueue.addCar(car);
             }
-            break;
-    	case PASS:
-            for (int i = 0; i < numberOfCars; i++) {
-            	entrancePassQueue.addCar(new ParkingPassCar());
-            }
-            break;	            
+
     	}
-    }
+
     
     private void carLeavesSpot(Car car){
-    	simulatorView.removeCarAt(car.getLocation());
+    	//simulatorView.removeCarAt(car.getLocation());
         exitCarQueue.addCar(car);
     }
+
+
 
 }

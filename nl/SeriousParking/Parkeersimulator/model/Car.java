@@ -13,7 +13,8 @@ public class Car extends Model{
     /**
      * Constructor for objects of class Car
      */
-    public void Car() {
+    public void Car(boolean hasPass) {
+        this.hasPass=hasPass;
         Random random = new Random();
         if (this.hasPass) this.setHasToPay(false);
         else this.setHasToPay(true);
@@ -56,9 +57,10 @@ public class Car extends Model{
     public void tick() {
         minutesLeft--;
     }
-    public void  sethasPass(boolean hasPass){
-        this.hasPass = hasPass;
-    }
+
+      public void sethasPass(boolean hasPass)
+        {this.hasPass= hasPass;}
+
     public boolean gethasPass()
     {return this.hasPass;}
 

@@ -1,19 +1,20 @@
 package SeriousParking;
 
 import nl.SeriousParking.Parkeersimulator.model.Car;
+import nl.SeriousParking.Parkeersimulator.model.Simulator;
 
 import java.util.Random;
 
 public class SeriousParking {
 
     public static void main(String[] args) {
-        Parkeersimulator.Simulator sim = new Parkeersimulator.Simulator();
+        Simulator sim = new Simulator();
         sim.run();
 
     }
 
     public static class AdHocCar extends Car {
-        private static final Color COLOR=Color.red;
+       // private static final Color COLOR=Color.red;
 
         public AdHocCar() {
             Random random = new Random();
@@ -22,8 +23,7 @@ public class SeriousParking {
             this.setHasToPay(true);
         }
 
-        public Color getColor(){
-            return COLOR;
+      //  public Color getColor(){
+      //      return COLOR;
         }
     }
-}

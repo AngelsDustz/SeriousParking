@@ -1,4 +1,4 @@
-package Parkeersimulator;
+package nl.SeriousParking.Parkeersimulator.view;
 
 import javax.swing.*;
 import java.awt.*;

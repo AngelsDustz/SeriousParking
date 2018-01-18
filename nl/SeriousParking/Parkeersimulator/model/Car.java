@@ -3,23 +3,21 @@ package nl.SeriousParking.Parkeersimulator.model;
 
 import java.util.Random;
 
-public class Car extends Model{
-    private Location location;
-    private int minutesLeft;
-    private boolean isPaying;
-    private boolean hasToPay;
-    private boolean hasPass;
+public class Car extends Model {
+    private Location    location;
+    private int         minutesLeft;
+    private boolean     isPaying;
+    private boolean     hasToPay;
+    private boolean     hasPass;
 
     /**
      * Constructor for objects of class Car
      */
     public void Car(boolean hasPass) {
-        this.hasPass=hasPass;
-        Random random = new Random();
-        if (this.hasPass) this.setHasToPay(false);
-        else this.setHasToPay(true);
-        int stayMinutes = (int) (15 + random.nextFloat() * 3 * 60);
-        this.setMinutesLeft(stayMinutes);
+        this.hasPass        = hasPass;
+        Random random       = new Random();
+        int stayMinutes     = (int) (15 + random.nextFloat() * 3 * 60);
+        this.minutesLeft    = stayMinutes;
     }
 
     public Location getLocation() {
@@ -58,10 +56,12 @@ public class Car extends Model{
         minutesLeft--;
     }
 
-      public void sethasPass(boolean hasPass)
-        {this.hasPass= hasPass;}
+    public void sethasPass(boolean hasPass) {
+        this.hasPass = hasPass;
+    }
 
-    public boolean gethasPass()
-    {return this.hasPass;}
+    public boolean gethasPass() {
+        return hasPass;
+    }
 
 }

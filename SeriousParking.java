@@ -6,7 +6,7 @@ import nl.SeriousParking.Parkeersimulator.model.Simulator;
 import java.util.Random;
 
 public class SeriousParking {
-
+/*
     public static void main(String[] args) {
         Simulator sim = new Simulator();
         sim.run();
@@ -25,5 +25,5 @@ public class SeriousParking {
 
       //  public Color getColor(){
       //      return COLOR;
-        }
-    }
+   }   */
+}

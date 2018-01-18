@@ -1,5 +1,14 @@
 package nl.SeriousParking.Parkeersimulator.controller;
 
-public abstract class Controller {
-  public  abstract void Handle();
+
+import nl.SeriousParking.Parkeersimulator.model.Model;
+
+abstract public class Controller<M extends Model> {
+
+    protected M model;
+
+    public Controller(M model) {
+      this.model = model;
+    }
   }
+

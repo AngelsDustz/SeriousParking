@@ -13,7 +13,6 @@ public class Simulator extends Model {
     private Queue entrancePassQueue;
     private Queue paymentCarQueue;
     private Queue exitCarQueue;
-    private Parking parking;
 
     private int numberOfFloors;
     private int numberOfRows;
@@ -37,14 +36,20 @@ public class Simulator extends Model {
     int paymentSpeed = 7; // number of cars that can pay per minute
     int exitSpeed = 5; // number of cars that can leave per minute
 
-    public Simulator() {
+    public Simulator(int numberOfFloors, int numberOfRows, int numberOfPlaces) {
+
         entranceCarQueue = new Queue();
         entrancePassQueue = new Queue();
         paymentCarQueue = new Queue();
         exitCarQueue = new Queue();
 
-        //hiervoor moet een Controller ingesteld worden.
-        parking = new Parking(3, 6, 30);
+
+        this.numberOfFloors = numberOfFloors;
+        this.numberOfRows = numberOfRows;
+        this.numberOfPlaces = numberOfPlaces;
+        this.numberOfOpenSpots = numberOfFloors * numberOfRows * numberOfPlaces;
+        cars = new Car[numberOfFloors][numberOfRows][numberOfPlaces];
+
     }
 
     public void run() {
@@ -58,7 +63,7 @@ public class Simulator extends Model {
     }
     private void tick() {
     	advanceTime();
-    	handleExit();
+        handleExit();
     	updateViews();
     	// Pause.
         try {
@@ -67,6 +72,19 @@ public class Simulator extends Model {
             e.printStackTrace();
         }
     	handleEntrance();
+
+        for (int floor = 0; floor < getNumberOfFloors(); floor++) {
+            for (int row = 0; row < getNumberOfRows(); row++) {
+                for (int place = 0; place < getNumberOfPlaces(); place++) {
+                    Location location = new Location(floor, row, place);
+                    Car car = getCarAt(location);
+                    if (car != null) {
+                        car.tick();
+
+                    }
+                }
+            }
+        }
     }
 
     private void advanceTime(){
@@ -87,15 +105,36 @@ public class Simulator extends Model {
     }
 
     private void handleEntrance(){
-    	carsArriving();
-    	carsEntering(entrancePassQueue);
-    	carsEntering(entranceCarQueue);  	
+        for (int floor = 0; floor < getNumberOfFloors(); floor++) {
+            for (int row = 0; row < getNumberOfRows(); row++) {
+                for (int place = 0; place < getNumberOfPlaces(); place++) {
+                    Location location = new Location(floor, row, place);
+                    Car car = getCarAt(location);
+                    if (car != null) {
+                        carsArriving();
+                        carsEntering(entrancePassQueue);
+                        carsEntering(entranceCarQueue);
+
+                    }
+                }
+            }
+        }
     }
     
     private void handleExit(){
-        carsReadyToLeave();
-        carsPaying();
-        carsLeaving();
+        for (int floor = 0; floor < getNumberOfFloors(); floor++) {
+            for (int row = 0; row < getNumberOfRows(); row++) {
+                for (int place = 0; place < getNumberOfPlaces(); place++) {
+                    Location location = new Location(floor, row, place);
+                    Car car = getCarAt(location);
+                    if (car != null) {
+                        carsReadyToLeave();
+                        carsPaying();
+                        carsLeaving();
+                    }
+                }
+            }
+        }
     }
     
     /*private void updateViews(){
@@ -115,18 +154,18 @@ public class Simulator extends Model {
         int i=0;
         // Remove car from the front of the queue and assign to a parking space.
     	while (queue.carsInQueue()>0 &&
-                parking.getNumberOfOpenSpots()>0 &&
+                getNumberOfOpenSpots()>0 &&
     			i<enterSpeed) {
             Car car = queue.removeCar();
-            Location freeLocation = parking.getFirstFreeLocation();
-            parking.setCarAt(freeLocation, car);
+            Location freeLocation = getFirstFreeLocation();
+            setCarAt(freeLocation, car);
             i++;
         }
     }
     
     private void carsReadyToLeave(){
         // Add leaving cars to the payment queue.
-        Car car = parking.getFirstLeavingCar();
+        Car car = getFirstLeavingCar();
         while (car!=null) {
         	if (car.getHasToPay()){
 	            car.setIsPaying(true);
@@ -135,7 +174,7 @@ public class Simulator extends Model {
         	else {
         		carLeavesSpot(car);
         	}
-            car = parking.getFirstLeavingCar();
+            car = getFirstLeavingCar();
         }
     }
 

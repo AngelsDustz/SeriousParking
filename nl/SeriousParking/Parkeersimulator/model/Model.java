@@ -18,6 +18,7 @@ public abstract class Model {
     public void updateViews() {
         for (View v : views) {
             v.update();
+
         }
     }
 }

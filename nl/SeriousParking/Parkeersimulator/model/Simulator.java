@@ -43,7 +43,7 @@ public class Simulator extends Model {
         paymentCarQueue = new Queue();
         exitCarQueue = new Queue();
 
-        //hiervoor moet een controller ingesteld worden.
+        //hiervoor moet een Controller ingesteld worden.
         parking = new Parking(3, 6, 30);
     }
 

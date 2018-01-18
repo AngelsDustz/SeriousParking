@@ -20,7 +20,7 @@ public class Main extends Application {
         root= new Group();
         MainScene= new Scene(root);
 
-        // root.getChildren().add(new simView());
+         root.getChildren().add(simView());
 
         primaryStage.setTitle("Parkeer Garage Simulator");
         primaryStage.setScene(MainScene);

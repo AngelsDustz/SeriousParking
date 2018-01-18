@@ -1,43 +1,26 @@
 package nl.SeriousParking.Parkeersimulator.view;
 
+import javafx.scene.layout.VBox;
 import nl.SeriousParking.Parkeersimulator.model.Car;
 import nl.SeriousParking.Parkeersimulator.model.Location;
-import nl.SeriousParking.Parkeersimulator.model.Parking;
 import nl.SeriousParking.Parkeersimulator.model.Simulator;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class SimView { private class CarParkView extends JPanel {
-    Simulator sim= new Simulator();
-
+public class SimView { private class CarParkView extends VBox {
+    private VBox container = new VBox();
+    private Simulator sim= new Simulator();
     private Dimension size;
     private Image carParkImage;
 
-    /**
-     * Constructor for objects of class CarPark
-     */
-    public CarParkView() {
-        size = new Dimension(0, 0);
-    }
 
-    /**
-     * Overridden. Tell the GUI manager how big we would like to be.
-     */
-    public Dimension getPreferredSize() {
-        return new Dimension(800, 500);
-    }
-
-    /**
-     * Overriden. The car park View component needs to be redisplayed. Copy the
-     * internal image to screen.
-     */
     public void paintComponent(Graphics g) {
         if (carParkImage == null) {
             return;
         }
 
-        Dimension currentSize = getSize();
+        Dimension currentSize = sim.getSize();
         if (size.equals(currentSize)) {
             g.drawImage(carParkImage, 0, 0, null);
         }
@@ -54,11 +37,11 @@ public class SimView { private class CarParkView extends JPanel {
             carParkImage = createImage(size.width, size.height);
         }
         Graphics graphics = carParkImage.getGraphics();
-        for(int floor = 0; floor < getNumberOfFloors(); floor++) {
-            for(int row = 0; row < getNumberOfRows(); row++) {
-                for(int place = 0; place < getNumberOfPlaces(); place++) {
+        for(int floor = 0; floor < sim.getNumberOfFloors(); floor++) {
+            for(int row = 0; row < sim.getNumberOfRows(); row++) {
+                for(int place = 0; place < sim.getNumberOfPlaces(); place++) {
                     Location location = new Location(floor, row, place);
-                    Car car = getCarAt(location);
+                    Car car = sim.getCarAt(location);
 
                     drawPlace(graphics, location, Color.BLACK);
                 }

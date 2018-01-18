@@ -56,8 +56,8 @@ public class Car extends Model{
     public void tick() {
         minutesLeft--;
     }
-    public boolean sethasPass(boolean hasPass){
-        this.hasPass = hasPass();
+    public void  sethasPass(boolean hasPass){
+        this.hasPass = hasPass;
     }
     public boolean gethasPass()
     {return this.hasPass;}

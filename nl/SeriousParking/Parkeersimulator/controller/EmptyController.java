@@ -10,7 +10,7 @@ public class EmptyController extends Controller<Simulator> {
     }
 
     public void startSimulator(){
-        if (clicked==false){
+      if (clicked==false){
             model.setRun(true);
             model.run();
         }

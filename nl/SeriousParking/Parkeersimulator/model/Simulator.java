@@ -52,6 +52,9 @@ public class Simulator extends Model {
 
     }
 
+    public void update(){
+        notifyViews();
+    }
     public void run() {
        while (run)
        {
@@ -63,8 +66,8 @@ public class Simulator extends Model {
     }
     private void tick() {
     	advanceTime();
-        handleExit();
-    	updateViews();
+        //handleExit();
+        notifyViews();
     	// Pause.
         try {
             Thread.sleep(tickPause);
@@ -72,7 +75,7 @@ public class Simulator extends Model {
             e.printStackTrace();
         }
     	handleEntrance();
-
+        handleExit();
         for (int floor = 0; floor < getNumberOfFloors(); floor++) {
             for (int row = 0; row < getNumberOfRows(); row++) {
                 for (int place = 0; place < getNumberOfPlaces(); place++) {
@@ -105,36 +108,18 @@ public class Simulator extends Model {
     }
 
     private void handleEntrance(){
-        for (int floor = 0; floor < getNumberOfFloors(); floor++) {
-            for (int row = 0; row < getNumberOfRows(); row++) {
-                for (int place = 0; place < getNumberOfPlaces(); place++) {
-                    Location location = new Location(floor, row, place);
-                    Car car = getCarAt(location);
-                    if (car != null) {
-                        carsArriving();
-                        carsEntering(entrancePassQueue);
-                        carsEntering(entranceCarQueue);
+        carsArriving();
+        carsEntering(entrancePassQueue);
+        carsEntering(entranceCarQueue);
 
-                    }
-                }
-            }
-        }
+
     }
     
     private void handleExit(){
-        for (int floor = 0; floor < getNumberOfFloors(); floor++) {
-            for (int row = 0; row < getNumberOfRows(); row++) {
-                for (int place = 0; place < getNumberOfPlaces(); place++) {
-                    Location location = new Location(floor, row, place);
-                    Car car = getCarAt(location);
-                    if (car != null) {
-                        carsReadyToLeave();
+  //                      carsReadyToLeave();
                         carsPaying();
                         carsLeaving();
-                    }
-                }
-            }
-        }
+
     }
     
     /*private void updateViews(){
@@ -162,7 +147,7 @@ public class Simulator extends Model {
             i++;
         }
     }
-    
+    //hier zit de fout geen idee tough
     private void carsReadyToLeave(){
         // Add leaving cars to the payment queue.
         Car car = getFirstLeavingCar();
@@ -172,6 +157,7 @@ public class Simulator extends Model {
 	            paymentCarQueue.addCar(car);
         	}
         	else {
+        	    //geerft geen plaats door
         		carLeavesSpot(car);
         	}
             car = getFirstLeavingCar();
@@ -302,21 +288,21 @@ public class Simulator extends Model {
         }
         return null;
     }
-
-    public Car getFirstLeavingCar() {
-        for (int floor = 0; floor < getNumberOfFloors(); floor++) {
-            for (int row = 0; row < getNumberOfRows(); row++) {
-                for (int place = 0; place < getNumberOfPlaces(); place++) {
-                    Location location = new Location(floor, row, place);
-                    Car car = getCarAt(location);
-                    if (car != null && car.getMinutesLeft() <= 0 && !car.getIsPaying()) {
-                        return car;
-                    }
+//hier zit een logishe fout
+public Car getFirstLeavingCar() {
+    for (int floor = 0; floor < getNumberOfFloors(); floor++) {
+        for (int row = 0; row < getNumberOfRows(); row++) {
+            for (int place = 0; place < getNumberOfPlaces(); place++) {
+                Location location = new Location(floor, row, place);
+                Car car = getCarAt(location);
+                if (car != null && car.getMinutesLeft() <= 0 && !car.getIsPaying()) {
+                    return car;
                 }
             }
         }
-        return null;
     }
+    return null;
+}
 
 
 }

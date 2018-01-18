@@ -208,6 +208,8 @@ public class SimulatorView extends JFrame {
                     20 - 1,
                     10 - 1); // TODO use dynamic size or constants
         }
+
     }
+
 
 }

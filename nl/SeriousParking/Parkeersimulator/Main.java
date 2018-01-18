@@ -16,7 +16,7 @@ import nl.SeriousParking.Parkeersimulator.view.SimView;
 public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
-        primaryStage.setTitle("Geld wissel app");
+        primaryStage.setTitle("Parkeer Simulator");
 
         Simulator model = new Simulator(2,3,5);
         EmptyController controller = new EmptyController(model);

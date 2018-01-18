@@ -5,20 +5,15 @@ import nl.SeriousParking.Parkeersimulator.view.View;
 import java.util.ArrayList;
 
 public abstract class Model {
-    private ArrayList<View> views;
+    private ArrayList<View> views=new ArrayList<View>();;
 
-    public Model() {
-        this.views = new ArrayList<View>();
+
+    public void addView(View view) {
+        views.add(view);
     }
 
-    public void addView(View v) {
-        views.add(v);
-    }
-
-    public void updateViews() {
-        for (View v : views) {
-            v.update();
-
+    public void notifyViews() {
+        for(View v: views) v.update();
         }
     }
-}
+

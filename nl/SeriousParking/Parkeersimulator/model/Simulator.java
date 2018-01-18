@@ -13,8 +13,7 @@ public class Simulator extends Model {
     private Queue entrancePassQueue;
     private Queue paymentCarQueue;
     private Queue exitCarQueue;
-    private Location location;
-    private SimulatorView simulatorView;
+    private Parking parking;
 
     private int numberOfFloors;
     private int numberOfRows;
@@ -43,10 +42,9 @@ public class Simulator extends Model {
         entrancePassQueue = new Queue();
         paymentCarQueue = new Queue();
         exitCarQueue = new Queue();
-        cars = new Car[numberOfFloors][numberOfRows][numberOfPlaces];
-        //location = new Location(numberOfFloors,numberOfRows,numberOfPlaces);
 
-       //simulatorView = new SimulatorView(3, 6, 30);
+        //hiervoor moet een controller ingesteld worden.
+        parking = new Parking(3, 6, 30);
     }
 
     public void run() {
@@ -116,19 +114,19 @@ public class Simulator extends Model {
     private void carsEntering(Queue queue){
         int i=0;
         // Remove car from the front of the queue and assign to a parking space.
-    	while (queue.carsInQueue()>0 && 
-    			simulatorView.getNumberOfOpenSpots()>0 &&
+    	while (queue.carsInQueue()>0 &&
+                parking.getNumberOfOpenSpots()>0 &&
     			i<enterSpeed) {
             Car car = queue.removeCar();
-            Location freeLocation = simulatorView.getFirstFreeLocation();
-            simulatorView.setCarAt(freeLocation, car);
+            Location freeLocation = parking.getFirstFreeLocation();
+            parking.setCarAt(freeLocation, car);
             i++;
         }
     }
     
     private void carsReadyToLeave(){
         // Add leaving cars to the payment queue.
-        Car car = simulatorView.getFirstLeavingCar();
+        Car car = parking.getFirstLeavingCar();
         while (car!=null) {
         	if (car.getHasToPay()){
 	            car.setIsPaying(true);
@@ -137,7 +135,7 @@ public class Simulator extends Model {
         	else {
         		carLeavesSpot(car);
         	}
-            car = simulatorView.getFirstLeavingCar();
+            car = parking.getFirstLeavingCar();
         }
     }
 
@@ -185,13 +183,104 @@ public class Simulator extends Model {
             }
 
     	}
-
-    
     private void carLeavesSpot(Car car){
     	//simulatorView.removeCarAt(car.getLocation());
         exitCarQueue.addCar(car);
     }
 
+    public int getNumberOfFloors() {
+        return numberOfFloors;
+    }
+
+    public int getNumberOfRows() {
+        return numberOfRows;
+    }
+
+    public int getNumberOfPlaces() {
+        return numberOfPlaces;
+    }
+
+
+    public int getNumberOfOpenSpots() {
+        return numberOfOpenSpots;
+    }
+
+    private boolean locationIsValid(Location location) {
+        int floor = location.getFloor();
+        int row = location.getRow();
+        int place = location.getPlace();
+        if (floor < 0 || floor >= numberOfFloors || row < 0 || row > numberOfRows || place < 0 || place > numberOfPlaces) {
+            return false;
+        }
+        return true;
+    }
+
+    public Car getCarAt(Location location) {
+        if (!locationIsValid(location)) {
+            return null;
+        }
+        return cars[location.getFloor()][location.getRow()][location.getPlace()];
+    }
+
+    public boolean setCarAt(Location location, Car car) {
+        if (!locationIsValid(location)) {
+            return false;
+        }
+        Car oldCar = getCarAt(location);
+        if (oldCar == null) {
+            cars[location.getFloor()][location.getRow()][location.getPlace()] = car;
+            car.setLocation(location);
+            numberOfOpenSpots--;
+            return true;
+        }
+        return false;
+    }
+
+    public Car removeCarAt(Location location) {
+        if (!locationIsValid(location)) {
+            return null;
+        }
+        Car car = getCarAt(location);
+        if (car == null) {
+            return null;
+        }
+        cars[location.getFloor()][location.getRow()][location.getPlace()] = null;
+        car.setLocation(null);
+        numberOfOpenSpots++;
+        return car;
+    }
+
+    public Location getFirstFreeLocation() {
+        for (int floor = 0; floor < getNumberOfFloors(); floor++) {
+            for (int row = 0; row < getNumberOfRows(); row++) {
+                for (int place = 0; place < getNumberOfPlaces(); place++) {
+                    Location location = new Location(floor, row, place);
+                    if (getCarAt(location) == null) {
+                        return location;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    public Car getFirstLeavingCar() {
+        for (int floor = 0; floor < getNumberOfFloors(); floor++) {
+            for (int row = 0; row < getNumberOfRows(); row++) {
+                for (int place = 0; place < getNumberOfPlaces(); place++) {
+                    Location location = new Location(floor, row, place);
+                    Car car = getCarAt(location);
+                    if (car != null && car.getMinutesLeft() <= 0 && !car.getIsPaying()) {
+                        return car;
+                    }
+                }
+            }
+        }
+        return null;
+    }
 
 
 }
+
+
+

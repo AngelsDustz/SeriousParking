@@ -1,4 +1,4 @@
-package nl.SeriousParking.Parkeersimulator.model;
+package Parkeersimulator;
 
 import java.util.Random;
 

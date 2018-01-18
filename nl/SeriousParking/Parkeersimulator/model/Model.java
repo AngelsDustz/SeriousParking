@@ -1,6 +1,7 @@
 package nl.SeriousParking.Parkeersimulator.model;
 
-import nl.SeriousParking.Parkeersimulator.View;
+import nl.SeriousParking.Parkeersimulator.view.View;
+
 import java.util.ArrayList;
 
 public abstract class Model {

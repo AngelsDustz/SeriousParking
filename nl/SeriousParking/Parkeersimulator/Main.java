@@ -1,6 +1,8 @@
 package nl.SeriousParking.Parkeersimulator;
 
 import javafx.application.Application;
+import javafx.scene.Group;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
@@ -12,8 +14,17 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
     @Override
-    public void start(Stage stage) throws Exception {
-        stage.setTitle("SeriousParking Parkeersimulator");
-        stage.show();
+    public void start(Stage primaryStage) throws Exception {
+        Scene MainScene;
+        Group root;
+        root= new Group();
+        MainScene= new Scene(root);
+
+        // root.getChildren().add(new simView());
+
+        primaryStage.setTitle("Parkeer Garage Simulator");
+        primaryStage.setScene(MainScene);
+        primaryStage.show();
+
     }
 }

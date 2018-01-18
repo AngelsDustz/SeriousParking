@@ -1,4 +1,4 @@
-package Parkeersimulator;
+package nl.SeriousParking.Parkeersimulator.model;
 
 import java.awt.*;
 

@@ -31,7 +31,7 @@ public class Main extends Application {
         Simulator model = new Simulator(2,3,5);
         SimulatorController controller = new SimulatorController(model);
         SimView view = new SimView(controller, model);
-        Scene s=new Scene(view);
+        
 
         TabPane tabPane = new TabPane();
         BorderPane borderPane = new BorderPane();

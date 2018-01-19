@@ -26,12 +26,12 @@ public class Main extends Application {
         primaryStage.setTitle("Parkeer Simulator");
 
         Group root = new Group();
-        Scene scene = new Scene(root, 500, 350, Color.WHITE);
+        Scene scene = new Scene(root, 400, 400, Color.WHITE);
 
         Simulator model = new Simulator(2,3,5);
         SimulatorController controller = new SimulatorController(model);
         SimView view = new SimView(controller, model);
-        
+
 
         TabPane tabPane = new TabPane();
         BorderPane borderPane = new BorderPane();

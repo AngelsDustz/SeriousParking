@@ -19,17 +19,17 @@ public class TabTest extends Application {
         Scene scene = new Scene(root, 400, 250, Color.WHITE);
         TabPane tabPane = new TabPane();
         BorderPane borderPane = new BorderPane();
-        // generate 3 tabs
-        for (int i = 0; i < 3; i++) {
+
+
             Tab tab = new Tab();
             tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
-            tab.setText("View" + i);
+            tab.setText("View");
             HBox hbox = new HBox();
-            hbox.getChildren().add(new Label("View" + i));
-            hbox.setAlignment(Pos.CENTER);
+            hbox.getChildren().add(toolBar);
+            hbox.setAlignment(Pos.BOTTOM_LEFT);
             tab.setContent(hbox);
             tabPane.getTabs().add(tab);
-        }
+
 
         // add tab pane
         borderPane.setCenter(tabPane);
@@ -41,5 +41,18 @@ public class TabTest extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
     }
+
+    ToolBar toolBar = new ToolBar(
+            new Button("New"),
+            new Button("Open"),
+            new Button("Save"),
+
+            new Button("Clean"),
+            new Button("Compile"),
+            new Button("Run"),
+
+            new Button("Debug"),
+            new Button("Profile")
+    );
 
 }

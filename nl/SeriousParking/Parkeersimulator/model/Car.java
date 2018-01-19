@@ -19,7 +19,6 @@ public class Car extends Model {
         Random random       = new Random();
         int stayMinutes     = (int) (15 + random.nextFloat() * 3 * 60);
         this.minutesLeft    = stayMinutes;
-        this.minutesLeft    = 1;
         this.isValid        = true;
     }
 

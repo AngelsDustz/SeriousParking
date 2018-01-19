@@ -28,7 +28,7 @@ public class Main extends Application {
         Group root = new Group();
         Scene scene = new Scene(root, 400, 400, Color.WHITE);
 
-        Simulator model = new Simulator(2,3,5);
+        Simulator model = new Simulator(2,5,10);
         SimulatorController controller = new SimulatorController(model);
         SimView view = new SimView(controller, model);
 

@@ -69,17 +69,30 @@ public class Simulator extends Model implements Runnable {
     }
     private void tick() {
     	advanceTime();
-    	handleEntrance();
-        handleExit();
+    	handleExit();
+        carTick();
+        handleEntrance();
         notifyViews();
+
     	// Pause.
         try {
             Thread.sleep(tickPause);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-    }
 
+    }
+    private void carTick(){
+        for (int floor = 0; floor < getNumberOfFloors(); floor++) {
+            for (int row = 0; row < getNumberOfRows(); row++) {
+                for (int place = 0; place < getNumberOfPlaces(); place++) {
+                    if (cars[floor][row][place]!=null) {
+                        cars[floor][row][place].tick();
+                    }
+                }
+            }
+        }
+    }
     private void advanceTime(){
         // Advance the time by one minute.
         minute++;
@@ -195,7 +208,9 @@ public class Simulator extends Model implements Runnable {
 
     	}
     private void carLeavesSpot(Car car){
-    	//simulatorView.removeCarAt(car.getLocation());
+        System.out.println("carleavessopt");
+
+    	removeCarAt(car.getLocation());
         exitCarQueue.addCar(car);
     }
 
@@ -260,7 +275,7 @@ public class Simulator extends Model implements Runnable {
         cars[location.getFloor()][location.getRow()][location.getPlace()] = null;
         car.setLocation(null);
         numberOfOpenSpots++;
-        return car;
+        return cars[location.getFloor()][location.getRow()][location.getPlace()] = null;
     }
 
     public Location getFirstFreeLocation() {

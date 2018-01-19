@@ -1,10 +1,10 @@
 package nl.SeriousParking.Parkeersimulator.view;
 
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
 import nl.SeriousParking.Parkeersimulator.controller.Controller;
 import nl.SeriousParking.Parkeersimulator.model.Model;
 
-abstract public class View<C extends Controller, M extends Model> extends VBox {
+abstract public class View<C extends Controller, M extends Model> extends HBox {
 
     protected C controller;
     protected M model;

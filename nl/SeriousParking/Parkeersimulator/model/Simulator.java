@@ -2,9 +2,9 @@ package nl.SeriousParking.Parkeersimulator.model;
 
 import nl.SeriousParking.Parkeersimulator.SimulatorView;
 
-import java.util.Random;
+import java.util.*;
 
-public class Simulator extends Model {
+public class Simulator extends Model implements Runnable {
 
 
 	
@@ -21,45 +21,48 @@ public class Simulator extends Model {
     private Car[][][] cars;
 
 
-    private int day     = 0;
-    private int hour    = 0;
-    private int minute  = 0;
-
-    private int tickPause = 100;
+    private int day         = 0;
+    private int hour        = 0;
+    private int minute      = 0;
+    private int tickPause   = 1000;
 
     int weekDayArrivals     = 100; // average number of arriving cars per hour
     int weekendArrivals     = 200; // average number of arriving cars per hour
     int weekDayPassArrivals = 50; // average number of arriving cars per hour
     int weekendPassArrivals = 5; // average number of arriving cars per hour
 
-    int enterSpeed = 3; // number of cars that can enter per minute
-    int paymentSpeed = 7; // number of cars that can pay per minute
-    int exitSpeed = 5; // number of cars that can leave per minute
+    int enterSpeed      = 3; // number of cars that can enter per minute
+    int paymentSpeed    = 7; // number of cars that can pay per minute
+    int exitSpeed       = 5; // number of cars that can leave per minute
 
     public Simulator(int numberOfFloors, int numberOfRows, int numberOfPlaces) {
+        entranceCarQueue    = new Queue();
+        entrancePassQueue   = new Queue();
+        paymentCarQueue     = new Queue();
+        exitCarQueue        = new Queue();
 
-        entranceCarQueue = new Queue();
-        entrancePassQueue = new Queue();
-        paymentCarQueue = new Queue();
-        exitCarQueue = new Queue();
 
+        this.numberOfFloors     = numberOfFloors;
+        this.numberOfRows       = numberOfRows;
+        this.numberOfPlaces     = numberOfPlaces;
+        this.numberOfOpenSpots  = numberOfFloors * numberOfRows * numberOfPlaces;
 
-        this.numberOfFloors = numberOfFloors;
-        this.numberOfRows = numberOfRows;
-        this.numberOfPlaces = numberOfPlaces;
-        this.numberOfOpenSpots = numberOfFloors * numberOfRows * numberOfPlaces;
         cars = new Car[numberOfFloors][numberOfRows][numberOfPlaces];
-
     }
 
-    public void update(){
-        notifyViews();
+    /**
+     * @name startSimulator
+     *
+     * This calls the thread to run the ticks.
+     */
+    public void startSimulator() {
+        new Thread(this).start();
     }
+
     public void run() {
-     //  while (run)
-      // {
+        while (run) {
             tick();
-   //    /}
+        }
     }
     public void setRun(boolean run){
         this.run =run;

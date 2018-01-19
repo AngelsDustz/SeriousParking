@@ -3,7 +3,7 @@ package nl.SeriousParking.Parkeersimulator;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import nl.SeriousParking.Parkeersimulator.controller.EmptyController;
+import nl.SeriousParking.Parkeersimulator.controller.SimulatorController;
 import nl.SeriousParking.Parkeersimulator.model.Simulator;
 import nl.SeriousParking.Parkeersimulator.view.SimView;
 
@@ -19,7 +19,7 @@ public class Main extends Application {
         primaryStage.setTitle("Parkeer Simulator");
 
         Simulator model = new Simulator(2,3,5);
-        EmptyController controller = new EmptyController(model);
+        SimulatorController controller = new SimulatorController(model);
         SimView view = new SimView(controller, model);
 
         Scene s=new Scene(view);

@@ -5,20 +5,20 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import nl.SeriousParking.Parkeersimulator.controller.EmptyController;
+import nl.SeriousParking.Parkeersimulator.controller.SimulatorController;
 import nl.SeriousParking.Parkeersimulator.model.Car;
 import nl.SeriousParking.Parkeersimulator.model.Location;
 import nl.SeriousParking.Parkeersimulator.model.Simulator;
 
 
 
-public class SimView extends View<EmptyController, Simulator> {
+public class SimView extends View<SimulatorController, Simulator> {
     Rectangle[][][]garage;
 
     private HBox container= new HBox();
 
 
-    public  SimView(EmptyController controller, Simulator model) {
+    public  SimView(SimulatorController controller, Simulator model) {
         super(controller, model);
         container.setSpacing(40);
 

@@ -210,7 +210,7 @@ public class Simulator extends Model implements Runnable {
 
             for (int i = 0; i < numberOfCars; i++) {
                 Car car =new Car();
-                car.sethasPass(hasPass);
+                car.setHasToPay(!hasPass);
             	entrancePassQueue.addCar(car);
             }
 

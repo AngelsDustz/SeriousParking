@@ -8,18 +8,15 @@ public class Car extends Model {
     private int         minutesLeft;
     private boolean     isPaying;
     private boolean     hasToPay;
-    private boolean     hasPass;
-    private boolean     isValid = false;
 
     /**
      * Constructor for objects of class Car
      */
     public Car() {
-        this.hasPass        = false;
+        this.hasToPay       = true;
         Random random       = new Random();
         int stayMinutes     = (int) (15 + random.nextFloat() * 3 * 60);
         this.minutesLeft    = stayMinutes;
-        this.isValid        = true;
     }
 
     public Location getLocation() {
@@ -57,17 +54,4 @@ public class Car extends Model {
     public void tick() {
         minutesLeft--;
     }
-
-    public void sethasPass(boolean hasPass) {
-        this.hasPass = hasPass;
-    }
-
-    public boolean gethasPass() {
-        return hasPass;
-    }
-
-    public boolean isValid() {
-        return true;
-    }
-
 }

@@ -21,7 +21,7 @@ public class SimView extends View<EmptyController, Simulator> {
     public  SimView(EmptyController controller, Simulator model) {
         super(controller, model);
         container.setSpacing(40);
-        model.addView(this);
+
         CreateTable();
         Button knop =new Button("Start");
         knop.setOnAction(e -> {
@@ -29,7 +29,7 @@ public class SimView extends View<EmptyController, Simulator> {
         });
         container.getChildren().add(knop);
         this.getChildren().add(container);
-
+        model.addView(this);
 
 
     }
@@ -38,7 +38,31 @@ public class SimView extends View<EmptyController, Simulator> {
     @Override
     public void update() {
         draw();
+
     }
+    private void draw(){
+
+        for (int floor = 0; floor < model.getNumberOfFloors(); floor++) {
+            for (int row = 0; row < model.getNumberOfRows(); row++) {
+                for (int place = 0; place < model.getNumberOfPlaces(); place++) {
+                    Car car = model.getCarAt(new Location(floor, row, place));
+                    if (car != null) {
+                        if (!car.gethasPass()){
+                            garage[floor][row][place].setFill(Color.DARKBLUE);
+                        }
+                        else{
+                            garage[floor][row][place].setFill(Color.GREEN);
+                        }
+                    }
+                    else{
+                        garage[floor][row][place].setFill(Color.ANTIQUEWHITE);
+                    }
+                }
+            }
+        }
+
+    }
+
     private void CreateTable(){
      garage = new Rectangle[model.getNumberOfFloors()][model.getNumberOfRows()][model.getNumberOfPlaces()];
         for (int floor = 0; floor < model.getNumberOfFloors(); floor++) {
@@ -60,6 +84,7 @@ public class SimView extends View<EmptyController, Simulator> {
                     rowContainer.getChildren().add(garage[floor][row][place]);
 
 
+
                     }
                 }
             }
@@ -68,20 +93,5 @@ public class SimView extends View<EmptyController, Simulator> {
 
 
 
-   private void draw(){
 
-       for (int floor = 0; floor < model.getNumberOfFloors(); floor++) {
-           for (int row = 0; row < model.getNumberOfRows(); row++) {
-               for (int place = 0; place < model.getNumberOfPlaces(); place++) {
-                   Location location = new Location(floor, row, place);
-                   Car car = model.getCarAt(location);
-                   if (car != null) {
-                       if (car.gethasPass()==true)garage[floor][row][place].setFill(Color.GREEN);
-                       else garage[floor][row][place].setFill(Color.DARKCYAN);
-                   }
-               }
-           }
-       }
-
-    }
 }

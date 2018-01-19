@@ -13,8 +13,10 @@ public class EmptyController extends Controller<Simulator> {
       if (clicked==false){
             model.setRun(true);
             model.run();
+            clicked=true;
         }
         else model.setRun(false);
+        clicked=false;
 
     }
 }

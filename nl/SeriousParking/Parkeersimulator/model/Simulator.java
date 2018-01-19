@@ -56,16 +56,17 @@ public class Simulator extends Model {
         notifyViews();
     }
     public void run() {
-       while (run)
-       {
+     //  while (run)
+      // {
             tick();
-       }
+   //    /}
     }
     public void setRun(boolean run){
         this.run =run;
     }
     private void tick() {
     	advanceTime();
+    	handleEntrance();
         //handleExit();
         notifyViews();
     	// Pause.

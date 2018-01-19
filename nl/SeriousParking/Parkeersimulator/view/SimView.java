@@ -1,5 +1,6 @@
 package nl.SeriousParking.Parkeersimulator.view;
 
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -20,6 +21,7 @@ public class SimView extends View<SimulatorController, Simulator> {
 
     public  SimView(SimulatorController controller, Simulator model) {
         super(controller, model);
+        container.setPadding(new Insets(15, 12, 15, 12));
         container.setSpacing(40);
 
         CreateTable();
@@ -30,6 +32,7 @@ public class SimView extends View<SimulatorController, Simulator> {
         container.getChildren().add(knop);
         this.getChildren().add(container);
         model.addView(this);
+
 
 
     }

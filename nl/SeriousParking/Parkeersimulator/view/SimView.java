@@ -59,7 +59,7 @@ public class SimView extends View<SimulatorController, Simulator> {
                 for (int place = 0; place < model.getNumberOfPlaces(); place++) {
                     Car car = model.getCarAt(new Location(floor, row, place));
                     if (car != null) {
-                        if (!car.gethasPass()){
+                        if (car.getHasToPay()){
                             garage[floor][row][place].setFill(Color.DARKBLUE);
                         }
                         else{

@@ -70,27 +70,13 @@ public class Simulator extends Model implements Runnable {
     private void tick() {
     	advanceTime();
     	handleEntrance();
-        //handleExit();
+        handleExit();
         notifyViews();
     	// Pause.
         try {
             Thread.sleep(tickPause);
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }
-    	handleEntrance();
-        handleExit();
-        for (int floor = 0; floor < getNumberOfFloors(); floor++) {
-            for (int row = 0; row < getNumberOfRows(); row++) {
-                for (int place = 0; place < getNumberOfPlaces(); place++) {
-                    Location location = new Location(floor, row, place);
-                    Car car = getCarAt(location);
-                    if (car != null) {
-                        car.tick();
-
-                    }
-                }
-            }
         }
     }
 
@@ -120,18 +106,12 @@ public class Simulator extends Model implements Runnable {
     }
     
     private void handleExit(){
-  //                      carsReadyToLeave();
-                        carsPaying();
-                        carsLeaving();
-
+        System.out.println("A car is leaving");
+        carsReadyToLeave();
+        carsPaying();
+        carsLeaving();
     }
     
-    /*private void updateViews(){
-    	simulatorView.tick();
-        // Update the car park View.
-        simulatorView.updateView();	
-    }
-    */
     private void carsArriving(){
     	int numberOfCars=getNumberOfCars(weekDayArrivals, weekendArrivals);
         addArrivingCars(numberOfCars, false);
@@ -151,10 +131,12 @@ public class Simulator extends Model implements Runnable {
             i++;
         }
     }
+
     //hier zit de fout geen idee tough
     private void carsReadyToLeave(){
         // Add leaving cars to the payment queue.
         Car car = getFirstLeavingCar();
+
         while (car!=null) {
         	if (car.getHasToPay()){
 	            car.setIsPaying(true);
@@ -248,6 +230,8 @@ public class Simulator extends Model implements Runnable {
         if (!locationIsValid(location)) {
             return null;
         }
+
+
         return cars[location.getFloor()][location.getRow()][location.getPlace()];
     }
 
@@ -305,6 +289,7 @@ public Car getFirstLeavingCar() {
             }
         }
     }
+
     return null;
 }
 

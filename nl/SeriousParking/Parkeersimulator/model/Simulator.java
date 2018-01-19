@@ -79,8 +79,9 @@ public class Simulator extends Model implements Runnable {
     	advanceTime();
     	handleExit();
         carTick();
-        handleEntrance();
         notifyViews();
+        handleEntrance();
+
 
     	// Pause.
         try {

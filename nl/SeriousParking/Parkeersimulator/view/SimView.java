@@ -96,8 +96,8 @@ public class SimView extends View<SimulatorController, Simulator> {
                 floorContainer.getChildren().add(rowContainer);
                 for (int place = 0; place < model.getNumberOfPlaces(); place++) {
                     garage[floor][row][place]=new Rectangle();
-                    garage[floor][row][place].setWidth(50);
-                    garage[floor][row][place].setHeight(50);
+                    garage[floor][row][place].setWidth(30);
+                    garage[floor][row][place].setHeight(20);
                     garage[floor][row][place].setArcWidth(5);
                     garage[floor][row][place].setArcHeight(5);
                     garage[floor][row][place].setFill(Color.ANTIQUEWHITE);

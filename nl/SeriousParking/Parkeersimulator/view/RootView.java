@@ -15,9 +15,9 @@ public class RootView {
         primaryStage.setTitle("Parkeer Simulator");
 
         Group root = new Group();
-        Scene scene = new Scene(root, 400, 400, Color.WHITE);
+        Scene scene = new Scene(root, 650, 400, Color.WHITE);
 
-        Simulator model = new Simulator(2,5,10);
+        Simulator model = new Simulator(3,6,30);
         SimulatorController controller = new SimulatorController(model);
         SimView view = new SimView(controller, model);
 

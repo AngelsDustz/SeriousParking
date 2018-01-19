@@ -15,4 +15,8 @@ public class Queue {
     public int carsInQueue(){
     	return queue.size();
     }
+
+    public void emptyQueue(){
+        queue.clear();
+    }
 }

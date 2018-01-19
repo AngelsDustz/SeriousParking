@@ -49,7 +49,9 @@ public class Simulator extends Model implements Runnable {
 
         cars = new Car[numberOfFloors][numberOfRows][numberOfPlaces];
     }
-
+    public boolean getRun(){
+        return run;
+    }
     /**
      * @name startSimulator
      *
@@ -67,6 +69,12 @@ public class Simulator extends Model implements Runnable {
     public void setRun(boolean run){
         this.run =run;
     }
+    public void Stop(){
+       run=false;
+
+
+    }
+
     private void tick() {
     	advanceTime();
     	handleExit();
@@ -291,25 +299,51 @@ public class Simulator extends Model implements Runnable {
         }
         return null;
     }
-//hier zit een logishe fout
-public Car getFirstLeavingCar() {
-    for (int floor = 0; floor < getNumberOfFloors(); floor++) {
-        for (int row = 0; row < getNumberOfRows(); row++) {
-            for (int place = 0; place < getNumberOfPlaces(); place++) {
-                Location location = new Location(floor, row, place);
-                Car car = getCarAt(location);
-                if (car != null && car.getMinutesLeft() <= 0 && !car.getIsPaying()) {
-                    return car;
+
+    public Car getFirstLeavingCar() {
+        for (int floor = 0; floor < getNumberOfFloors(); floor++) {
+            for (int row = 0; row < getNumberOfRows(); row++) {
+                for (int place = 0; place < getNumberOfPlaces(); place++) {
+                    Location location = new Location(floor, row, place);
+                    Car car = getCarAt(location);
+                    if (car != null && car.getMinutesLeft() <= 0 && !car.getIsPaying()) {
+                        return car;
+                    }
                 }
             }
         }
+
+        return null;
     }
 
-    return null;
+    public void ResetSim() {
+        for (int floor = 0; floor < getNumberOfFloors(); floor++) {
+            for (int row = 0; row < getNumberOfRows(); row++) {
+                for (int place = 0; place < getNumberOfPlaces(); place++) {
+                    cars[floor][row][place] = null;
+
+
+                }
+
+            }
+
+        }
+        entranceCarQueue.emptyQueue();
+        entrancePassQueue.emptyQueue();
+        paymentCarQueue.emptyQueue();
+        exitCarQueue.emptyQueue();
+        numberOfOpenSpots   = numberOfFloors *numberOfRows * numberOfPlaces;
+
+        day=0;
+        hour=0;
+        minute=0;
+        run=false;
+        notifyViews();
+    }
 }
 
 
-}
+
 
 
 

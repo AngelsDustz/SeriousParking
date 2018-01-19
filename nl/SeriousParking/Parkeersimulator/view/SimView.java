@@ -30,13 +30,21 @@ public class SimView extends View<SimulatorController, Simulator> {
         container.setSpacing(40);
 
         CreateTable();
-        Button knop =new Button("Start");
-        knop.setOnAction(e -> {
+
+        Button start =new Button("Start/Stop");
+        start.setOnAction(e -> {
             controller.startSimulator();
         });
 
+
+        Button reset =new Button("Reset");
+        reset.setOnAction(e -> {
+            controller.resetSimulator();
+        });
+
+
         ToolBar toolBar = new ToolBar();
-        toolBar.getItems().addAll(knop);
+        toolBar.getItems().addAll(start,reset);
         
         borderPane.setCenter(container);
         borderPane.setBottom(toolBar);

@@ -1,6 +1,8 @@
 package nl.SeriousParking.Parkeersimulator;
 
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -10,8 +12,10 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import nl.SeriousParking.Parkeersimulator.controller.SimulatorController;
 import nl.SeriousParking.Parkeersimulator.model.Simulator;
+import nl.SeriousParking.Parkeersimulator.view.RootView;
 import nl.SeriousParking.Parkeersimulator.view.SimView;
 
 /**
@@ -23,34 +27,16 @@ import nl.SeriousParking.Parkeersimulator.view.SimView;
 public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
-        primaryStage.setTitle("Parkeer Simulator");
-
-        Group root = new Group();
-        Scene scene = new Scene(root, 400, 400, Color.WHITE);
-
-        Simulator model = new Simulator(2,5,10);
-        SimulatorController controller = new SimulatorController(model);
-        SimView view = new SimView(controller, model);
+        RootView main =new RootView();
+        main.RootView(primaryStage);
 
 
-        TabPane tabPane = new TabPane();
-        BorderPane borderPane = new BorderPane();
-
-        Tab parkinglot = new Tab();
-        tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
-        parkinglot.setText("parkinglot");
-        parkinglot.setContent(view);
-        tabPane.getTabs().add(parkinglot);
-
-
-        // add tab pane
-        borderPane.setCenter(tabPane);
-        // bind to take available space
-        borderPane.prefHeightProperty().bind(scene.heightProperty());
-        borderPane.prefWidthProperty().bind(scene.widthProperty());
-        // add border Pane
-        root.getChildren().add(borderPane);
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent e) {
+                Platform.exit();
+                System.exit(0);
+            }
+        });
     }
 }

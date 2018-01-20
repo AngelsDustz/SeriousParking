@@ -64,6 +64,15 @@ public class Simulator extends Model implements Runnable {
         new Thread(this).start();
     }
 
+
+    public void startStop(){
+        if (run==false){
+           run=true;
+            startSimulator();
+        } else {
+          run=false;
+        }
+    }
     public void run() {
         while (run) {
             tick();

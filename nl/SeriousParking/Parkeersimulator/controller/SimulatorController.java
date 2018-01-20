@@ -10,12 +10,8 @@ public class SimulatorController extends Controller<Simulator> {
     }
 
     public void startSimulator() {
-        if (!model.getRun()){
-            model.setRun(true);
-            model.startSimulator();
-        } else {
-            model.setRun(false);
-        }
+        model.startStop();
+
     }
 
     public void resetSimulator(){

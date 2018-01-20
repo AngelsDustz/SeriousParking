@@ -1,8 +1,6 @@
 package nl.SeriousParking.Parkeersimulator.view;
 
 import javafx.geometry.Insets;
-import javafx.scene.control.Button;
-import javafx.scene.control.ToolBar;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -20,7 +18,7 @@ public class SimView extends View<SimulatorController, Simulator> {
     private HBox container = new HBox();
 
 
-    public  SimView(SimulatorController controller, Simulator model) {
+    public SimView(SimulatorController controller, Simulator model) {
         super(controller, model);
 
         BorderPane borderPane   = new BorderPane();

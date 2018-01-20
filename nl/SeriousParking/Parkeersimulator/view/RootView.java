@@ -9,10 +9,13 @@ import javafx.scene.control.ToolBar;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import nl.SeriousParking.Parkeersimulator.controller.SettingsController;
 import nl.SeriousParking.Parkeersimulator.controller.SimulatorController;
 import nl.SeriousParking.Parkeersimulator.model.Simulator;
 
+
 public class RootView {
+
     private static final int NUMFLOORS  = 3;
     private static final int NUMROWS    = 6;
     private static final int NUMPLACES  = 20;
@@ -25,7 +28,9 @@ public class RootView {
 
         Simulator model                 = new Simulator(NUMFLOORS, NUMROWS, NUMPLACES);
         SimulatorController controller  = new SimulatorController(model);
+        SettingsController settingscontroller  = new SettingsController(model);
         SimView view                    = new SimView(controller, model);
+        SimSettings simsettings         = new SimSettings(settingscontroller, model);
 
         TabPane tabPane         = new TabPane();
         BorderPane borderPane   = new BorderPane();
@@ -42,6 +47,7 @@ public class RootView {
         });
 
 
+
         toolBar.getItems().addAll(start,reset);
 
         Tab parkinglot = new Tab();
@@ -49,6 +55,12 @@ public class RootView {
         parkinglot.setText("parkinglot");
         parkinglot.setContent(view);
         tabPane.getTabs().add(parkinglot);
+
+        Tab SimSettings = new Tab();
+        tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
+        SimSettings.setText("Settings");
+        SimSettings.setContent(simsettings);
+        tabPane.getTabs().add(SimSettings);
 
         borderPane.setBottom(toolBar);
 

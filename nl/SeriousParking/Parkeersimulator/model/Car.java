@@ -8,6 +8,7 @@ public class Car extends Model {
     private int         minutesLeft;
     private boolean     isPaying;
     private boolean     hasToPay;
+    private boolean     isParkedDouble;
 
     /**
      * Constructor for objects of class Car
@@ -17,6 +18,14 @@ public class Car extends Model {
         Random random       = new Random();
         int stayMinutes     = (int) (15 + random.nextFloat() * 3 * 60);
         this.minutesLeft    = stayMinutes;
+    }
+
+    public boolean getisParkedDouble() {
+        return isParkedDouble;
+    }
+
+    public void setParkedDouble(boolean parkedDouble) {
+        isParkedDouble = parkedDouble;
     }
 
     public Location getLocation() {
@@ -54,4 +63,17 @@ public class Car extends Model {
     public void tick() {
         minutesLeft--;
     }
+
+    public Car copy(Car car){
+        Car copiedCar =new Car();
+
+        copiedCar.location       = car.location;
+        copiedCar.minutesLeft    = car.minutesLeft ;
+        copiedCar.isPaying       = car.isPaying ;
+        copiedCar.hasToPay       = car.hasToPay;
+        copiedCar.isParkedDouble = car.isParkedDouble;
+
+        return copiedCar;
+    }
 }
+

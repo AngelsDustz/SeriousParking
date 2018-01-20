@@ -12,14 +12,14 @@ import nl.SeriousParking.Parkeersimulator.model.Simulator;
 
 public class RootView {
     private static final int NUMFLOORS  = 3;
-    private static final int NUMROWS    = 3;
-    private static final int NUMPLACES  = 15;
+    private static final int NUMROWS    = 6;
+    private static final int NUMPLACES  = 20;
 
     public void RootView(Stage primaryStage) {
         primaryStage.setTitle("SeriousParking Parkeersimulator");
 
         Group root  = new Group();
-        Scene scene = new Scene(root, 650, 400, Color.WHITE);
+        Scene scene = new Scene(root, 650, 500, Color.WHITE);
 
         Simulator model                 = new Simulator(NUMFLOORS, NUMROWS, NUMPLACES);
         SimulatorController controller  = new SimulatorController(model);

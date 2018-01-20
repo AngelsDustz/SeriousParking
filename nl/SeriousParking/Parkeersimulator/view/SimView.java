@@ -58,7 +58,17 @@ public class SimView extends View<SimulatorController, Simulator> {
         draw();
     }
 
-    private void draw(){
+
+    private void paintCar(int floor, int row, int place, Car car){
+
+        if (car.getHasToPay()) {
+            garage[floor][row][place].setFill(Color.DARKBLUE);
+        } else {
+            garage[floor][row][place].setFill(Color.DARKOLIVEGREEN);
+        }
+    }
+    private void draw() {
+
         for (int floor = 0; floor < model.getNumberOfFloors(); floor++) {
 
             for (int row = 0; row < model.getNumberOfRows(); row++) {
@@ -67,14 +77,19 @@ public class SimView extends View<SimulatorController, Simulator> {
                     Car car = model.getCarAt(new Location(floor, row, place));
 
                     if (car != null) {
-                        if (car.getHasToPay()) {
-                            garage[floor][row][place].setFill(Color.DARKBLUE);
+                        if (!car.getisParkedDouble()) {
+                            garage[floor][row][place].setStroke(Color.BLACK);
+                            paintCar(floor, row, place, car);
                         } else {
-                            garage[floor][row][place].setFill(Color.GREEN);
+                            garage[floor][row][place].setStroke(Color.RED);
+                            paintCar(floor, row, place, car);
                         }
                     } else {
                         garage[floor][row][place].setFill(Color.ANTIQUEWHITE);
+                        garage[floor][row][place].setStroke(Color.ANTIQUEWHITE);
                     }
+
+
                 }
             }
         }
@@ -95,8 +110,9 @@ public class SimView extends View<SimulatorController, Simulator> {
 
                 for (int place = 0; place < model.getNumberOfPlaces(); place++) {
                     garage[floor][row][place] = new Rectangle();
-                    garage[floor][row][place].setWidth(20);
-                    garage[floor][row][place].setHeight(10);
+                    garage[floor][row][place].setWidth(18);
+                    garage[floor][row][place].setStrokeWidth(2);
+                    garage[floor][row][place].setHeight(8);
                     garage[floor][row][place].setArcWidth(2);
                     garage[floor][row][place].setArcHeight(2);
                     garage[floor][row][place].setFill(Color.ANTIQUEWHITE);

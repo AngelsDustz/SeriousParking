@@ -19,12 +19,14 @@ public class Simulator extends Model implements Runnable {
     private int numberOfPlaces;
     private int numberOfOpenSpots;
     private Car[][][] cars;
+    private Random randomGenerator;
 
 
     private int day         = 0;
     private int hour        = 0;
     private int minute      = 0;
-    private int tickPause   = 1000;
+    private int tickPause   = 100;
+    private int chance      = 10;
 
     int weekDayArrivals     = 100; // average number of arriving cars per hour
     int weekendArrivals     = 200; // average number of arriving cars per hour
@@ -48,6 +50,7 @@ public class Simulator extends Model implements Runnable {
         this.numberOfOpenSpots  = numberOfFloors * numberOfRows * numberOfPlaces;
 
         cars = new Car[numberOfFloors][numberOfRows][numberOfPlaces];
+        randomGenerator= new Random();
     }
     public boolean getRun(){
         return run;
@@ -142,8 +145,9 @@ public class Simulator extends Model implements Runnable {
         addArrivingCars(numberOfCars, false);
     	numberOfCars = getNumberOfCars(weekDayPassArrivals, weekendPassArrivals);
         addArrivingCars(numberOfCars, true);
-    }
 
+    }
+    /*
     private void carsEntering(Queue queue){
         int i=0;
         // Remove car from the front of the queue and assign to a parking space.
@@ -154,6 +158,38 @@ public class Simulator extends Model implements Runnable {
             Location freeLocation   = getFirstFreeLocation();
 
             setCarAt(freeLocation, car);
+            i++;
+        }
+    }
+    */
+
+    private void carsEntering(Queue queue){
+        int i=0;
+        // Remove car from the front of the queue and assign to a parking space.
+        while (queue.carsInQueue()>0 &&
+                getNumberOfOpenSpots()>0 &&
+                i<enterSpeed) {
+            Car car = queue.removeCar();
+
+            if (!car.getisParkedDouble()){
+                Location freeLocation = getFirstFreeLocation();
+                setCarAt(freeLocation, car);
+
+               }
+
+
+            else{
+                Location[] freeLocation = getFirstFreeDoubleLocation();
+                if (freeLocation!=null) {
+                    Location loc1 = freeLocation[0];
+                    Location loc2 = freeLocation[1];
+                    Car car2 = new Car();
+                    car2 = car2.copy(car);
+                    setCarAt(loc1, car);
+                    setCarAt(loc2, car2);
+                }
+
+            }
             i++;
         }
     }
@@ -212,15 +248,24 @@ public class Simulator extends Model implements Runnable {
     private void addArrivingCars(int numberOfCars, boolean hasPass) {
         // Add the cars to the back of the queue.
         for (int i = 0; i < numberOfCars; i++) {
-            Car car = new Car();
+            Car car =new Car();
             car.setHasToPay(!hasPass);
+            if (randomGenerator.nextInt(100)<=chance){
+                car.setParkedDouble(true);
+            }
+            else{
+                car.setParkedDouble(false);
+            }
             entrancePassQueue.addCar(car);
         }
+
     }
 
     private void carLeavesSpot(Car car){
-    	removeCarAt(car.getLocation());
-        exitCarQueue.addCar(car);
+
+            removeCarAt(car.getLocation());
+            exitCarQueue.addCar(car);
+
     }
 
     public int getNumberOfFloors() {
@@ -241,6 +286,7 @@ public class Simulator extends Model implements Runnable {
     }
 
     private boolean locationIsValid(Location location) {
+
         int floor   = location.getFloor();
         int row     = location.getRow();
         int place   = location.getPlace();
@@ -317,6 +363,32 @@ public class Simulator extends Model implements Runnable {
         }
         return null;
     }
+
+    public Location[] getFirstFreeDoubleLocation() {
+        Location[] locations = new Location[2];
+        for (int floor = 0; floor < getNumberOfFloors(); floor++) {
+            for (int row = 0; row < getNumberOfRows(); row++) {
+                for (int place = 0; place < getNumberOfPlaces(); place++) {
+                    Location location = new Location(floor, row, place);
+                    if (getCarAt(location) == null) {
+                        if (place<numberOfPlaces-1){
+                            Location secondLocation = new Location(floor, row, place + 1);
+                            if (getCarAt(secondLocation) == null) {
+
+                                locations[0] = location;
+                                locations[1] = secondLocation;
+                                return locations;
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
+        return null;
+    }
+
+
 
     public Car getFirstLeavingCar() {
         for (int floor = 0; floor < getNumberOfFloors(); floor++) {

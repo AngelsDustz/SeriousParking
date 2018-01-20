@@ -66,13 +66,13 @@ public class Simulator extends Model implements Runnable {
             tick();
         }
     }
+
     public void setRun(boolean run){
-        this.run =run;
+        this.run = run;
     }
+
     public void Stop(){
-       run=false;
-
-
+       run = false;
     }
 
     private void tick() {
@@ -91,10 +91,14 @@ public class Simulator extends Model implements Runnable {
         }
 
     }
+
     private void carTick(){
         for (int floor = 0; floor < getNumberOfFloors(); floor++) {
+
             for (int row = 0; row < getNumberOfRows(); row++) {
+
                 for (int place = 0; place < getNumberOfPlaces(); place++) {
+
                     if (cars[floor][row][place]!=null) {
                         cars[floor][row][place].tick();
                     }
@@ -102,6 +106,7 @@ public class Simulator extends Model implements Runnable {
             }
         }
     }
+
     private void advanceTime(){
         // Advance the time by one minute.
         minute++;
@@ -109,35 +114,33 @@ public class Simulator extends Model implements Runnable {
             minute -= 60;
             hour++;
         }
+
         while (hour > 23) {
             hour -= 24;
             day++;
         }
+
         while (day > 6) {
             day -= 7;
         }
-
     }
 
     private void handleEntrance(){
         carsArriving();
         carsEntering(entrancePassQueue);
         carsEntering(entranceCarQueue);
-
-
     }
     
     private void handleExit(){
-        System.out.println("A car is leaving");
         carsReadyToLeave();
         carsPaying();
         carsLeaving();
     }
     
     private void carsArriving(){
-    	int numberOfCars=getNumberOfCars(weekDayArrivals, weekendArrivals);
+    	int numberOfCars = getNumberOfCars(weekDayArrivals, weekendArrivals);
         addArrivingCars(numberOfCars, false);
-    	numberOfCars=getNumberOfCars(weekDayPassArrivals, weekendPassArrivals);
+    	numberOfCars = getNumberOfCars(weekDayPassArrivals, weekendPassArrivals);
         addArrivingCars(numberOfCars, true);
     }
 
@@ -147,8 +150,9 @@ public class Simulator extends Model implements Runnable {
     	while (queue.carsInQueue()>0 &&
                 getNumberOfOpenSpots()>0 &&
     			i<enterSpeed) {
-            Car car = queue.removeCar();
-            Location freeLocation = getFirstFreeLocation();
+            Car car                 = queue.removeCar();
+            Location freeLocation   = getFirstFreeLocation();
+
             setCarAt(freeLocation, car);
             i++;
         }
@@ -163,9 +167,8 @@ public class Simulator extends Model implements Runnable {
         	if (car.getHasToPay()){
 	            car.setIsPaying(true);
 	            paymentCarQueue.addCar(car);
-        	}
-        	else {
-        	    //geerft geen plaats door
+        	} else {
+        	    //geeft geen plaats door
         		carLeavesSpot(car);
         	}
             car = getFirstLeavingCar();
@@ -201,24 +204,21 @@ public class Simulator extends Model implements Runnable {
                 : weekend;
 
         // Calculate the number of cars that arrive this minute.
-        double standardDeviation = averageNumberOfCarsPerHour * 0.3;
-        double numberOfCarsPerHour = averageNumberOfCarsPerHour + random.nextGaussian() * standardDeviation;
+        double standardDeviation    = averageNumberOfCarsPerHour * 0.3;
+        double numberOfCarsPerHour  = averageNumberOfCarsPerHour + random.nextGaussian() * standardDeviation;
         return (int)Math.round(numberOfCarsPerHour / 60);	
     }
     
-    private void addArrivingCars(int numberOfCars, boolean hasPass){
+    private void addArrivingCars(int numberOfCars, boolean hasPass) {
         // Add the cars to the back of the queue.
+        for (int i = 0; i < numberOfCars; i++) {
+            Car car = new Car();
+            car.setHasToPay(!hasPass);
+            entrancePassQueue.addCar(car);
+        }
+    }
 
-            for (int i = 0; i < numberOfCars; i++) {
-                Car car =new Car();
-                car.setHasToPay(!hasPass);
-            	entrancePassQueue.addCar(car);
-            }
-
-    	}
     private void carLeavesSpot(Car car){
-        System.out.println("carleavessopt");
-
     	removeCarAt(car.getLocation());
         exitCarQueue.addCar(car);
     }
@@ -241,12 +241,22 @@ public class Simulator extends Model implements Runnable {
     }
 
     private boolean locationIsValid(Location location) {
-        int floor = location.getFloor();
-        int row = location.getRow();
-        int place = location.getPlace();
-        if (floor < 0 || floor >= numberOfFloors || row < 0 || row > numberOfRows || place < 0 || place > numberOfPlaces) {
+        int floor   = location.getFloor();
+        int row     = location.getRow();
+        int place   = location.getPlace();
+
+        if (floor < 0 || floor >= numberOfFloors) {
             return false;
         }
+
+        if (row < 0 || row > numberOfRows) {
+            return false;
+        }
+
+        if (place < 0 || place > numberOfPlaces) {
+            return false;
+        }
+
         return true;
     }
 
@@ -255,7 +265,6 @@ public class Simulator extends Model implements Runnable {
             return null;
         }
 
-
         return cars[location.getFloor()][location.getRow()][location.getPlace()];
     }
 
@@ -263,6 +272,7 @@ public class Simulator extends Model implements Runnable {
         if (!locationIsValid(location)) {
             return false;
         }
+
         Car oldCar = getCarAt(location);
         if (oldCar == null) {
             cars[location.getFloor()][location.getRow()][location.getPlace()] = car;
@@ -270,6 +280,7 @@ public class Simulator extends Model implements Runnable {
             numberOfOpenSpots--;
             return true;
         }
+
         return false;
     }
 
@@ -277,21 +288,27 @@ public class Simulator extends Model implements Runnable {
         if (!locationIsValid(location)) {
             return null;
         }
+
         Car car = getCarAt(location);
         if (car == null) {
             return null;
         }
+
         cars[location.getFloor()][location.getRow()][location.getPlace()] = null;
         car.setLocation(null);
         numberOfOpenSpots++;
+
         return cars[location.getFloor()][location.getRow()][location.getPlace()] = null;
     }
 
     public Location getFirstFreeLocation() {
         for (int floor = 0; floor < getNumberOfFloors(); floor++) {
+
             for (int row = 0; row < getNumberOfRows(); row++) {
+
                 for (int place = 0; place < getNumberOfPlaces(); place++) {
                     Location location = new Location(floor, row, place);
+
                     if (getCarAt(location) == null) {
                         return location;
                     }
@@ -303,10 +320,13 @@ public class Simulator extends Model implements Runnable {
 
     public Car getFirstLeavingCar() {
         for (int floor = 0; floor < getNumberOfFloors(); floor++) {
+
             for (int row = 0; row < getNumberOfRows(); row++) {
+
                 for (int place = 0; place < getNumberOfPlaces(); place++) {
                     Location location = new Location(floor, row, place);
                     Car car = getCarAt(location);
+
                     if (car != null && car.getMinutesLeft() <= 0 && !car.getIsPaying()) {
                         return car;
                     }
@@ -319,26 +339,26 @@ public class Simulator extends Model implements Runnable {
 
     public void ResetSim() {
         for (int floor = 0; floor < getNumberOfFloors(); floor++) {
+
             for (int row = 0; row < getNumberOfRows(); row++) {
+
                 for (int place = 0; place < getNumberOfPlaces(); place++) {
                     cars[floor][row][place] = null;
-
-
                 }
-
             }
-
         }
+
         entranceCarQueue.emptyQueue();
         entrancePassQueue.emptyQueue();
         paymentCarQueue.emptyQueue();
         exitCarQueue.emptyQueue();
         numberOfOpenSpots   = numberOfFloors *numberOfRows * numberOfPlaces;
 
-        day=0;
-        hour=0;
-        minute=0;
-        run=false;
+        day     = 0;
+        hour    = 0;
+        minute  = 0;
+        run     = false;
+
         notifyViews();
     }
 }

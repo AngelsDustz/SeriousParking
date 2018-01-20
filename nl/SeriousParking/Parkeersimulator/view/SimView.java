@@ -16,34 +16,32 @@ import nl.SeriousParking.Parkeersimulator.model.Simulator;
 
 
 public class SimView extends View<SimulatorController, Simulator> {
-    Rectangle[][][]garage;
-
-    private HBox container= new HBox();
+    private Rectangle[][][] garage;
+    private HBox container = new HBox();
 
 
     public  SimView(SimulatorController controller, Simulator model) {
         super(controller, model);
 
-        BorderPane borderPane = new BorderPane();
+        BorderPane borderPane   = new BorderPane();
+        Button start            = new Button("Start/Stop");
+        Button reset            = new Button("Reset");
+        ToolBar toolBar         = new ToolBar();
 
         container.setPadding(new Insets(15, 12, 15, 12));
         container.setSpacing(40);
 
         CreateTable();
 
-        Button start =new Button("Start/Stop");
         start.setOnAction(e -> {
             controller.startSimulator();
         });
 
-
-        Button reset =new Button("Reset");
         reset.setOnAction(e -> {
             controller.resetSimulator();
         });
 
 
-        ToolBar toolBar = new ToolBar();
         toolBar.getItems().addAll(start,reset);
         
         borderPane.setCenter(container);
@@ -58,60 +56,53 @@ public class SimView extends View<SimulatorController, Simulator> {
     @Override
     public void update() {
         draw();
-
     }
-    private void draw(){
 
+    private void draw(){
         for (int floor = 0; floor < model.getNumberOfFloors(); floor++) {
+
             for (int row = 0; row < model.getNumberOfRows(); row++) {
+
                 for (int place = 0; place < model.getNumberOfPlaces(); place++) {
                     Car car = model.getCarAt(new Location(floor, row, place));
+
                     if (car != null) {
-                        if (car.getHasToPay()){
+                        if (car.getHasToPay()) {
                             garage[floor][row][place].setFill(Color.DARKBLUE);
-                        }
-                        else{
+                        } else {
                             garage[floor][row][place].setFill(Color.GREEN);
                         }
-                    }
-                    else{
+                    } else {
                         garage[floor][row][place].setFill(Color.ANTIQUEWHITE);
                     }
                 }
             }
         }
-
     }
 
-    private void CreateTable(){
-     garage = new Rectangle[model.getNumberOfFloors()][model.getNumberOfRows()][model.getNumberOfPlaces()];
-        for (int floor = 0; floor < model.getNumberOfFloors(); floor++) {
-            HBox floorContainer= new HBox();
-            floorContainer.setSpacing(5);
+    private void CreateTable() {
+        garage = new Rectangle[model.getNumberOfFloors()][model.getNumberOfRows()][model.getNumberOfPlaces()];
 
+        for (int floor = 0; floor < model.getNumberOfFloors(); floor++) {
+            HBox floorContainer = new HBox();
+            floorContainer.setSpacing(5);
             container.getChildren().add(floorContainer);
+
             for (int row = 0; row < model.getNumberOfRows(); row++) {
-                VBox rowContainer=new VBox();
+                VBox rowContainer = new VBox();
                 rowContainer.setSpacing(10);
                 floorContainer.getChildren().add(rowContainer);
+
                 for (int place = 0; place < model.getNumberOfPlaces(); place++) {
-                    garage[floor][row][place]=new Rectangle();
-                    garage[floor][row][place].setWidth(30);
-                    garage[floor][row][place].setHeight(20);
-                    garage[floor][row][place].setArcWidth(5);
-                    garage[floor][row][place].setArcHeight(5);
+                    garage[floor][row][place] = new Rectangle();
+                    garage[floor][row][place].setWidth(20);
+                    garage[floor][row][place].setHeight(10);
+                    garage[floor][row][place].setArcWidth(2);
+                    garage[floor][row][place].setArcHeight(2);
                     garage[floor][row][place].setFill(Color.ANTIQUEWHITE);
                     rowContainer.getChildren().add(garage[floor][row][place]);
-
-
-
-                    }
                 }
             }
         }
-
-
-
-
-
+    }
 }

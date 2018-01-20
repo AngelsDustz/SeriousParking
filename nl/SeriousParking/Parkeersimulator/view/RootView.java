@@ -11,19 +11,23 @@ import nl.SeriousParking.Parkeersimulator.controller.SimulatorController;
 import nl.SeriousParking.Parkeersimulator.model.Simulator;
 
 public class RootView {
-    public void RootView(Stage primaryStage) {
-        primaryStage.setTitle("Parkeer Simulator");
+    private static final int NUMFLOORS  = 3;
+    private static final int NUMROWS    = 3;
+    private static final int NUMPLACES  = 15;
 
-        Group root = new Group();
+    public void RootView(Stage primaryStage) {
+        primaryStage.setTitle("SeriousParking Parkeersimulator");
+
+        Group root  = new Group();
         Scene scene = new Scene(root, 650, 400, Color.WHITE);
 
-        Simulator model = new Simulator(3,6,30);
-        SimulatorController controller = new SimulatorController(model);
-        SimView view = new SimView(controller, model);
+        Simulator model                 = new Simulator(NUMFLOORS, NUMROWS, NUMPLACES);
+        SimulatorController controller  = new SimulatorController(model);
+        SimView view                    = new SimView(controller, model);
 
 
-        TabPane tabPane = new TabPane();
-        BorderPane borderPane = new BorderPane();
+        TabPane tabPane         = new TabPane();
+        BorderPane borderPane   = new BorderPane();
 
         Tab parkinglot = new Tab();
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);

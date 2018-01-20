@@ -1,10 +1,6 @@
 package nl.SeriousParking.Parkeersimulator.model;
 
 public class Location extends Model {
-
-
-
-
     private int floor;
     private int row;
     private int place;
@@ -14,9 +10,9 @@ public class Location extends Model {
      */
     public Location(int floor, int row, int place) {
         super();
-        this.floor = floor;
-        this.row = row;
-        this.place = place;
+        this.floor  = floor;
+        this.row    = row;
+        this.place  = place;
     }
 
     /**
@@ -26,8 +22,7 @@ public class Location extends Model {
         if(obj instanceof Location) {
             Location other = (Location) obj;
             return floor == other.getFloor() && row == other.getRow() && place == other.getPlace();
-        }
-        else {
+        } else {
             return false;
         }
     }

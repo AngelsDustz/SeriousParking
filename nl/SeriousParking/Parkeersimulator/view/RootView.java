@@ -50,12 +50,6 @@ public class RootView {
         parkinglot.setContent(view);
         tabPane.getTabs().add(parkinglot);
 
-        Tab parkinglot1 = new Tab();
-        tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
-        parkinglot1.setText("parkinglot");
-        parkinglot1.setContent(view);
-        tabPane.getTabs().add(parkinglot1);
-
         borderPane.setBottom(toolBar);
 
         // add tab pane

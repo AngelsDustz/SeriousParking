@@ -24,28 +24,14 @@ public class SimView extends View<SimulatorController, Simulator> {
         super(controller, model);
 
         BorderPane borderPane   = new BorderPane();
-        Button start            = new Button("Start/Stop");
-        Button reset            = new Button("Reset");
-        ToolBar toolBar         = new ToolBar();
 
         container.setPadding(new Insets(15, 12, 15, 12));
         container.setSpacing(40);
 
         CreateTable();
-
-        start.setOnAction(e -> {
-            controller.startSimulator();
-        });
-
-        reset.setOnAction(e -> {
-            controller.resetSimulator();
-        });
-
-
-        toolBar.getItems().addAll(start,reset);
         
         borderPane.setCenter(container);
-        borderPane.setBottom(toolBar);
+
 
         this.getChildren().add(borderPane);
         model.addView(this);

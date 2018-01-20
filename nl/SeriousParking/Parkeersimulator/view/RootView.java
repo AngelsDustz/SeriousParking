@@ -2,8 +2,10 @@ package nl.SeriousParking.Parkeersimulator.view;
 
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.ToolBar;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -25,9 +27,22 @@ public class RootView {
         SimulatorController controller  = new SimulatorController(model);
         SimView view                    = new SimView(controller, model);
 
-
         TabPane tabPane         = new TabPane();
         BorderPane borderPane   = new BorderPane();
+        Button start            = new Button("Start/Stop");
+        Button reset            = new Button("Reset");
+        ToolBar toolBar         = new ToolBar();
+
+        start.setOnAction(e -> {
+            controller.startSimulator();
+        });
+
+        reset.setOnAction(e -> {
+            controller.resetSimulator();
+        });
+
+
+        toolBar.getItems().addAll(start,reset);
 
         Tab parkinglot = new Tab();
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
@@ -35,6 +50,13 @@ public class RootView {
         parkinglot.setContent(view);
         tabPane.getTabs().add(parkinglot);
 
+        Tab parkinglot1 = new Tab();
+        tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
+        parkinglot1.setText("parkinglot");
+        parkinglot1.setContent(view);
+        tabPane.getTabs().add(parkinglot1);
+
+        borderPane.setBottom(toolBar);
 
         // add tab pane
         borderPane.setCenter(tabPane);

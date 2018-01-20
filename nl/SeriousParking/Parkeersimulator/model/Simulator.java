@@ -52,6 +52,19 @@ public class Simulator extends Model implements Runnable {
         cars = new Car[numberOfFloors][numberOfRows][numberOfPlaces];
         randomGenerator= new Random();
     }
+
+    public int getDay() {
+        return day;
+    }
+
+    public int getHour() {
+        return hour;
+    }
+
+    public int getMinute() {
+        return minute;
+    }
+
     public boolean getRun(){
         return run;
     }

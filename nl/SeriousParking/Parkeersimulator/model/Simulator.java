@@ -25,18 +25,18 @@ public class Simulator extends Model implements Runnable {
     private int day         = 0;
     private int hour        = 0;
     private int minute      = 0;
-    //jeroen - mijn tested minimum stable tick rate is 25 op 20 heb ik desync na een aantal minuten
-    private int tickPause   = 25;
-    private int chance      = 1;
 
-    private int weekDayArrivals     = 100; // average number of arriving cars per hour
-    private int weekendArrivals     = 200; // average number of arriving cars per hour
-    private int weekDayPassArrivals = 50; // average number of arriving cars per hour
-    private int weekendPassArrivals = 5; // average number of arriving cars per hour
+    private int tickPause   = SettingHandler.tickPause;
+    private int chance      = SettingHandler.chance;
 
-   private int enterSpeed      = 3; // number of cars that can enter per minute
-   private int paymentSpeed    = 7; // number of cars that can pay per minute
-   private int exitSpeed       = 5; // number of cars that can leave per minute
+    private int weekDayArrivals; // average number of arriving cars per hour
+    private int weekendArrivals;// average number of arriving cars per hour
+    private int weekDayPassArrivals;// average number of arriving cars per hour
+    private int weekendPassArrivals;// average number of arriving cars per hour
+
+    private int enterSpeed; // number of cars that can enter per minute
+    private int paymentSpeed; // number of cars that can pay per minute
+    private int exitSpeed; // number of cars that can leave per minute
 
     public Simulator(int numberOfFloors, int numberOfRows, int numberOfPlaces) {
         entranceCarQueue    = new Queue();
@@ -54,6 +54,19 @@ public class Simulator extends Model implements Runnable {
         randomGenerator= new Random();
     }
 
+    private void setSettings(){
+        tickPause   = SettingHandler.tickPause;
+        chance      = SettingHandler.chance;
+
+        weekDayArrivals     = SettingHandler.weekDayArrivals;
+        weekendArrivals     = SettingHandler.weekendArrivals;
+        weekDayPassArrivals = SettingHandler.weekDayPassArrivals;
+        weekendPassArrivals = SettingHandler.weekendPassArrivals;
+
+        enterSpeed      = SettingHandler.enterSpeed;
+        paymentSpeed    = SettingHandler.paymentSpeed;
+        exitSpeed       = SettingHandler.exitSpeed;
+    }
     /**
      * @name startSimulator
      *
@@ -89,6 +102,7 @@ public class Simulator extends Model implements Runnable {
         carTick();
         notifyViews();
         handleEntrance();
+        setSettings();
 
 
     	// Pause.
@@ -409,66 +423,6 @@ public class Simulator extends Model implements Runnable {
         notifyViews();
     }
 
-    public void notifyAllViews(){
-        notifyViews();
-    }
-    public int getDay() {
-        return day;
-    }
-
-    public int getHour() {
-        return hour;
-    }
-
-    public int getMinute() {
-        return minute;
-    }
-
-    public int getTickPause() {
-        return tickPause;
-    }
-
-    public void setTickPause(int tickPause) {
-
-        if(tickPause>25){
-            this.tickPause = tickPause;
-        }
-        else
-        {
-            this.tickPause = 25;
-        }
-    }
-
-    public int getEnterSpeed() {
-        return enterSpeed;
-    }
-
-    public void setEnterSpeed(int enterSpeed) {
-        this.enterSpeed = enterSpeed;
-    }
-
-    public int getExitSpeed() {
-        return exitSpeed;
-    }
-
-    public void setExitSpeed(int exitSpeed) {
-        this.exitSpeed = exitSpeed;
-    }
-
-    public int getPaymentSpeed() {
-        return paymentSpeed;
-    }
-
-    public void setPaymentSpeed(int paymentSpeed) {
-        this.paymentSpeed = paymentSpeed;
-    }
-
-
-
-    public boolean getRun(){
-        return run;
-    }
-
     public int getNumberOfFloors() {
         return numberOfFloors;
     }
@@ -486,10 +440,77 @@ public class Simulator extends Model implements Runnable {
         return numberOfOpenSpots;
     }
 
-    public void setRun(boolean run){
-        this.run = run;
+    public int getTickPause() {
+        return tickPause;
     }
 
+    public void setTickPause(int tickPause) {
+        this.tickPause = tickPause;
+    }
+
+    public int getChance() {
+        return chance;
+    }
+
+    public void setChance(int chance) {
+        this.chance = chance;
+    }
+
+    public int getWeekDayArrivals() {
+        return weekDayArrivals;
+    }
+
+    public void setWeekDayArrivals(int weekDayArrivals) {
+        this.weekDayArrivals = weekDayArrivals;
+    }
+
+    public int getWeekendArrivals() {
+        return weekendArrivals;
+    }
+
+    public void setWeekendArrivals(int weekendArrivals) {
+        this.weekendArrivals = weekendArrivals;
+    }
+
+    public int getWeekDayPassArrivals() {
+        return weekDayPassArrivals;
+    }
+
+    public void setWeekDayPassArrivals(int weekDayPassArrivals) {
+        this.weekDayPassArrivals = weekDayPassArrivals;
+    }
+
+    public int getWeekendPassArrivals() {
+        return weekendPassArrivals;
+    }
+
+    public void setWeekendPassArrivals(int weekendPassArrivals) {
+        this.weekendPassArrivals = weekendPassArrivals;
+    }
+
+    public int getEnterSpeed() {
+        return enterSpeed;
+    }
+
+    public void setEnterSpeed(int enterSpeed) {
+        this.enterSpeed = enterSpeed;
+    }
+
+    public int getPaymentSpeed() {
+        return paymentSpeed;
+    }
+
+    public void setPaymentSpeed(int paymentSpeed) {
+        this.paymentSpeed = paymentSpeed;
+    }
+
+    public int getExitSpeed() {
+        return exitSpeed;
+    }
+
+    public void setExitSpeed(int exitSpeed) {
+        this.exitSpeed = exitSpeed;
+    }
 }
 
 

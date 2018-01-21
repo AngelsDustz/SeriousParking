@@ -11,6 +11,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import nl.SeriousParking.Parkeersimulator.controller.SettingsController;
 import nl.SeriousParking.Parkeersimulator.controller.SimulatorController;
+import nl.SeriousParking.Parkeersimulator.model.SettingHandler;
 import nl.SeriousParking.Parkeersimulator.model.Simulator;
 
 
@@ -28,9 +29,11 @@ public class RootView {
 
         Simulator model                 = new Simulator(NUMFLOORS, NUMROWS, NUMPLACES);
         SimulatorController controller  = new SimulatorController(model);
-        SettingsController settingscontroller  = new SettingsController(model);
         SimView view                    = new SimView(controller, model);
-        SimSettings simsettings         = new SimSettings(settingscontroller, model);
+
+        SettingHandler handler = new SettingHandler();
+        SettingsController settingscontroller  = new SettingsController(handler);
+        SimSettings simsettings         = new SimSettings(settingscontroller, handler);
 
         TabPane tabPane         = new TabPane();
         BorderPane borderPane   = new BorderPane();

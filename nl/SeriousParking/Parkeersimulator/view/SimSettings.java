@@ -6,10 +6,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.*;
 import nl.SeriousParking.Parkeersimulator.controller.SettingsController;
+import nl.SeriousParking.Parkeersimulator.model.SettingHandler;
 import nl.SeriousParking.Parkeersimulator.model.Simulator;
 
 
-public class SimSettings extends View<SettingsController, Simulator> {
+public class SimSettings extends View<SettingsController, SettingHandler> {
 
     private TextField[] input;
     private GridPane container;
@@ -23,7 +24,7 @@ public class SimSettings extends View<SettingsController, Simulator> {
     private Button  saveButton;
 
 
-    public SimSettings(SettingsController settingscontroller, Simulator model) {
+    public SimSettings(SettingsController settingscontroller, SettingHandler model) {
         super(settingscontroller, model);
 
         container = new GridPane();
@@ -96,9 +97,10 @@ public class SimSettings extends View<SettingsController, Simulator> {
             }
             controller.Save(content);
 
+
         });
 
-
+        model.addView(this);
         //////////////////////////////////////////////////////////////////////////////////////////////////
 
 

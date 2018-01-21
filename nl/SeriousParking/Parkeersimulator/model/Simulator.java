@@ -25,17 +25,18 @@ public class Simulator extends Model implements Runnable {
     private int day         = 0;
     private int hour        = 0;
     private int minute      = 0;
-    private int tickPause   = 100;
-    private int chance      = 10;
+    //jeroen - mijn tested minimum stable tick rate is 25 op 20 heb ik desync na een aantal minuten
+    private int tickPause   = 25;
+    private int chance      = 1;
 
-    int weekDayArrivals     = 100; // average number of arriving cars per hour
-    int weekendArrivals     = 200; // average number of arriving cars per hour
-    int weekDayPassArrivals = 50; // average number of arriving cars per hour
-    int weekendPassArrivals = 5; // average number of arriving cars per hour
+    private int weekDayArrivals     = 100; // average number of arriving cars per hour
+    private int weekendArrivals     = 200; // average number of arriving cars per hour
+    private int weekDayPassArrivals = 50; // average number of arriving cars per hour
+    private int weekendPassArrivals = 5; // average number of arriving cars per hour
 
-    int enterSpeed      = 3; // number of cars that can enter per minute
-    int paymentSpeed    = 7; // number of cars that can pay per minute
-    int exitSpeed       = 5; // number of cars that can leave per minute
+   private int enterSpeed      = 3; // number of cars that can enter per minute
+   private int paymentSpeed    = 7; // number of cars that can pay per minute
+   private int exitSpeed       = 5; // number of cars that can leave per minute
 
     public Simulator(int numberOfFloors, int numberOfRows, int numberOfPlaces) {
         entranceCarQueue    = new Queue();
@@ -53,21 +54,6 @@ public class Simulator extends Model implements Runnable {
         randomGenerator= new Random();
     }
 
-    public int getDay() {
-        return day;
-    }
-
-    public int getHour() {
-        return hour;
-    }
-
-    public int getMinute() {
-        return minute;
-    }
-
-    public boolean getRun(){
-        return run;
-    }
     /**
      * @name startSimulator
      *
@@ -92,9 +78,6 @@ public class Simulator extends Model implements Runnable {
         }
     }
 
-    public void setRun(boolean run){
-        this.run = run;
-    }
 
     public void Stop(){
        run = false;
@@ -169,21 +152,7 @@ public class Simulator extends Model implements Runnable {
         addArrivingCars(numberOfCars, true);
 
     }
-    /*
-    private void carsEntering(Queue queue){
-        int i=0;
-        // Remove car from the front of the queue and assign to a parking space.
-    	while (queue.carsInQueue()>0 &&
-                getNumberOfOpenSpots()>0 &&
-    			i<enterSpeed) {
-            Car car                 = queue.removeCar();
-            Location freeLocation   = getFirstFreeLocation();
 
-            setCarAt(freeLocation, car);
-            i++;
-        }
-    }
-    */
 
     private void carsEntering(Queue queue){
         int i=0;
@@ -290,22 +259,6 @@ public class Simulator extends Model implements Runnable {
 
     }
 
-    public int getNumberOfFloors() {
-        return numberOfFloors;
-    }
-
-    public int getNumberOfRows() {
-        return numberOfRows;
-    }
-
-    public int getNumberOfPlaces() {
-        return numberOfPlaces;
-    }
-
-
-    public int getNumberOfOpenSpots() {
-        return numberOfOpenSpots;
-    }
 
     private boolean locationIsValid(Location location) {
 
@@ -455,6 +408,88 @@ public class Simulator extends Model implements Runnable {
 
         notifyViews();
     }
+
+    public void notifyAllViews(){
+        notifyViews();
+    }
+    public int getDay() {
+        return day;
+    }
+
+    public int getHour() {
+        return hour;
+    }
+
+    public int getMinute() {
+        return minute;
+    }
+
+    public int getTickPause() {
+        return tickPause;
+    }
+
+    public void setTickPause(int tickPause) {
+
+        if(tickPause>25){
+            this.tickPause = tickPause;
+        }
+        else
+        {
+            this.tickPause = 25;
+        }
+    }
+
+    public int getEnterSpeed() {
+        return enterSpeed;
+    }
+
+    public void setEnterSpeed(int enterSpeed) {
+        this.enterSpeed = enterSpeed;
+    }
+
+    public int getExitSpeed() {
+        return exitSpeed;
+    }
+
+    public void setExitSpeed(int exitSpeed) {
+        this.exitSpeed = exitSpeed;
+    }
+
+    public int getPaymentSpeed() {
+        return paymentSpeed;
+    }
+
+    public void setPaymentSpeed(int paymentSpeed) {
+        this.paymentSpeed = paymentSpeed;
+    }
+
+
+
+    public boolean getRun(){
+        return run;
+    }
+
+    public int getNumberOfFloors() {
+        return numberOfFloors;
+    }
+
+    public int getNumberOfRows() {
+        return numberOfRows;
+    }
+
+    public int getNumberOfPlaces() {
+        return numberOfPlaces;
+    }
+
+
+    public int getNumberOfOpenSpots() {
+        return numberOfOpenSpots;
+    }
+
+    public void setRun(boolean run){
+        this.run = run;
+    }
+
 }
 
 

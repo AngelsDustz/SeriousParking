@@ -20,8 +20,11 @@ public class SimSettings extends View<SettingsController, SettingHandler> {
     private Label   entranceSpeedLbl;
     private Label   exitSpeedLbl;
     private Label   PaymentSpeedLbl;
+    private Label   weekArrivalsLbl;
+    private Label   chanceLbl;
 
     private Button  saveButton;
+    private Button  defaultButton;
 
 
     public SimSettings(SettingsController settingscontroller, SettingHandler model) {
@@ -31,7 +34,26 @@ public class SimSettings extends View<SettingsController, SettingHandler> {
         container.getRowConstraints().add(new RowConstraints(100)); // 1st Row is 100 wide
         container.getColumnConstraints().add(new ColumnConstraints(100)); // 1st column 100 wide
         this.getChildren().add(container);
-        input= new TextField[4];
+        input= new TextField[6];
+        create();
+    }
+
+    @Override
+    public void update() {
+        updateValues();
+    }
+
+    public void updateValues(){
+        input[0].setText(""+model.getTickPause());
+        input[1].setText(""+model.getEnterSpeed());
+        input[2].setText(""+model.getExitSpeed());
+        input[3].setText(""+model.getPaymentSpeed());
+        input[4].setText(""+model.getWeekDayArrivals());
+        input[5].setText(""+model.getChance());
+    }
+
+    public void create(){
+
 
         //////////////////////////////////////////////////////////////////////////////////////////////////
         tickspeedLbl = new Label();
@@ -82,14 +104,56 @@ public class SimSettings extends View<SettingsController, SettingHandler> {
         //////////////////////////////////////////////////////////////////////////////////////////////////
 
         //////////////////////////////////////////////////////////////////////////////////////////////////
+        weekArrivalsLbl = new Label();
+        weekArrivalsLbl.setText("Avarage weekday without pass");
+        container.setConstraints(weekArrivalsLbl,1,5);
+        container.getChildren().add(weekArrivalsLbl);
+
+        input[4] = new TextField();
+        input[4].setText(""+model.getWeekDayArrivals());
+        container.setConstraints(input[4],3,5);
+        container.getChildren().add(input[4]);
+        //////////////////////////////////////////////////////////////////////////////////////////////////
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////
+        chanceLbl = new Label();
+        chanceLbl.setText("the Chance of double parking");
+        container.setConstraints(chanceLbl,1,6);
+        container.getChildren().add(chanceLbl);
+
+        input[5] = new TextField();
+        input[5].setText(""+model.getChance());
+        container.setConstraints(input[5],3,6);
+        container.getChildren().add(input[5]);
+        //////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+        //////////////////////////////Buttons/////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////////////////////
+        defaultButton = new Button();
+        defaultButton.setText("Default");
+        container.setConstraints(defaultButton,1,7);
+        container.getChildren().add(defaultButton);
+
+
+        defaultButton.setOnAction(e -> {
+            controller.setDefault();
+
+
+        });
+
+        model.addView(this);
+        //////////////////////////////////////////////////////////////////////////////////////////////////
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////
         saveButton = new Button();
         saveButton.setText("Save");
-        container.setConstraints(saveButton,2,5);
+        container.setConstraints(saveButton,3,7);
         container.getChildren().add(saveButton);
 
 
         saveButton.setOnAction(e -> {
-            String[] content = new String[4];
+            String[] content = new String[6];
             int i=0;
             for(TextField textField: input){
                 content[i]=textField.getText();
@@ -102,22 +166,6 @@ public class SimSettings extends View<SettingsController, SettingHandler> {
 
         model.addView(this);
         //////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-    }
-
-    @Override
-    public void update() {
-        updateValues();
-    }
-
-    public void updateValues(){
-        input[0].setText(""+model.getTickPause());
-        input[1].setText(""+model.getEnterSpeed());
-        input[2].setText(""+model.getExitSpeed());
-        input[3].setText(""+model.getPaymentSpeed());
-
 
     }
 }

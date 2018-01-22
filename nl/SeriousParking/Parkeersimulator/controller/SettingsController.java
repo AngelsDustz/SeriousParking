@@ -23,7 +23,11 @@ public class SettingsController extends Controller<SettingHandler> {
             model.setExitSpeed(parseInt(array[2]));
             model.setPaymentSpeed(parseInt(array[3]));
             model.setWeekDayArrivals(parseInt(array[4]));
-            model.setChance(parseInt(array[5]));
+            model.setWeekendArrivals(parseInt(array[5]));
+            model.setWeekDayPassArrivals(parseInt(array[6]));
+            model.setWeekendPassArrivals(parseInt(array[7]));
+            model.setChance(parseInt(array[8]));
+
             model.nofifier();
         }
 

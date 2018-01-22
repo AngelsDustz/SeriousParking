@@ -19,6 +19,10 @@ public class Simulator extends Model implements Runnable {
     private int numberOfFloors;
     private int numberOfRows;
     private int numberOfPlaces;
+
+    private int NumberOfCarsParkedDouble;
+    private int numberOfAddhoccarsinPark;
+    private int numberOfPasscarsinPark;
     private int numberOfOpenSpots;
     private Car[][][] cars;
     private Random randomGenerator;
@@ -41,6 +45,10 @@ public class Simulator extends Model implements Runnable {
     private int exitSpeed; // number of cars that can leave per minute
 
     public Simulator() {
+        NumberOfCarsParkedDouble =0;
+        numberOfAddhoccarsinPark=0;
+        numberOfPasscarsinPark=0;
+
         entranceCarQueue    = new Queue();
         entrancePassQueue   = new Queue();
         paymentCarQueue     = new Queue();
@@ -173,6 +181,32 @@ public class Simulator extends Model implements Runnable {
 
     }
 
+    private void carcounterADD(Car car){
+    if (car.getHasToPay()==true){
+        numberOfAddhoccarsinPark++;
+    }
+    else{
+        numberOfPasscarsinPark++;
+    }
+    if (car.getisParkedDouble()==true){
+        NumberOfCarsParkedDouble++;
+
+    }
+
+    }
+
+    private void carcounterRemove(Car car){
+        if (car.getHasToPay()==true){
+            numberOfAddhoccarsinPark--;
+        }
+    else{
+           numberOfPasscarsinPark--;
+        }
+        if (car.getisParkedDouble()==true){
+            NumberOfCarsParkedDouble--;
+        }
+    }
+
 
     private void carsEntering(Queue queue){
         int i=0;
@@ -185,6 +219,7 @@ public class Simulator extends Model implements Runnable {
             if (!car.getisParkedDouble()){
                 Location freeLocation = getFirstFreeLocation();
                 setCarAt(freeLocation, car);
+                carcounterADD(car);
 
                }
 
@@ -198,8 +233,11 @@ public class Simulator extends Model implements Runnable {
                     car2 = car2.copy(car);
                     setCarAt(loc1, car);
                     setCarAt(loc2, car2);
+                    carcounterADD(car);
                 }
-
+                else{
+                    queue.addCar(car);
+                }
             }
             i++;
         }
@@ -214,8 +252,9 @@ public class Simulator extends Model implements Runnable {
 	            car.setIsPaying(true);
 	            paymentCarQueue.addCar(car);
         	} else {
-        	    //geeft geen plaats door
-        		carLeavesSpot(car);
+               carcounterRemove(car);
+        	   carLeavesSpot(car);
+
         	}
             car = getFirstLeavingCar();
         }
@@ -227,18 +266,19 @@ public class Simulator extends Model implements Runnable {
     	while (paymentCarQueue.carsInQueue()>0 && i < paymentSpeed){
             Car car = paymentCarQueue.removeCar();
             this.profit += CARPRICE;
+            carcounterRemove(car);
             carLeavesSpot(car);
             i++;
     	}
     }
-    
+
     private void carsLeaving(){
         // Let cars leave.
     	int i=0;
     	while (exitCarQueue.carsInQueue()>0 && i < exitSpeed){
             exitCarQueue.removeCar();
             i++;
-    	}	
+    	}
     }
     
     private int getNumberOfCars(int weekDay, int weekend){
@@ -413,6 +453,9 @@ public class Simulator extends Model implements Runnable {
                 }
             }
         }
+        NumberOfCarsParkedDouble=0;
+        numberOfAddhoccarsinPark=0;
+        numberOfPasscarsinPark=0;
 
         entranceCarQueue.emptyQueue();
         entrancePassQueue.emptyQueue();
@@ -426,6 +469,14 @@ public class Simulator extends Model implements Runnable {
         run     = false;
 
         notifyViews();
+    }
+
+    public int getNumberOfPasscarsinPark() {
+        return numberOfPasscarsinPark;
+    }
+
+    public int getNumberOfAddhoccarsinPark() {
+        return numberOfAddhoccarsinPark;
     }
 
     public int getNumberOfFloors() {
@@ -443,6 +494,10 @@ public class Simulator extends Model implements Runnable {
 
     public int getNumberOfOpenSpots() {
         return numberOfOpenSpots;
+    }
+
+    public int getNumberOfCarsParkedDouble() {
+        return NumberOfCarsParkedDouble;
     }
 
     public int getTickPause() {

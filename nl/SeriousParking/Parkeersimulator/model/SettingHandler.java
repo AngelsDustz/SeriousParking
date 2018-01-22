@@ -24,7 +24,7 @@ public class SettingHandler extends Model{
         notifyViews();
     }
     public void defaultValue(){
-    tickPause   = 50;
+    tickPause   = 150;
     chance      = 1;
 
     garageFloors= 3;

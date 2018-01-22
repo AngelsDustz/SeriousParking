@@ -2,6 +2,7 @@ package nl.SeriousParking.Parkeersimulator.view;
 
 
 import javafx.geometry.Orientation;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -77,6 +78,8 @@ public class RootView {
         SimSettings.setText("Settings");
         SimSettings.setContent(scrollPane);
         tabPane.getTabs().add(SimSettings);
+
+        legend.setAlignment(Pos.CENTER);
 
         borderPane.setLeft(view);
         borderPane.setCenter(legend);

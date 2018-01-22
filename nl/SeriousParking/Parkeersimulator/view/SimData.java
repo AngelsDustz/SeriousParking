@@ -1,5 +1,6 @@
 package nl.SeriousParking.Parkeersimulator.view;
 
+import javafx.geometry.Pos;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
@@ -16,6 +17,8 @@ public class SimData extends View<SimulatorController, Simulator> {
         super(controller, model);
 
         GridPane data = new GridPane();
+
+
 
         Label abbo = new Label("abbo");
         Label adhoc = new Label("adhoc");
@@ -43,7 +46,7 @@ public class SimData extends View<SimulatorController, Simulator> {
         data.add(vrijC,0,4);
 
         VBox data1 = new VBox(data);
-
+        data1.setAlignment(Pos.CENTER);
         this.getChildren().add(data1);
 
 

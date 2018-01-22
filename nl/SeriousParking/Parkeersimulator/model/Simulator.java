@@ -38,17 +38,17 @@ public class Simulator extends Model implements Runnable {
     private int paymentSpeed; // number of cars that can pay per minute
     private int exitSpeed; // number of cars that can leave per minute
 
-    public Simulator(int numberOfFloors, int numberOfRows, int numberOfPlaces) {
+    public Simulator() {
         entranceCarQueue    = new Queue();
         entrancePassQueue   = new Queue();
         paymentCarQueue     = new Queue();
         exitCarQueue        = new Queue();
 
 
-        this.numberOfFloors     = numberOfFloors;
-        this.numberOfRows       = numberOfRows;
-        this.numberOfPlaces     = numberOfPlaces;
-        this.numberOfOpenSpots  = numberOfFloors * numberOfRows * numberOfPlaces;
+        numberOfFloors     = SettingHandler.garageFloors;
+        numberOfRows       = SettingHandler.garageRows;
+        numberOfPlaces     = SettingHandler.garagePlaces;
+        numberOfOpenSpots  = numberOfFloors * numberOfRows * numberOfPlaces;
 
         cars = new Car[numberOfFloors][numberOfRows][numberOfPlaces];
         randomGenerator= new Random();
@@ -96,6 +96,9 @@ public class Simulator extends Model implements Runnable {
        run = false;
     }
 
+    public void singleTick(){
+        tick();
+    }
     private void tick() {
     	advanceTime();
     	handleExit();

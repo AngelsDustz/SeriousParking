@@ -17,9 +17,7 @@ import nl.SeriousParking.Parkeersimulator.model.Simulator;
 
 public class RootView {
 
-    private static final int NUMFLOORS  = 3;
-    private static final int NUMROWS    = 6;
-    private static final int NUMPLACES  = 20;
+
 
     public void RootView(Stage primaryStage) {
         primaryStage.setTitle("SeriousParking Parkeersimulator");
@@ -27,7 +25,7 @@ public class RootView {
         Group root  = new Group();
         Scene scene = new Scene(root, 650, 500, Color.WHITE);
 
-        Simulator model                 = new Simulator(NUMFLOORS, NUMROWS, NUMPLACES);
+        Simulator model                 = new Simulator();
         SimulatorController controller  = new SimulatorController(model);
         SimView view                    = new SimView(controller, model);
 
@@ -39,6 +37,7 @@ public class RootView {
         BorderPane borderPane   = new BorderPane();
         Button start            = new Button("Start/Stop");
         Button reset            = new Button("Reset");
+        Button tick             = new Button("single tick");
         ToolBar toolBar         = new ToolBar();
 
         start.setOnAction(e -> {
@@ -49,9 +48,12 @@ public class RootView {
             controller.resetSimulator();
         });
 
+        tick.setOnAction(e -> {
+            controller.tick();
+        });
 
 
-        toolBar.getItems().addAll(start,reset);
+        toolBar.getItems().addAll(start,reset,tick);
 
         Tab parkinglot = new Tab();
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);

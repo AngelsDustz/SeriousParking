@@ -13,6 +13,9 @@ public class SettingHandler extends Model{
     protected static int paymentSpeed; // number of cars that can pay per minute
     protected static int exitSpeed; // number of cars that can leave per minute
 
+    protected   static int garageFloors =3;
+    protected   static int garageRows   =6;
+    protected   static int garagePlaces = 20;
 
     public SettingHandler() {
     defaultValue();
@@ -24,6 +27,10 @@ public class SettingHandler extends Model{
     tickPause   = 50;
     chance      = 1;
 
+    garageFloors= 3;
+    garageRows=6;
+    garagePlaces=20;
+
     weekDayArrivals     = 100;
     weekendArrivals     = 200;
     weekDayPassArrivals = 50;
@@ -32,7 +39,35 @@ public class SettingHandler extends Model{
     enterSpeed      = 3;
     paymentSpeed    = 7;
     exitSpeed       = 5;
+
+    garageFloors= 3;
+    garageRows=6;
+    garagePlaces=20;
    nofifier();
+    }
+
+    public static int getGarageFloors() {
+        return garageFloors;
+    }
+
+    public static void setGarageFloors(int garageFloors) {
+        SettingHandler.garageFloors = garageFloors;
+    }
+
+    public static int getGarageRows() {
+        return garageRows;
+    }
+
+    public static void setGarageRows(int garageRows) {
+        SettingHandler.garageRows = garageRows;
+    }
+
+    public static int getGaragePlaces() {
+        return garagePlaces;
+    }
+
+    public static void setGaragePlaces(int garagePlaces) {
+        SettingHandler.garagePlaces = garagePlaces;
     }
 
     public static int getTickPause() {

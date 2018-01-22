@@ -17,4 +17,8 @@ public class SimulatorController extends Controller<Simulator> {
     public void resetSimulator(){
         model.ResetSim();
     }
+
+    public void tick(){
+        model.singleTick();
+    }
 }

@@ -39,6 +39,7 @@ public class SimView extends View<SimulatorController, Simulator> {
 
     @Override
     public void update() {
+        repaint();
         draw();
     }
 
@@ -104,5 +105,8 @@ public class SimView extends View<SimulatorController, Simulator> {
                 }
             }
         }
+    }
+    public void repaint() {
+
     }
 }

@@ -27,10 +27,13 @@ public class SimSettings extends View<SettingsController, SettingHandler> {
     private Label   getWeekArrivalspassLbl;
     private Label   getWeekendArrivalspassLbl;
     private Label   chanceLbl;
+    private Label   floorLbl;
+    private Label   rowLbl;
+    private Label   placeLbl;
 
     private Button  saveButton;
     private Button  defaultButton;
-    private final int     numberOfElements =10;
+    private final int     numberOfElements =15;
 
     public SimSettings(SettingsController settingscontroller, SettingHandler model) {
         super(settingscontroller, model);
@@ -58,6 +61,9 @@ public class SimSettings extends View<SettingsController, SettingHandler> {
         input[6].setText(""+model.getWeekDayPassArrivals());
         input[7].setText(""+model.getWeekendPassArrivals());
         input[8].setText(""+model.getChance());
+        input[9].setText(""+model.getGarageFloors());
+        input[10].setText(""+model.getGarageRows());
+        input[11].setText(""+model.getGaragePlaces());
     }
 
     public void create(){
@@ -171,11 +177,48 @@ public class SimSettings extends View<SettingsController, SettingHandler> {
         container.getChildren().add(input[8]);
         //////////////////////////////////////////////////////////////////////////////////////////////////
 
+        //////////////////////////////////////////////////////////////////////////////////////////////////
+        floorLbl = new Label();
+        floorLbl.setText("Number of floors");
+        container.setConstraints(floorLbl,1,10);
+        container.getChildren().add(floorLbl);
+
+        input[9] = new TextField();
+        input[9].setText(""+model.getGarageFloors());
+        container.setConstraints(input[9],3,10);
+        container.getChildren().add(input[9]);
+        //////////////////////////////////////////////////////////////////////////////////////////////////
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////
+        rowLbl = new Label();
+        rowLbl.setText("Number of rows");
+        container.setConstraints(rowLbl,1,11);
+        container.getChildren().add(rowLbl);
+
+        input[10] = new TextField();
+        input[10].setText(""+model.getGarageRows());
+        container.setConstraints(input[10],3,11);
+        container.getChildren().add(input[10]);
+        //////////////////////////////////////////////////////////////////////////////////////////////////
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////
+        placeLbl = new Label();
+        placeLbl.setText("Number of places");
+        container.setConstraints(placeLbl,1,12);
+        container.getChildren().add(placeLbl);
+
+        input[11] = new TextField();
+        input[11].setText(""+model.getGaragePlaces());
+        container.setConstraints(input[11],3,12);
+        container.getChildren().add(input[11]);
+        //////////////////////////////////////////////////////////////////////////////////////////////////
+
+
         //////////////////////////////Buttons/////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////////////////////////////////////
         defaultButton = new Button();
         defaultButton.setText("Default");
-        container.setConstraints(defaultButton,1,10);
+        container.setConstraints(defaultButton,1,13);
         container.getChildren().add(defaultButton);
 
 
@@ -191,7 +234,7 @@ public class SimSettings extends View<SettingsController, SettingHandler> {
         //////////////////////////////////////////////////////////////////////////////////////////////////
         saveButton = new Button();
         saveButton.setText("Save");
-        container.setConstraints(saveButton,3,10);
+        container.setConstraints(saveButton,3,13);
         container.getChildren().add(saveButton);
 
 

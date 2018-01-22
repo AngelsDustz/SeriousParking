@@ -5,10 +5,12 @@ import nl.SeriousParking.Parkeersimulator.SimulatorView;
 import java.util.*;
 
 public class Simulator extends Model implements Runnable {
+    //@todo Make this a setting.
+    private static final double CARPRICE = 12.50;
 
+    private boolean run;
+	private double profit;
 
-	
-	private boolean run;
 	private Queue entranceCarQueue;
     private Queue entrancePassQueue;
     private Queue paymentCarQueue;
@@ -43,6 +45,7 @@ public class Simulator extends Model implements Runnable {
         entrancePassQueue   = new Queue();
         paymentCarQueue     = new Queue();
         exitCarQueue        = new Queue();
+        profit              = 0;
 
 
         numberOfFloors     = SettingHandler.garageFloors;
@@ -202,7 +205,6 @@ public class Simulator extends Model implements Runnable {
         }
     }
 
-    //hier zit de fout geen idee tough
     private void carsReadyToLeave(){
         // Add leaving cars to the payment queue.
         Car car = getFirstLeavingCar();
@@ -224,7 +226,7 @@ public class Simulator extends Model implements Runnable {
     	int i=0;
     	while (paymentCarQueue.carsInQueue()>0 && i < paymentSpeed){
             Car car = paymentCarQueue.removeCar();
-            // TODO Handle payment.
+            this.profit += CARPRICE;
             carLeavesSpot(car);
             i++;
     	}

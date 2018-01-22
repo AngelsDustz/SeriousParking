@@ -8,6 +8,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import nl.SeriousParking.Parkeersimulator.controller.SettingsController;
@@ -23,18 +24,21 @@ public class RootView {
     public void RootView(Stage primaryStage) {
         primaryStage.setTitle("SeriousParking Parkeersimulator");
 
-        Group root  = new Group();
-        Scene scene = new Scene(root, 650, 500, Color.WHITE);
+        GridPane grid           = new GridPane();
+        Scene scene = new Scene(grid);
 
         Simulator model                 = new Simulator();
         SimulatorController controller  = new SimulatorController(model);
         SimView view                    = new SimView(controller, model);
 
-        SettingHandler handler = new SettingHandler();
-        SettingsController settingscontroller  = new SettingsController(handler);
-        SimSettings simsettings         = new SimSettings(settingscontroller, handler);
+        SettingHandler handler                  = new SettingHandler();
+        SettingsController settingscontroller   = new SettingsController(handler);
+        SimSettings simsettings                 = new SimSettings(settingscontroller, handler);
 
         PieChartView piechart = new PieChartView(controller, model);
+
+        TextView textview  = new TextView(controller, model);
+
 
         TabPane tabPane         = new TabPane();
         BorderPane borderPane   = new BorderPane();
@@ -58,11 +62,11 @@ public class RootView {
 
         toolBar.getItems().addAll(start,reset,tick);
 
-        Tab parkinglot = new Tab();
+        Tab TextViewTab = new Tab();
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
-        parkinglot.setText("parkinglot");
-        parkinglot.setContent(view);
-        tabPane.getTabs().add(parkinglot);
+        TextViewTab.setText("Text View");
+        TextViewTab.setContent(textview);
+        tabPane.getTabs().add(TextViewTab);
 
         Tab SimSettings = new Tab();
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
@@ -70,21 +74,15 @@ public class RootView {
         SimSettings.setContent(simsettings);
         tabPane.getTabs().add(SimSettings);
 
-        Tab PieChartTab = new Tab();
-        tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
-        PieChartTab.setText("PieChartView");
-        PieChartTab.setContent(piechart);
-        tabPane.getTabs().add(PieChartTab);
-
+        borderPane.setLeft(view);
+        borderPane.setRight(piechart);
         borderPane.setBottom(toolBar);
-
-        // add tab pane
-        borderPane.setCenter(tabPane);
-        // bind to take available space
-        borderPane.prefHeightProperty().bind(scene.heightProperty());
         borderPane.prefWidthProperty().bind(scene.widthProperty());
-        // add border Pane
-        root.getChildren().add(borderPane);
+
+        grid.add(tabPane,0,1);
+        grid.add(borderPane,0,0);
+
+
         primaryStage.setScene(scene);
         primaryStage.show();
     }

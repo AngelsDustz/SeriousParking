@@ -1,15 +1,12 @@
 package nl.SeriousParking.Parkeersimulator.view;
-import javafx.geometry.Pos;
+
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.control.ToolBar;
 import javafx.scene.layout.*;
 import nl.SeriousParking.Parkeersimulator.controller.SettingsController;
 import nl.SeriousParking.Parkeersimulator.model.SettingHandler;
-import nl.SeriousParking.Parkeersimulator.model.Simulator;
 
-import java.util.Map;
 
 
 public class SimSettings extends View<SettingsController, SettingHandler> {

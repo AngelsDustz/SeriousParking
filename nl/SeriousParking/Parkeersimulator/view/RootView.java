@@ -2,6 +2,7 @@ package nl.SeriousParking.Parkeersimulator.view;
 
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -32,6 +33,8 @@ public class RootView {
         SettingHandler handler = new SettingHandler();
         SettingsController settingscontroller  = new SettingsController(handler);
         SimSettings simsettings         = new SimSettings(settingscontroller, handler);
+
+        PieChartView piechart = new PieChartView(controller, model);
 
         TabPane tabPane         = new TabPane();
         BorderPane borderPane   = new BorderPane();
@@ -66,6 +69,12 @@ public class RootView {
         SimSettings.setText("Settings");
         SimSettings.setContent(simsettings);
         tabPane.getTabs().add(SimSettings);
+
+        Tab PieChartTab = new Tab();
+        tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
+        PieChartTab.setText("PieChartView");
+        PieChartTab.setContent(piechart);
+        tabPane.getTabs().add(PieChartTab);
 
         borderPane.setBottom(toolBar);
 

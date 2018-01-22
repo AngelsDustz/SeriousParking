@@ -1,8 +1,5 @@
 package nl.SeriousParking.Parkeersimulator.view;
 
-import javafx.geometry.Insets;
-import javafx.scene.control.Button;
-import javafx.scene.control.ToolBar;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import nl.SeriousParking.Parkeersimulator.controller.SimulatorController;

@@ -7,12 +7,15 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.RowConstraints;
 import javafx.stage.Stage;
 import nl.SeriousParking.Parkeersimulator.controller.SettingsController;
 import nl.SeriousParking.Parkeersimulator.controller.SimulatorController;
 import nl.SeriousParking.Parkeersimulator.model.SettingHandler;
 import nl.SeriousParking.Parkeersimulator.model.Simulator;
+import static javafx.scene.paint.Color.WHITE;
 
 
 public class RootView {
@@ -23,7 +26,7 @@ public class RootView {
         primaryStage.setTitle("SeriousParking Parkeersimulator");
 
         GridPane grid           = new GridPane();
-        Scene scene = new Scene(grid);
+        Scene scene = new Scene(grid,1500,900);
 
         Simulator model                 = new Simulator();
         SimulatorController controller  = new SimulatorController(model);
@@ -80,6 +83,11 @@ public class RootView {
         grid.add(tabPane,0,1);
         grid.add(borderPane,0,0);
 
+        RowConstraints row1 = new RowConstraints();
+        row1.setPercentHeight(70);
+        RowConstraints row2 = new RowConstraints();
+        row2.setPercentHeight(40);
+        grid.getRowConstraints().addAll(row1,row2);
 
         primaryStage.setScene(scene);
         primaryStage.show();

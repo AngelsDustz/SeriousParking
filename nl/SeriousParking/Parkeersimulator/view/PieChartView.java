@@ -27,7 +27,6 @@ public class PieChartView extends View<SimulatorController, Simulator> {
         pieChart.getData().add(slice5);
 
         VBox pie = new VBox(pieChart);
-
         this.getChildren().add(pie);
 
     }

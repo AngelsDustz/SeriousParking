@@ -1,9 +1,8 @@
 package nl.SeriousParking.Parkeersimulator.controller;
 
 
-import nl.SeriousParking.Parkeersimulator.model.Model;
 import nl.SeriousParking.Parkeersimulator.model.SettingHandler;
-import nl.SeriousParking.Parkeersimulator.model.Simulator;
+
 
 import static java.lang.Integer.parseInt;
 

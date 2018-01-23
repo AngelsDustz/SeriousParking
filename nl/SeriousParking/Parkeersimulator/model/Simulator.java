@@ -10,7 +10,7 @@ public class Simulator extends Model implements Runnable {
 
     private boolean run;
 	private double profit;
-
+    private boolean firstRun;
 	private Queue entranceCarQueue;
     private Queue entrancePassQueue;
     private Queue paymentCarQueue;
@@ -61,7 +61,7 @@ public class Simulator extends Model implements Runnable {
         numberOfPlaces     = SettingHandler.garagePlaces;
         numberOfOpenSpots  = numberOfFloors * numberOfRows * numberOfPlaces;
 
-
+        firstRun=true;
         randomGenerator= new Random();
     }
 
@@ -84,7 +84,11 @@ public class Simulator extends Model implements Runnable {
      * This calls the thread to run the ticks.
      */
     public void startSimulator() {
-        cars = new Car[numberOfFloors][numberOfRows][numberOfPlaces];
+
+        if(firstRun==true){
+            cars = new Car[numberOfFloors][numberOfRows][numberOfPlaces];
+            firstRun=false;
+        }
         new Thread(this).start();
     }
 

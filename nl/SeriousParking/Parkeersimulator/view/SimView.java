@@ -16,6 +16,7 @@ import nl.SeriousParking.Parkeersimulator.model.Simulator;
 
 public class SimView extends View<SimulatorController, Simulator> {
     private Rectangle[][][] garage;
+
     private HBox container = new HBox();
     private TextField[] input;
     private final int numberOfElements =3;

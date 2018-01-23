@@ -182,28 +182,32 @@ public class Simulator extends Model implements Runnable {
     }
 
     private void carcounterADD(Car car){
-    if (car.getHasToPay()==true){
-        numberOfAddhoccarsinPark++;
-    }
-    else{
-        numberOfPasscarsinPark++;
-    }
-    if (car.getisParkedDouble()==true){
-        NumberOfCarsParkedDouble++;
+        if (car.getisParkedDouble()==true){
+           NumberOfCarsParkedDouble++;
 
-    }
+        }
+        else {
+            if (car.getHasToPay() == true) {
 
+                numberOfAddhoccarsinPark++;
+            } else {
+                numberOfPasscarsinPark++;
+            }
+        }
     }
 
     private void carcounterRemove(Car car){
-        if (car.getHasToPay()==true){
-            numberOfAddhoccarsinPark--;
-        }
-    else{
-           numberOfPasscarsinPark--;
-        }
         if (car.getisParkedDouble()==true){
             NumberOfCarsParkedDouble--;
+
+        }
+        else {
+            if (car.getHasToPay() == true) {
+
+                numberOfAddhoccarsinPark--;
+            } else {
+                numberOfPasscarsinPark--;
+            }
         }
     }
 
@@ -300,7 +304,8 @@ public class Simulator extends Model implements Runnable {
         for (int i = 0; i < numberOfCars; i++) {
             Car car =new Car();
             car.setHasToPay(!hasPass);
-            if (randomGenerator.nextInt(100)<=chance){
+            int rand= randomGenerator.nextInt(100);
+            if (rand<=chance && chance!=0){
                 car.setParkedDouble(true);
             }
             else{
@@ -497,7 +502,7 @@ public class Simulator extends Model implements Runnable {
     }
 
     public int getNumberOfCarsParkedDouble() {
-        return NumberOfCarsParkedDouble;
+        return NumberOfCarsParkedDouble/2;
     }
 
     public int getTickPause() {

@@ -9,6 +9,7 @@ import nl.SeriousParking.Parkeersimulator.model.Simulator;
 
 public class PieChartView extends View<SimulatorController, Simulator> {
     PieChart.Data carSlice;
+    PieChart.Data empty;
     PieChart.Data dubbelpSlice;
     PieChart.Data gereserveerdSlice;
     PieChart.Data VrijePlekkenSlice;
@@ -18,19 +19,20 @@ public class PieChartView extends View<SimulatorController, Simulator> {
         super(controller, model);
 
         PieChart pieChart = new PieChart();
-
+        //TODO kleuren refactoren
         percentofCars=100;
-        carSlice = new PieChart.Data("Auto's Geparkeerd", ((model.getNumberOfPasscarsinPark()+model.getNumberOfAddhoccarsinPark())/percentofCars*100));
-        dubbelpSlice = new PieChart.Data("Dubbelparkeerder", (model.getNumberOfCarsParkedDouble()/percentofCars*100));
-        VrijePlekkenSlice = new PieChart.Data("Vrije Plekken", (model.getNumberOfOpenSpots()/percentofCars*100));
-        gereserveerdSlice= new PieChart.Data("Gereserveerd", 0);
+        carSlice = new PieChart.Data("Auto's Geparkeerd", 30);
+        empty= new PieChart.Data("", 0);
+        dubbelpSlice = new PieChart.Data("Dubbelparkeerder", 10);
+        gereserveerdSlice= new PieChart.Data("Gereserveerd", 10);
+        VrijePlekkenSlice = new PieChart.Data("Vrije Plekken", 10);
+
 
         pieChart.getData().add(carSlice);
+        pieChart.getData().add(empty);
+        pieChart.getData().add(dubbelpSlice);
         pieChart.getData().add(gereserveerdSlice);
         pieChart.getData().add(VrijePlekkenSlice);
-        pieChart.getData().add(dubbelpSlice);
-
-
 
         pieChart.setLegendVisible(false);
         pieChart.setClockwise(true);

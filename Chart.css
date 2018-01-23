@@ -5,12 +5,11 @@
     -fx-pie-color: DARKBLUE;
 }
 .data2.chart-pie {
-    -fx-pie-color: ANTIQUEWHITE;
+    -fx-pie-color: RED;
 }
-.data3.chart-pie
-{ -fx-pie-color: RED;
-}
-.data4.chart-pie {
+.data3.chart-pie {
     -fx-pie-color: orange;
 }
-
+.data4.chart-pie {
+    -fx-pie-color: ANTIQUEWHITE;
+}

@@ -41,6 +41,8 @@ public class RootView {
         SettingsController settingscontroller   = new SettingsController(handler);
         SimSettings simsettings                 = new SimSettings(settingscontroller, handler);
 
+        TextView TextView                    = new TextView(controller, model);
+
         ScrollPane scrollPane = new ScrollPane(simsettings);
         scrollPane.setFitToHeight(true);
 
@@ -79,7 +81,7 @@ public class RootView {
 
         Tab TextViewTab = new Tab();
         TextViewTab.setText("Text View");
-        TextViewTab.setContent(textview);
+        TextViewTab.setContent(TextView);
         tabPane.getTabs().add(TextViewTab);
 
         Tab SimSettings = new Tab();

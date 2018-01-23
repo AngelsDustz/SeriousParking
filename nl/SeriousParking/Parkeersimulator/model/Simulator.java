@@ -574,6 +574,18 @@ public class Simulator extends Model implements Runnable {
     public void setExitSpeed(int exitSpeed) {
         this.exitSpeed = exitSpeed;
     }
+
+    public int getDay() {
+        return day;
+    }
+
+    public int getHour() {
+        return hour;
+    }
+
+    public int getMinute() {
+        return minute;
+    }
 }
 
 

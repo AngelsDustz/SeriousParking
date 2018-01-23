@@ -1,6 +1,7 @@
 package nl.SeriousParking.Parkeersimulator.view;
 
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.ColumnConstraints;
@@ -29,10 +30,9 @@ public class SimSettings extends View<SettingsController, SettingHandler> {
     private Label   floorLbl;
     private Label   rowLbl;
     private Label   placeLbl;
-
     private Button  saveButton;
     private Button  defaultButton;
-    private final int     numberOfElements =15;
+    private final int     numberOfElements =16;
 
     public SimSettings(SettingsController settingscontroller, SettingHandler model) {
         super(settingscontroller, model);
@@ -211,13 +211,16 @@ public class SimSettings extends View<SettingsController, SettingHandler> {
         container.setConstraints(input[11],3,12);
         container.getChildren().add(input[11]);
         //////////////////////////////////////////////////////////////////////////////////////////////////
-
+        // input[12] = new CheckBox("Opposite entrances");
+        //input[12].setIndeterminate(false);
+        //container.setConstraints(input[12],1,13);
+        //container.getChildren().add(input[12]);
 
         //////////////////////////////Buttons/////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////////////////////////////////////
         defaultButton = new Button();
         defaultButton.setText("Default");
-        container.setConstraints(defaultButton,1,13);
+        container.setConstraints(defaultButton,1,14);
         container.getChildren().add(defaultButton);
 
 
@@ -233,7 +236,7 @@ public class SimSettings extends View<SettingsController, SettingHandler> {
         //////////////////////////////////////////////////////////////////////////////////////////////////
         saveButton = new Button();
         saveButton.setText("Save");
-        container.setConstraints(saveButton,3,13);
+        container.setConstraints(saveButton,3,14);
         container.getChildren().add(saveButton);
 
 

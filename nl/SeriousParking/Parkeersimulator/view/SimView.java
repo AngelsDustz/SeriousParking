@@ -26,22 +26,21 @@ public class SimView extends View<SimulatorController, Simulator> {
     private Button saveButton;
     private Button  defaultButton;
 
-
     public SimView(SimulatorController controller, Simulator model) {
         super(controller, model);
 
-        BorderPane borderPane   = new BorderPane();
+
 
         container.setPadding(new Insets(15, 12, 15, 12));
         container.setSpacing(40);
-
+        container.getChildren().add(settings);
 
         settings.getRowConstraints().add(new RowConstraints(100)); // 1st Row is 100 wide
         settings.getColumnConstraints().add(new ColumnConstraints(100)); // 1st column 100 wide
         input= new TextField[numberOfElements];
         create();
 
-        this.getChildren().add(settings);
+        this.getChildren().add(container);
         model.addView(this);
 
     }
@@ -92,9 +91,11 @@ public class SimView extends View<SimulatorController, Simulator> {
         settings.getChildren().add(defaultButton);
 
 
-      //  defaultButton.setOnAction(e -> {
-        //    controller.setDefault();
-          //  });
+        defaultButton.setOnAction(e -> {
+
+         container.getChildren().clear();
+         CreateTable();
+        });
 
         model.addView(this);
 
@@ -105,22 +106,18 @@ public class SimView extends View<SimulatorController, Simulator> {
         settings.getChildren().add(saveButton);
 
 
-        saveButton.setOnAction(e -> {
+        saveButton.setOnAction(e ->{
             String[] content = new String[numberOfElements];
             int i=0;
-            for(TextField textField: input){
-                if(textField!=null) {
+            for(TextField textField: input) {
+                if (textField != null) {
                     content[i] = textField.getText();
                     i++;
                 }
-                else{
-                    break;
-                }
-
-
             }
-            controller.Save(content);
-
+            controller.SaveSettings(content);
+            container.getChildren().clear();
+            CreateTable();
 
         });
 

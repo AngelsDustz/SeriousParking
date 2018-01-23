@@ -572,6 +572,17 @@ public class Simulator extends Model implements Runnable {
         return numberOfPlaces;
     }
 
+    public void setNumberOfFloors(int numberOfFloors) {
+        this.numberOfFloors = numberOfFloors;
+    }
+
+    public void setNumberOfRows(int numberOfRows) {
+        this.numberOfRows = numberOfRows;
+    }
+
+    public void setNumberOfPlaces(int numberOfPlaces) {
+        this.numberOfPlaces = numberOfPlaces;
+    }
 
     public int getNumberOfOpenSpots() {
         return numberOfOpenSpots;

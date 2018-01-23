@@ -8,28 +8,30 @@ import nl.SeriousParking.Parkeersimulator.model.Simulator;
 
 
 public class PieChartView extends View<SimulatorController, Simulator> {
-    PieChart.Data abbonementSlice;
-    PieChart.Data adhocSlice;
+    PieChart.Data carSlice;
     PieChart.Data dubbelpSlice;
     PieChart.Data gereserveerdSlice;
     PieChart.Data VrijePlekkenSlice;
+    double percentofCars;
 
     public PieChartView(SimulatorController controller, Simulator model) {
         super(controller, model);
 
         PieChart pieChart = new PieChart();
 
-        abbonementSlice = new PieChart.Data("Abbonoment", model.getNumberOfPasscarsinPark());
-        adhocSlice = new PieChart.Data("AdHoc", model.getNumberOfAddhoccarsinPark());
-        dubbelpSlice = new PieChart.Data("Dubbelparkeerder", model.getNumberOfCarsParkedDouble());
-        VrijePlekkenSlice = new PieChart.Data("Vrije Plekken", model.getNumberOfOpenSpots());
+        percentofCars=100;
+        carSlice = new PieChart.Data("Auto's Geparkeerd", ((model.getNumberOfPasscarsinPark()+model.getNumberOfAddhoccarsinPark())/percentofCars*100));
+        dubbelpSlice = new PieChart.Data("Dubbelparkeerder", (model.getNumberOfCarsParkedDouble()/percentofCars*100));
+        VrijePlekkenSlice = new PieChart.Data("Vrije Plekken", (model.getNumberOfOpenSpots()/percentofCars*100));
         gereserveerdSlice= new PieChart.Data("Gereserveerd", 0);
 
-        pieChart.getData().add(abbonementSlice);
-        pieChart.getData().add(adhocSlice);
-        pieChart.getData().add(dubbelpSlice);
+        pieChart.getData().add(carSlice);
         pieChart.getData().add(gereserveerdSlice);
         pieChart.getData().add(VrijePlekkenSlice);
+        pieChart.getData().add(dubbelpSlice);
+
+
+
         pieChart.setLegendVisible(false);
         pieChart.setClockwise(true);
         pieChart.setStartAngle(90);
@@ -42,8 +44,7 @@ public class PieChartView extends View<SimulatorController, Simulator> {
 
     @Override
     public void update() {
-        abbonementSlice.setPieValue(model.getNumberOfPasscarsinPark());
-        adhocSlice.setPieValue(model.getNumberOfAddhoccarsinPark());
+        carSlice.setPieValue(((model.getNumberOfPasscarsinPark()+model.getNumberOfAddhoccarsinPark())/percentofCars*100));
         dubbelpSlice.setPieValue(model.getNumberOfCarsParkedDouble());
         gereserveerdSlice.setPieValue(0);
         VrijePlekkenSlice.setPieValue(model.getNumberOfOpenSpots());

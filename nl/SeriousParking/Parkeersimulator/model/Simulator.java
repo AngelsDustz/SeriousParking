@@ -184,16 +184,14 @@ public class Simulator extends Model implements Runnable {
     private void carcounterADD(Car car){
         if (car.getisParkedDouble()==true){
            NumberOfCarsParkedDouble++;
-
         }
-        else {
-            if (car.getHasToPay() == true) {
 
-                numberOfAddhoccarsinPark++;
-            } else {
-                numberOfPasscarsinPark++;
-            }
+        if (car.getHasToPay() == true) {
+            numberOfAddhoccarsinPark++;
+        } else {
+            numberOfPasscarsinPark++;
         }
+
     }
 
     private void carcounterRemove(Car car){
@@ -201,14 +199,14 @@ public class Simulator extends Model implements Runnable {
             NumberOfCarsParkedDouble--;
 
         }
-        else {
-            if (car.getHasToPay() == true) {
 
-                numberOfAddhoccarsinPark--;
-            } else {
-                numberOfPasscarsinPark--;
-            }
+        if (car.getHasToPay() == true) {
+            numberOfAddhoccarsinPark--;
         }
+        else {
+            numberOfPasscarsinPark--;
+        }
+
     }
 
 

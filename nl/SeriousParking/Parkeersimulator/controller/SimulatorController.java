@@ -14,7 +14,6 @@ public class SimulatorController extends Controller<Simulator> {
 
     public void startSimulator() {
         model.startStop();
-
     }
 
     public void resetSimulator(){
@@ -26,10 +25,10 @@ public class SimulatorController extends Controller<Simulator> {
     }
 
     public void SaveSettings(String[] array){
-            model.setNumberOfFloors(parseInt(array[0]));
-             model.setNumberOfRows(parseInt(array[1]));
-            model.setNumberOfPlaces(parseInt(array[2]));
-        }
-
+        model.setNumberOfFloors(parseInt(array[0]));
+        model.setNumberOfRows(parseInt(array[1]));
+        model.setNumberOfPlaces(parseInt(array[2]));
     }
+
+}
 

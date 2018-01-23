@@ -1,5 +1,6 @@
 package nl.SeriousParking.Parkeersimulator.view;
 
+import javafx.application.Platform;
 import javafx.scene.control.Label;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
@@ -8,8 +9,7 @@ import nl.SeriousParking.Parkeersimulator.controller.SimulatorController;
 import nl.SeriousParking.Parkeersimulator.model.Simulator;
 
 public class TextView extends View<SimulatorController, Simulator>  {
-
-    Label timeLbl      = new Label();
+    Label timeLbl    = new Label();
     Label total1     = new Label();
     Label passcar1   = new Label();
     Label adhoccar1  = new Label();
@@ -31,7 +31,7 @@ public class TextView extends View<SimulatorController, Simulator>  {
         Label dubbel    = new Label("dubbel geparkeerde auto's");
         Label reser     = new Label("gereserveerde plekken");
         Label free      = new Label("vrij plekken");
-        Label rev       = new Label("omzet");
+        Label rev       = new Label("Winst");
 
         grid.getColumnConstraints().add(new ColumnConstraints(200));
 
@@ -55,23 +55,27 @@ public class TextView extends View<SimulatorController, Simulator>  {
         HBox container = new HBox(grid);
         this.getChildren().add(container);
         model.addView(this);
-
-
     }
 
 
     @Override
     public void update() {
        /*
-        timeLbl.setText(""+model.getDay()+"  time :  "+model.getHour()+" : "+model.getMinute()+" : 00");
-        total1.setText(""+model.getNumberOfPasscarsinPark()+model.getNumberOfAddhoccarsinPark());
-        passcar1.setText(""+model.getNumberOfPasscarsinPark());
-        adhoccar1.setText(""+model.getNumberOfAddhoccarsinPark());
-        dubbel1.setText(""+model.getNumberOfCarsParkedDouble());
-        reser1.setText("");
-        free1.setText(""+model.getNumberOfOpenSpots());
-        rev1.setText("");
 */
+
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                timeLbl.setText(""+model.getDay()+"  time :  "+model.getHour()+" : "+model.getMinute()+" : 00");
+                total1.setText(""+model.getNumberOfPasscarsinPark()+"/"+model.getNumberOfAddhoccarsinPark());
+                passcar1.setText(""+model.getNumberOfPasscarsinPark());
+                adhoccar1.setText(""+model.getNumberOfAddhoccarsinPark());
+                dubbel1.setText(""+model.getNumberOfCarsParkedDouble());
+                reser1.setText("");
+                free1.setText(""+model.getNumberOfOpenSpots());
+                rev1.setText("€ " + model.getProfit());
+            }
+        });
 
 
     }

@@ -7,8 +7,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import nl.SeriousParking.Parkeersimulator.controller.ProfitController;
 import nl.SeriousParking.Parkeersimulator.controller.SettingsController;
 import nl.SeriousParking.Parkeersimulator.controller.SimulatorController;
+import nl.SeriousParking.Parkeersimulator.model.Profit;
 import nl.SeriousParking.Parkeersimulator.model.SettingHandler;
 import nl.SeriousParking.Parkeersimulator.model.Simulator;
 
@@ -41,23 +43,26 @@ public class RootView {
         SettingsController settingscontroller   = new SettingsController(handler);
         SimSettings simsettings                 = new SimSettings(settingscontroller, handler);
 
-        TextView TextView                    = new TextView(controller, model);
+        TextView TextView                   = new TextView(controller, model);
 
-        ScrollPane scrollPane = new ScrollPane(simsettings);
+        Profit profit                       = new Profit();
+        ProfitController profitController   = new ProfitController(profit);
+        ProfitView profitView               = new ProfitView(profitController, profit);
+
+        model.addEventListner(profit);
+
+        ScrollPane scrollPane   = new ScrollPane(simsettings);
         scrollPane.setFitToHeight(true);
 
-        ScrollPane scrollPane2 = new ScrollPane(view);
+        ScrollPane scrollPane2  = new ScrollPane(view);
         scrollPane.setFitToHeight(true);
 
-        PieChartView piechart = new PieChartView(controller, model);
+        PieChartView piechart   = new PieChartView(controller, model);
         PieChartView2 piechart2 = new PieChartView2(controller, model);
-
-        SimData legend = new SimData(controller, model);
-
-        TextView textview  = new TextView(controller, model);
-
+        SimData legend          = new SimData(controller, model);
+        TextView textview       = new TextView(controller, model);
         TabPane tabPane         = new TabPane();
-        TabPane pie         = new TabPane();
+        TabPane pie             = new TabPane();
         BorderPane borderPane   = new BorderPane();
         Button start            = new Button("Start/Stop");
         Button reset            = new Button("Reset");
@@ -91,6 +96,11 @@ public class RootView {
         SimSettings.setText("Settings");
         SimSettings.setContent(scrollPane);
         tabPane.getTabs().add(SimSettings);
+
+        Tab ProfitTab   = new Tab();
+        ProfitTab.setText("Inkomsten");
+        ProfitTab.setContent(profitView);
+        tabPane.getTabs().add(ProfitTab);
 
         Tab PieChart1 = new Tab();
         PieChart1.setText("PieChart1");

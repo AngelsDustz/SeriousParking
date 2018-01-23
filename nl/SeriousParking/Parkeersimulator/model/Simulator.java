@@ -1,6 +1,7 @@
 package nl.SeriousParking.Parkeersimulator.model;
 
 import nl.SeriousParking.Parkeersimulator.SimulatorView;
+import nl.SeriousParking.Parkeersimulator.canEvent;
 
 import java.util.*;
 
@@ -27,6 +28,7 @@ public class Simulator extends Model implements Runnable {
     private Car[][][] cars;
     private Random randomGenerator;
 
+    private ArrayList<Model> listners = new ArrayList<>();
 
     private int day         = 0;
     private int hour        = 0;
@@ -45,9 +47,9 @@ public class Simulator extends Model implements Runnable {
     private int exitSpeed; // number of cars that can leave per minute
 
     public Simulator() {
-        NumberOfCarsParkedDouble =0;
-        numberOfAddhoccarsinPark=0;
-        numberOfPasscarsinPark=0;
+        NumberOfCarsParkedDouble    = 0;
+        numberOfAddhoccarsinPark    = 0;
+        numberOfPasscarsinPark      = 0;
 
         entranceCarQueue    = new Queue();
         entrancePassQueue   = new Queue();
@@ -61,8 +63,20 @@ public class Simulator extends Model implements Runnable {
         numberOfPlaces     = SettingHandler.garagePlaces;
         numberOfOpenSpots  = numberOfFloors * numberOfRows * numberOfPlaces;
 
-        firstRun=true;
-        randomGenerator= new Random();
+        firstRun        = true;
+        randomGenerator = new Random();
+    }
+
+    private void sendEvent(HashMap data) {
+        for (Model m : listners) {
+            if (m instanceof canEvent) {
+                ((canEvent) m).doEvent(data);
+            }
+        }
+    }
+
+    public void addEventListner(Model m) {
+        listners.add(m);
     }
 
     private void setSettings(){
@@ -86,9 +100,10 @@ public class Simulator extends Model implements Runnable {
     public void startSimulator() {
 
         if(firstRun==true){
-            cars = new Car[numberOfFloors][numberOfRows][numberOfPlaces];
-            firstRun=false;
+            cars        = new Car[numberOfFloors][numberOfRows][numberOfPlaces];
+            firstRun    = false;
         }
+
         new Thread(this).start();
     }
 
@@ -101,6 +116,7 @@ public class Simulator extends Model implements Runnable {
           run=false;
         }
     }
+
     public void run() {
         while (run) {
             tick();
@@ -115,6 +131,7 @@ public class Simulator extends Model implements Runnable {
     public void singleTick(){
         tick();
     }
+
     private void tick() {
     	advanceTime();
     	handleExit();
@@ -306,13 +323,22 @@ public class Simulator extends Model implements Runnable {
     private void carsPaying(){
         // Let cars pay.
     	int i=0;
+
     	while (paymentCarQueue.carsInQueue()>0 && i < paymentSpeed){
             Car car = paymentCarQueue.removeCar();
             this.profit += CARPRICE;
+            HashMap<String, Object> data = new HashMap<>();
+            data.put("profit", this.profit);
+            data.put("time_passed", 123);
+            sendEvent(data);
             carcounterRemove(car);
             carLeavesSpot(car);
             i++;
     	}
+    }
+
+    public double getProfit() {
+        return profit;
     }
 
     private void carsLeaving(){
@@ -539,6 +565,7 @@ public class Simulator extends Model implements Runnable {
                 }
             }
         }
+
         NumberOfCarsParkedDouble=0;
         numberOfAddhoccarsinPark=0;
         numberOfPasscarsinPark=0;
@@ -552,8 +579,10 @@ public class Simulator extends Model implements Runnable {
         day     = 0;
         hour    = 0;
         minute  = 0;
+        profit  = 0;
         run     = false;
 
+        sendEvent(null);
         notifyViews();
     }
 

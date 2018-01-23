@@ -6,3 +6,6 @@
 .out/
 .out/*
 TabTest.java
+compile/
+compile
+compile/*

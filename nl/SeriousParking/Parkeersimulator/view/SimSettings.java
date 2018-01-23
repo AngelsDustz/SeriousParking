@@ -50,7 +50,7 @@ public class SimSettings extends View<SettingsController, SettingHandler> {
         updateValues();
     }
 
-    public void updateValues(){
+       public void updateValues(){
         input[0].setText(""+model.getTickPause());
         input[1].setText(""+model.getEnterSpeed());
         input[2].setText(""+model.getExitSpeed());

@@ -1,9 +1,10 @@
 package nl.SeriousParking.Parkeersimulator.view;
 
 import javafx.geometry.Insets;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import nl.SeriousParking.Parkeersimulator.controller.SimulatorController;
@@ -16,6 +17,14 @@ import nl.SeriousParking.Parkeersimulator.model.Simulator;
 public class SimView extends View<SimulatorController, Simulator> {
     private Rectangle[][][] garage;
     private HBox container = new HBox();
+    private TextField[] input;
+    private final int numberOfElements =3;
+    private Label floorLbl;
+    private Label rowLbl;
+    private Label placeLbl;
+    private GridPane settings = new GridPane();
+    private Button saveButton;
+    private Button  defaultButton;
 
 
     public SimView(SimulatorController controller, Simulator model) {
@@ -26,12 +35,13 @@ public class SimView extends View<SimulatorController, Simulator> {
         container.setPadding(new Insets(15, 12, 15, 12));
         container.setSpacing(40);
 
-        CreateTable();
-        
-        borderPane.setCenter(container);
 
+        settings.getRowConstraints().add(new RowConstraints(100)); // 1st Row is 100 wide
+        settings.getColumnConstraints().add(new ColumnConstraints(100)); // 1st column 100 wide
+        input= new TextField[numberOfElements];
+        create();
 
-        this.getChildren().add(borderPane);
+        this.getChildren().add(settings);
         model.addView(this);
 
     }
@@ -43,6 +53,79 @@ public class SimView extends View<SimulatorController, Simulator> {
         draw();
     }
 
+
+    public void create() {
+
+        floorLbl = new Label();
+        floorLbl.setText("Number of floors");
+        settings.setConstraints(floorLbl,1,10);
+        settings.getChildren().add(floorLbl);
+
+        input[0] = new TextField();
+        input[0].setText(""+model.getNumberOfFloors());
+        settings.setConstraints(input[0],3,10);
+        settings.getChildren().add(input[0]);
+
+        rowLbl = new Label();
+        rowLbl.setText("Number of rows");
+        settings.setConstraints(rowLbl,1,11);
+        settings.getChildren().add(rowLbl);
+
+        input[1] = new TextField();
+        input[1].setText(""+model.getNumberOfRows());
+        settings.setConstraints(input[1],3,11);
+        settings.getChildren().add(input[1]);
+
+        placeLbl = new Label();
+        placeLbl.setText("Number of places");
+        settings.setConstraints(placeLbl,1,12);
+        settings.getChildren().add(placeLbl);
+
+        input[2] = new TextField();
+        input[2].setText(""+model.getNumberOfPlaces());
+        settings.setConstraints(input[2],3,12);
+        settings.getChildren().add(input[2]);
+
+        defaultButton = new Button();
+        defaultButton.setText("Default");
+        settings.setConstraints(defaultButton,1,13);
+        settings.getChildren().add(defaultButton);
+
+
+      //  defaultButton.setOnAction(e -> {
+        //    controller.setDefault();
+          //  });
+
+        model.addView(this);
+
+
+        saveButton = new Button();
+        saveButton.setText("Save");
+        settings.setConstraints(saveButton,3,13);
+        settings.getChildren().add(saveButton);
+
+
+        saveButton.setOnAction(e -> {
+            String[] content = new String[numberOfElements];
+            int i=0;
+            for(TextField textField: input){
+                if(textField!=null) {
+                    content[i] = textField.getText();
+                    i++;
+                }
+                else{
+                    break;
+                }
+
+
+            }
+            controller.Save(content);
+
+
+        });
+
+        model.addView(this);
+    }
 
     private void paintCar(int floor, int row, int place, Car car){
 

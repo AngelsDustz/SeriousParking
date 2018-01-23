@@ -61,7 +61,7 @@ public class Simulator extends Model implements Runnable {
         numberOfPlaces     = SettingHandler.garagePlaces;
         numberOfOpenSpots  = numberOfFloors * numberOfRows * numberOfPlaces;
 
-        cars = new Car[numberOfFloors][numberOfRows][numberOfPlaces];
+
         randomGenerator= new Random();
     }
 
@@ -84,6 +84,7 @@ public class Simulator extends Model implements Runnable {
      * This calls the thread to run the ticks.
      */
     public void startSimulator() {
+        cars = new Car[numberOfFloors][numberOfRows][numberOfPlaces];
         new Thread(this).start();
     }
 

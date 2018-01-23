@@ -46,6 +46,9 @@ public class RootView {
         ScrollPane scrollPane = new ScrollPane(simsettings);
         scrollPane.setFitToHeight(true);
 
+        ScrollPane scrollPane2 = new ScrollPane(view);
+        scrollPane.setFitToHeight(true);
+
         PieChartView piechart = new PieChartView(controller, model);
         PieChartView2 piechart2 = new PieChartView2(controller, model);
 
@@ -81,7 +84,7 @@ public class RootView {
 
         Tab TextViewTab = new Tab();
         TextViewTab.setText("Text View");
-        TextViewTab.setContent(TextView);
+        TextViewTab.setContent(textview);
         tabPane.getTabs().add(TextViewTab);
 
         Tab SimSettings = new Tab();
@@ -101,8 +104,8 @@ public class RootView {
 
         legend.setAlignment(Pos.CENTER);
 
-        borderPane.setLeft(view);
-        borderPane.setCenter(legend);
+        borderPane.setCenter(scrollPane2);
+        //borderPane.setRight(legend);
         borderPane.setBottom(toolBar);
 
         splitPanetop.getItems().addAll(borderPane,pie);

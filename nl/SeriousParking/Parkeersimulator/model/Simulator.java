@@ -57,7 +57,9 @@ public class Simulator extends Model implements Runnable {
         exitCarQueue        = new Queue();
         profit              = 0;
 
-        setGarageSizeValue();
+        numberOfFloors     = SettingHandler.garageFloors;
+        numberOfRows       = SettingHandler.garageRows;
+        numberOfPlaces     = SettingHandler.garagePlaces;
 
 
         firstRun        = true;
@@ -89,6 +91,8 @@ public class Simulator extends Model implements Runnable {
         paymentSpeed    = SettingHandler.paymentSpeed;
         exitSpeed       = SettingHandler.exitSpeed;
 
+
+
     }
     /**
      * @name startSimulator
@@ -105,10 +109,7 @@ public class Simulator extends Model implements Runnable {
         new Thread(this).start();
     }
     private void setGarageSizeValue(){
-        numberOfFloors     = SettingHandler.garageFloors;
-        numberOfRows       = SettingHandler.garageRows;
-        numberOfPlaces     = SettingHandler.garagePlaces;
-        numberOfOpenSpots  = numberOfFloors * numberOfRows * numberOfPlaces;
+          numberOfOpenSpots  = numberOfFloors * numberOfRows * numberOfPlaces;
     }
 
     public void startStop(){

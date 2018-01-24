@@ -32,6 +32,7 @@ public class SimSettings extends View<SettingsController, SettingHandler> {
     private Label   placeLbl;
     private Button  saveButton;
     private Button  defaultButton;
+    private CheckBox checkbox;
     private final int     numberOfElements =16;
 
     public SimSettings(SettingsController settingscontroller, SettingHandler model) {
@@ -211,10 +212,10 @@ public class SimSettings extends View<SettingsController, SettingHandler> {
         container.setConstraints(input[11],3,12);
         container.getChildren().add(input[11]);
         //////////////////////////////////////////////////////////////////////////////////////////////////
-        // input[12] = new CheckBox("Opposite entrances");
-        //input[12].setIndeterminate(false);
-        //container.setConstraints(input[12],1,13);
-        //container.getChildren().add(input[12]);
+        checkbox = new CheckBox("Opposite entrances");
+        checkbox.setIndeterminate(false);
+        container.setConstraints(checkbox,1,13);
+        container.getChildren().add(checkbox);
 
         //////////////////////////////Buttons/////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -255,6 +256,7 @@ public class SimSettings extends View<SettingsController, SettingHandler> {
 
             }
             controller.Save(content);
+            controller.doubleEntrance(checkbox.isSelected());
 
 
         });

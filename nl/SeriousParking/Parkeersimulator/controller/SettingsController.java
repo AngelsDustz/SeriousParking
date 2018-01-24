@@ -15,6 +15,11 @@ public class SettingsController extends Controller<SettingHandler> {
         model.defaultValue();
     }
 
+    public void doubleEntrance(boolean bool){
+        model.setDoubleEntrance(bool);
+
+    }
+
     public void Save(String[] array){
         try {
             model.setTickPause(parseInt(array[0]));

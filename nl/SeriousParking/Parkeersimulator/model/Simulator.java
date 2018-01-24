@@ -12,6 +12,7 @@ public class Simulator extends Model implements Runnable {
     private boolean run;
 	private double profit;
     private boolean firstRun;
+    private boolean doubleEntrance;
 	private Queue entranceCarQueue;
     private Queue entrancePassQueue;
     private Queue paymentCarQueue;
@@ -90,6 +91,7 @@ public class Simulator extends Model implements Runnable {
         enterSpeed      = SettingHandler.enterSpeed;
         paymentSpeed    = SettingHandler.paymentSpeed;
         exitSpeed       = SettingHandler.exitSpeed;
+        doubleEntrance  = SettingHandler.doubleEntrance;
 
 
 
@@ -191,8 +193,10 @@ public class Simulator extends Model implements Runnable {
     private void handleEntrance(){
         carsArriving();
         carsEntering(entrancePassQueue);
-        carsOtherEntering(entrancePassQueue);
-        carsOtherEntering(entranceCarQueue);
+        if (doubleEntrance==true) {
+            carsOtherEntering(entrancePassQueue);
+            carsOtherEntering(entranceCarQueue);
+        }
         carsEntering(entranceCarQueue);
     }
     
@@ -610,6 +614,7 @@ public class Simulator extends Model implements Runnable {
         sendEvent(null);
         notifyViews();
     }
+
 
     public double getNumberOfPasscarsinPark() {
         return numberOfPasscarsinPark;

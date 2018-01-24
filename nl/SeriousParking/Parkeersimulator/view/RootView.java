@@ -39,24 +39,20 @@ public class RootView {
         SimulatorController controller  = new SimulatorController(model);
         SimView view                    = new SimView(controller, model);
 
-        SettingHandler handler                  = new SettingHandler();
-        SettingsController settingscontroller   = new SettingsController(handler);
-        SimSettings simsettings                 = new SimSettings(settingscontroller, handler);
+        SettingHandler handler          = new SettingHandler();
+        SettingsController settingsc    = new SettingsController(handler);
+        SimSettings simsettings         = new SimSettings(settingsc, handler);
 
-        TextView TextView                   = new TextView(controller, model);
+        TextView TextView               = new TextView(controller, model);
 
-        Profit profit                       = new Profit();
-        ProfitController profitController   = new ProfitController(profit);
-        ProfitView profitView               = new ProfitView(profitController, profit);
+        Profit profit                   = new Profit();
+        ProfitController profitC        = new ProfitController(profit);
+        ProfitView profitView           = new ProfitView(profitC, profit);
 
         model.addEventListner(profit);
 
         ScrollPane scrollPane   = new ScrollPane(simsettings);
-        scrollPane.setFitToHeight(true);
-
         ScrollPane scrollPane2  = new ScrollPane(view);
-        scrollPane.setFitToHeight(true);
-
         PieChartView piechart   = new PieChartView(controller, model);
         PieChartView2 piechart2 = new PieChartView2(controller, model);
         SimData legend          = new SimData(controller, model);
@@ -68,6 +64,9 @@ public class RootView {
         Button reset            = new Button("Reset");
         Button tick             = new Button("single tick");
         ToolBar toolBar         = new ToolBar();
+
+        scrollPane.setFitToHeight(true);
+        scrollPane2.setFitToHeight(true);
 
         start.setOnAction(e -> {
             controller.startSimulator();
@@ -103,12 +102,12 @@ public class RootView {
         tabPane.getTabs().add(ProfitTab);
 
         Tab PieChart1 = new Tab();
-        PieChart1.setText("PieChart1");
+        PieChart1.setText("Bezetting");
         PieChart1.setContent(piechart);
         pie.getTabs().add(PieChart1);
 
         Tab PieChart2 = new Tab();
-        PieChart2.setText("PieChart2");
+        PieChart2.setText("AdHoc/pass");
         PieChart2.setContent(piechart2);
         pie.getTabs().add(PieChart2);
 

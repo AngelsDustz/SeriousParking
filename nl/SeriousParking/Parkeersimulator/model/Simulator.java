@@ -325,11 +325,20 @@ public class Simulator extends Model implements Runnable {
     	int i=0;
 
     	while (paymentCarQueue.carsInQueue()>0 && i < paymentSpeed){
-            Car car = paymentCarQueue.removeCar();
-            this.profit += CARPRICE;
             HashMap<String, Object> data = new HashMap<>();
+            Car car = paymentCarQueue.removeCar();
+
+            if (car.getisParkedDouble()) {
+                this.profit += (CARPRICE/2);
+                data.put("car_price", (CARPRICE/2));
+            } else {
+                this.profit += CARPRICE;
+                data.put("car_price", CARPRICE);
+            }
+
             data.put("profit", this.profit);
-            data.put("time_passed", 123);
+            data.put("time_passed", this.hour);
+            data.put("doubled", car.getisParkedDouble());
             sendEvent(data);
             carcounterRemove(car);
             carLeavesSpot(car);

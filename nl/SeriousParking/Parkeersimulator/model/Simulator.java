@@ -21,10 +21,10 @@ public class Simulator extends Model implements Runnable {
     private int numberOfRows;
     private int numberOfPlaces;
 
-    private int NumberOfCarsParkedDouble;
-    private int numberOfAddhoccarsinPark;
-    private int numberOfPasscarsinPark;
-    private int numberOfOpenSpots;
+    private double NumberOfCarsParkedDouble;
+    private double numberOfAddhoccarsinPark;
+    private double numberOfPasscarsinPark;
+    private double numberOfOpenSpots;
     private Car[][][] cars;
     private Random randomGenerator;
 
@@ -57,11 +57,8 @@ public class Simulator extends Model implements Runnable {
         exitCarQueue        = new Queue();
         profit              = 0;
 
+        setGarageSizeValue();
 
-        numberOfFloors     = SettingHandler.garageFloors;
-        numberOfRows       = SettingHandler.garageRows;
-        numberOfPlaces     = SettingHandler.garagePlaces;
-        numberOfOpenSpots  = numberOfFloors * numberOfRows * numberOfPlaces;
 
         firstRun        = true;
         randomGenerator = new Random();
@@ -91,6 +88,7 @@ public class Simulator extends Model implements Runnable {
         enterSpeed      = SettingHandler.enterSpeed;
         paymentSpeed    = SettingHandler.paymentSpeed;
         exitSpeed       = SettingHandler.exitSpeed;
+
     }
     /**
      * @name startSimulator
@@ -106,11 +104,17 @@ public class Simulator extends Model implements Runnable {
 
         new Thread(this).start();
     }
-
+    private void setGarageSizeValue(){
+        numberOfFloors     = SettingHandler.garageFloors;
+        numberOfRows       = SettingHandler.garageRows;
+        numberOfPlaces     = SettingHandler.garagePlaces;
+        numberOfOpenSpots  = numberOfFloors * numberOfRows * numberOfPlaces;
+    }
 
     public void startStop(){
         if (run==false){
            run=true;
+            setGarageSizeValue();
             startSimulator();
         } else {
           run=false;
@@ -208,6 +212,13 @@ public class Simulator extends Model implements Runnable {
     private void carcounterADD(Car car){
         if (car.getisParkedDouble()==true){
            NumberOfCarsParkedDouble++;
+
+
+            if (car.getHasToPay() == true) {
+                numberOfAddhoccarsinPark++;
+            } else {
+                numberOfPasscarsinPark++;
+            }
         }
 
         if (car.getHasToPay() == true) {
@@ -220,17 +231,21 @@ public class Simulator extends Model implements Runnable {
 
     private void carcounterRemove(Car car){
         if (car.getisParkedDouble()==true){
-            NumberOfCarsParkedDouble--;
+            NumberOfCarsParkedDouble=NumberOfCarsParkedDouble-.5;
 
-        }
-
-        if (car.getHasToPay() == true) {
-            numberOfAddhoccarsinPark--;
+            if (car.getHasToPay() == true) {
+                numberOfAddhoccarsinPark=numberOfAddhoccarsinPark-.5;
+            } else {
+                numberOfPasscarsinPark=numberOfPasscarsinPark-.5;
+            }
         }
         else {
-            numberOfPasscarsinPark--;
+            if (car.getHasToPay() == true) {
+                numberOfAddhoccarsinPark--;
+            } else {
+                numberOfPasscarsinPark--;
+            }
         }
-
     }
 
 
@@ -595,11 +610,11 @@ public class Simulator extends Model implements Runnable {
         notifyViews();
     }
 
-    public int getNumberOfPasscarsinPark() {
+    public double getNumberOfPasscarsinPark() {
         return numberOfPasscarsinPark;
     }
 
-    public int getNumberOfAddhoccarsinPark() {
+    public double getNumberOfAddhoccarsinPark() {
         return numberOfAddhoccarsinPark;
     }
 
@@ -627,12 +642,12 @@ public class Simulator extends Model implements Runnable {
         this.numberOfPlaces = numberOfPlaces;
     }
 
-    public int getNumberOfOpenSpots() {
+    public double getNumberOfOpenSpots() {
         return numberOfOpenSpots;
     }
 
-    public int getNumberOfCarsParkedDouble() {
-        return NumberOfCarsParkedDouble/2;
+    public double getNumberOfCarsParkedDouble() {
+        return NumberOfCarsParkedDouble;
     }
 
     public int getTickPause() {

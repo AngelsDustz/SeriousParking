@@ -12,6 +12,7 @@ public class Simulator extends Model implements Runnable {
     private boolean run;
 	private double profit;
     private boolean firstRun;
+    private boolean doubleEntrance;
 	private Queue entranceCarQueue;
     private Queue entrancePassQueue;
     private Queue paymentCarQueue;
@@ -21,11 +22,11 @@ public class Simulator extends Model implements Runnable {
     private int numberOfRows;
     private int numberOfPlaces;
 
-    private int NumberOfCarsParkedDouble;
-    private int numberOfAddhoccarsinPark;
-    private int numberOfPasscarsinPark;
-    private int numberOfOpenSpots;
     private int totalCarsPassed;
+    private double NumberOfCarsParkedDouble;
+    private double numberOfAddhoccarsinPark;
+    private double numberOfPasscarsinPark;
+    private double numberOfOpenSpots;
     private Car[][][] cars;
     private Random randomGenerator;
 
@@ -34,6 +35,8 @@ public class Simulator extends Model implements Runnable {
     private int day         = 0;
     private int hour        = 0;
     private int minute      = 0;
+    private int week        = 0;
+    private int year        = 0;
 
     private int tickPause   = SettingHandler.tickPause;
     private int chance      = SettingHandler.chance;
@@ -58,11 +61,10 @@ public class Simulator extends Model implements Runnable {
         exitCarQueue        = new Queue();
         profit              = 0;
 
-
         numberOfFloors     = SettingHandler.garageFloors;
         numberOfRows       = SettingHandler.garageRows;
         numberOfPlaces     = SettingHandler.garagePlaces;
-        numberOfOpenSpots  = numberOfFloors * numberOfRows * numberOfPlaces;
+
 
         firstRun        = true;
         randomGenerator = new Random();
@@ -92,6 +94,10 @@ public class Simulator extends Model implements Runnable {
         enterSpeed      = SettingHandler.enterSpeed;
         paymentSpeed    = SettingHandler.paymentSpeed;
         exitSpeed       = SettingHandler.exitSpeed;
+        doubleEntrance  = SettingHandler.doubleEntrance;
+
+
+
     }
     /**
      * @name startSimulator
@@ -107,11 +113,14 @@ public class Simulator extends Model implements Runnable {
 
         new Thread(this).start();
     }
-
+    private void setGarageSizeValue(){
+          numberOfOpenSpots  = numberOfFloors * numberOfRows * numberOfPlaces;
+    }
 
     public void startStop(){
         if (run==false){
            run=true;
+            setGarageSizeValue();
             startSimulator();
         } else {
           run=false;
@@ -181,14 +190,21 @@ public class Simulator extends Model implements Runnable {
 
         while (day > 6) {
             day -= 7;
+            week++;
+        }
+        while (week > 51){
+            week -= 52;
+            year++;
         }
     }
 
     private void handleEntrance(){
         carsArriving();
         carsEntering(entrancePassQueue);
-        carsOtherEntering(entrancePassQueue);
-        carsOtherEntering(entranceCarQueue);
+        if (doubleEntrance==true) {
+            carsOtherEntering(entrancePassQueue);
+            carsOtherEntering(entranceCarQueue);
+        }
         carsEntering(entranceCarQueue);
     }
     
@@ -209,6 +225,13 @@ public class Simulator extends Model implements Runnable {
     private void carcounterADD(Car car){
         if (car.getisParkedDouble()==true){
            NumberOfCarsParkedDouble++;
+
+
+            if (car.getHasToPay() == true) {
+                numberOfAddhoccarsinPark++;
+            } else {
+                numberOfPasscarsinPark++;
+            }
         }
 
         if (car.getHasToPay() == true) {
@@ -221,17 +244,21 @@ public class Simulator extends Model implements Runnable {
 
     private void carcounterRemove(Car car){
         if (car.getisParkedDouble()==true){
-            NumberOfCarsParkedDouble--;
+            NumberOfCarsParkedDouble=NumberOfCarsParkedDouble-.5;
 
-        }
-
-        if (car.getHasToPay() == true) {
-            numberOfAddhoccarsinPark--;
+            if (car.getHasToPay() == true) {
+                numberOfAddhoccarsinPark=numberOfAddhoccarsinPark-.5;
+            } else {
+                numberOfPasscarsinPark=numberOfPasscarsinPark-.5;
+            }
         }
         else {
-            numberOfPasscarsinPark--;
+            if (car.getHasToPay() == true) {
+                numberOfAddhoccarsinPark--;
+            } else {
+                numberOfPasscarsinPark--;
+            }
         }
-
     }
 
 
@@ -590,6 +617,8 @@ public class Simulator extends Model implements Runnable {
         exitCarQueue.emptyQueue();
         numberOfOpenSpots   = numberOfFloors *numberOfRows * numberOfPlaces;
 
+        year    = 0;
+        week    = 0;
         day     = 0;
         hour    = 0;
         minute  = 0;
@@ -600,11 +629,12 @@ public class Simulator extends Model implements Runnable {
         notifyViews();
     }
 
-    public int getNumberOfPasscarsinPark() {
+
+    public double getNumberOfPasscarsinPark() {
         return numberOfPasscarsinPark;
     }
 
-    public int getNumberOfAddhoccarsinPark() {
+    public double getNumberOfAddhoccarsinPark() {
         return numberOfAddhoccarsinPark;
     }
 
@@ -632,12 +662,12 @@ public class Simulator extends Model implements Runnable {
         this.numberOfPlaces = numberOfPlaces;
     }
 
-    public int getNumberOfOpenSpots() {
+    public double getNumberOfOpenSpots() {
         return numberOfOpenSpots;
     }
 
-    public int getNumberOfCarsParkedDouble() {
-        return NumberOfCarsParkedDouble/2;
+    public double getNumberOfCarsParkedDouble() {
+        return NumberOfCarsParkedDouble;
     }
 
     public int getTickPause() {
@@ -722,6 +752,14 @@ public class Simulator extends Model implements Runnable {
 
     public int getMinute() {
         return minute;
+    }
+
+    public int getWeek() {
+        return week;
+    }
+
+    public int getYear() {
+        return year;
     }
 }
 

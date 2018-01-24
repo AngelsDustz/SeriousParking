@@ -3,6 +3,7 @@ package nl.SeriousParking.Parkeersimulator.model;
 public class SettingHandler extends Model{
     protected static int tickPause;
     protected static int chance;
+    protected static Boolean doubleEntrance;
 
     protected static int weekDayArrivals; // average number of arriving cars per hour
     protected static int weekendArrivals; // average number of arriving cars per hour
@@ -26,7 +27,7 @@ public class SettingHandler extends Model{
     public void defaultValue(){
     tickPause   = 150;
     chance      = 1;
-
+    doubleEntrance = false;
     garageFloors= 3;
     garageRows=6;
     garagePlaces=20;
@@ -146,5 +147,9 @@ public class SettingHandler extends Model{
 
     public static void setExitSpeed(int exitSpeed) {
         SettingHandler.exitSpeed = exitSpeed;
+    }
+
+    public static void setDoubleEntrance(Boolean doubleEntrance) {
+        SettingHandler.doubleEntrance = doubleEntrance;
     }
 }

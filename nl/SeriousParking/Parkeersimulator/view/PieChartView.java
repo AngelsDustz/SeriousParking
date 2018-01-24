@@ -27,7 +27,6 @@ public class PieChartView extends View<SimulatorController, Simulator> {
         gereserveerdSlice= new PieChart.Data("Gereserveerd", 10);
         VrijePlekkenSlice = new PieChart.Data("Vrije Plekken", 10);
 
-
         pieChart.getData().add(carSlice);
         pieChart.getData().add(empty);
         pieChart.getData().add(dubbelpSlice);

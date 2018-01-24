@@ -3,6 +3,7 @@ package nl.SeriousParking.Parkeersimulator.view;
 
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
+import javafx.geometry.Side;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -39,24 +40,20 @@ public class RootView {
         SimulatorController controller  = new SimulatorController(model);
         SimView view                    = new SimView(controller, model);
 
-        SettingHandler handler                  = new SettingHandler();
-        SettingsController settingscontroller   = new SettingsController(handler);
-        SimSettings simsettings                 = new SimSettings(settingscontroller, handler);
+        SettingHandler handler          = new SettingHandler();
+        SettingsController settingsc    = new SettingsController(handler);
+        SimSettings simsettings         = new SimSettings(settingsc, handler);
 
-        TextView TextView                   = new TextView(controller, model);
+        TextView TextView               = new TextView(controller, model);
 
-        Profit profit                       = new Profit();
-        ProfitController profitController   = new ProfitController(profit);
-        ProfitView profitView               = new ProfitView(profitController, profit);
+        Profit profit                   = new Profit();
+        ProfitController profitC        = new ProfitController(profit);
+        ProfitView profitView           = new ProfitView(profitC, profit);
 
         model.addEventListner(profit);
 
         ScrollPane scrollPane   = new ScrollPane(simsettings);
-        scrollPane.setFitToHeight(true);
-
         ScrollPane scrollPane2  = new ScrollPane(view);
-        scrollPane.setFitToHeight(true);
-
         PieChartView piechart   = new PieChartView(controller, model);
         PieChartView2 piechart2 = new PieChartView2(controller, model);
         SimData legend          = new SimData(controller, model);
@@ -64,10 +61,15 @@ public class RootView {
         TabPane tabPane         = new TabPane();
         TabPane pie             = new TabPane();
         BorderPane borderPane   = new BorderPane();
+        BorderPane pies         = new BorderPane();
         Button start            = new Button("Start/Stop");
         Button reset            = new Button("Reset");
         Button tick             = new Button("single tick");
+        Button tick100          = new Button("tick +100");
         ToolBar toolBar         = new ToolBar();
+
+        scrollPane.setFitToHeight(true);
+        scrollPane2.setFitToHeight(true);
 
         start.setOnAction(e -> {
             controller.startSimulator();
@@ -81,8 +83,17 @@ public class RootView {
             controller.tick();
         });
 
+/*
+        tick100.setOnAction(e -> {
+            controller.tick100();
+        });
+*/
 
-        toolBar.getItems().addAll(start,reset,tick);
+        tick100.setDisable(true);
+        start.setDefaultButton(true);
+        reset.setCancelButton(true);
+
+        toolBar.getItems().addAll(start,reset,tick,tick100);
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
         pie.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
 
@@ -92,38 +103,40 @@ public class RootView {
         TextViewTab.setContent(textview);
         tabPane.getTabs().add(TextViewTab);
 
-        Tab SimSettings = new Tab();
-        SimSettings.setText("Settings");
-        SimSettings.setContent(scrollPane);
-        tabPane.getTabs().add(SimSettings);
-
         Tab ProfitTab   = new Tab();
         ProfitTab.setText("Inkomsten");
         ProfitTab.setContent(profitView);
         tabPane.getTabs().add(ProfitTab);
 
+        Tab SimSettings = new Tab();
+        SimSettings.setText("Settings");
+        SimSettings.setContent(scrollPane);
+        tabPane.getTabs().add(SimSettings);
+
         Tab PieChart1 = new Tab();
-        PieChart1.setText("PieChart1");
+        PieChart1.setText("Bezetting");
         PieChart1.setContent(piechart);
         pie.getTabs().add(PieChart1);
 
         Tab PieChart2 = new Tab();
-        PieChart2.setText("PieChart2");
+        PieChart2.setText("AdHoc/pass");
         PieChart2.setContent(piechart2);
         pie.getTabs().add(PieChart2);
 
         legend.setAlignment(Pos.CENTER);
 
         borderPane.setCenter(scrollPane2);
-        //borderPane.setRight(legend);
         borderPane.setBottom(toolBar);
 
-        splitPanetop.getItems().addAll(borderPane,pie);
+        pies.setCenter(pie);
+        pies.setBottom(legend);
+
+        splitPanetop.getItems().addAll(borderPane,pies);
 
         splitPanebottom.getItems().addAll(splitPanetop,tabPane);
 
         primaryStage.setScene(scene);
-        scene.getStylesheets().add("Chart.css");
+        scene.getStylesheets().add("Style.css");
 
         primaryStage.show();
     }

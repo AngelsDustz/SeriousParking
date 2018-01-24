@@ -63,6 +63,7 @@ public class RootView {
         Button start            = new Button("Start/Stop");
         Button reset            = new Button("Reset");
         Button tick             = new Button("single tick");
+        Button tick100          = new Button("tick +100");
         ToolBar toolBar         = new ToolBar();
 
         scrollPane.setFitToHeight(true);
@@ -80,8 +81,17 @@ public class RootView {
             controller.tick();
         });
 
+/*
+        tick100.setOnAction(e -> {
+            controller.tick100();
+        });
+*/
 
-        toolBar.getItems().addAll(start,reset,tick);
+        tick100.setDisable(true);
+        start.setDefaultButton(true);
+        reset.setCancelButton(true);
+
+        toolBar.getItems().addAll(start,reset,tick,tick100);
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
         pie.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
 

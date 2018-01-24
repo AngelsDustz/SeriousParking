@@ -59,9 +59,6 @@ public class TextView extends View<SimulatorController, Simulator>  {
 
     @Override
     public void update() {
-       /*
-*/
-
         Platform.runLater(new Runnable() {
             @Override
             public void run() {

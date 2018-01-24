@@ -9,9 +9,10 @@ public class Profit extends Model implements canEvent {
     private double perHour;
     private double doubleLost;
     private int hours;
+    private int minutes;
+    private int cars;
 
     public Profit() {
-        hours = 1; //Prevent devision by zero.
     }
 
     private double calcPerHour(int hours, double profit) {
@@ -23,6 +24,9 @@ public class Profit extends Model implements canEvent {
         if (data != null) {
             this.profit     = (double) data.get("profit");
             this.hours      = (int) data.get("time_passed");
+            this.hours++;
+            this.minutes    = (int) data.get("minutes");
+            this.cars       = (int) data.get("cars");
             this.perHour    = calcPerHour(this.hours, this.profit);
 
             if ((boolean) data.get("doubled")) {
@@ -35,6 +39,7 @@ public class Profit extends Model implements canEvent {
             this.hours      = 0;
             this.perHour    = 0.0;
             this.doubleLost = 0.0;
+            this.minutes    = 0;
         }
 
         this.notifyViews();
@@ -44,11 +49,23 @@ public class Profit extends Model implements canEvent {
         return profit;
     }
 
+    public int getHours() {
+        return hours;
+    }
+
     public double getPerHour() {
         return perHour;
     }
 
+    public int getCars() {
+        return cars;
+    }
+
     public double getDoubleLost() {
         return doubleLost;
+    }
+
+    public int getMinutes() {
+        return minutes;
     }
 }

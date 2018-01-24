@@ -22,6 +22,7 @@ public class Simulator extends Model implements Runnable {
     private int numberOfRows;
     private int numberOfPlaces;
 
+    private int totalCarsPassed;
     private double NumberOfCarsParkedDouble;
     private double numberOfAddhoccarsinPark;
     private double numberOfPasscarsinPark;
@@ -132,22 +133,46 @@ public class Simulator extends Model implements Runnable {
         }
     }
 
+    public void tickMany(int times) {
+        new Thread(() -> {
+            for (int i=0;i<times;i++) {
+                tick();
+            }
+        }).start();
+    }
 
     public void Stop(){
        run = false;
     }
 
     public void singleTick(){
-        tick();
+        new Thread(() -> {tick();}).start();
     }
 
     private void tick() {
+        System.out.println("Start advanceTime.");
     	advanceTime();
+        System.out.println("End advanceTime.");
+
+        System.out.println("Start handleExit.");
     	handleExit();
+        System.out.println("End handleExit.");
+
+        System.out.println("Start carTick.");
         carTick();
+        System.out.println("End carTick.");
+
+        System.out.println("Start notifyViews.");
         notifyViews();
+        System.out.println("End notifyViews.");
+
+        System.out.println("Start handleEntrance.");
         handleEntrance();
+        System.out.println("End handleEntrance.");
+
+        System.out.println("Start setSettings.");
         setSettings();
+        System.out.println("End setSettings.");
 
 
     	// Pause.
@@ -156,7 +181,6 @@ public class Simulator extends Model implements Runnable {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
     }
 
     private void carTick(){
@@ -262,35 +286,34 @@ public class Simulator extends Model implements Runnable {
 
     private void carsEntering(Queue queue){
         int i=0;
+
         // Remove car from the front of the queue and assign to a parking space.
-        while (queue.carsInQueue()>0 &&
-                getNumberOfOpenSpots()>0 &&
-                i<enterSpeed) {
+        while (queue.carsInQueue()>0 && getNumberOfOpenSpots()>0 && i<enterSpeed) {
             Car car = queue.removeCar();
 
             if (!car.getisParkedDouble()){
                 Location freeLocation = getFirstFreeLocation();
                 setCarAt(freeLocation, car);
 
-
-               }
-
-
-            else{
+            } else {
                 Location[] freeLocation = getFirstFreeDoubleLocation();
-                if (freeLocation!=null) {
-                    Location loc1 = freeLocation[0];
-                    Location loc2 = freeLocation[1];
-                    Car car2 = new Car();
-                    car2 = car2.copy(car);
+
+
+                if (freeLocation != null) {
+                    Location loc1   = freeLocation[0];
+                    Location loc2   = freeLocation[1];
+                    Car car2        = new Car();
+                    car2            = car2.copy(car);
+
                     setCarAt(loc1, car);
                     setCarAt(loc2, car2);
 
-                }
-                else{
+                } else {
+
                     queue.addCar(car);
                 }
             }
+
             i++;
         }
     }
@@ -361,8 +384,12 @@ public class Simulator extends Model implements Runnable {
                 data.put("car_price", CARPRICE);
             }
 
+            totalCarsPassed++;
+
             data.put("profit", this.profit);
             data.put("time_passed", this.hour);
+            data.put("minutes", this.minute);
+            data.put("cars", totalCarsPassed);
             data.put("doubled", car.getisParkedDouble());
             sendEvent(data);
             carLeavesSpot(car);

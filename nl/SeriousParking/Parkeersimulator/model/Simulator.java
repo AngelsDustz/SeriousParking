@@ -133,13 +133,20 @@ public class Simulator extends Model implements Runnable {
         }
     }
 
+    public void tickMany(int times) {
+        new Thread(() -> {
+            for (int i=0;i<times;i++) {
+                tick();
+            }
+        }).start();
+    }
 
     public void Stop(){
        run = false;
     }
 
     public void singleTick(){
-        tick();
+        new Thread(() -> {tick();}).start();
     }
 
     private void tick() {

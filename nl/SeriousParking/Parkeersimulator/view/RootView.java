@@ -83,13 +83,12 @@ public class RootView {
             controller.tick();
         });
 
-/*
-        tick100.setOnAction(e -> {
-            controller.tick100();
-        });
-*/
 
-        tick100.setDisable(true);
+        tick100.setOnAction(e -> {
+            controller.tickMany(100);
+        });
+
+
         start.setDefaultButton(true);
         reset.setCancelButton(true);
 

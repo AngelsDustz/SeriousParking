@@ -24,6 +24,10 @@ public class SimulatorController extends Controller<Simulator> {
         model.singleTick();
     }
 
+    public void tickMany(int times) {
+        model.tickMany(times);
+    }
+
     public void SaveSettings(String[] array){
         model.setNumberOfFloors(parseInt(array[0]));
         model.setNumberOfRows(parseInt(array[1]));

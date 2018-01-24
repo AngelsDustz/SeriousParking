@@ -25,6 +25,7 @@ public class Simulator extends Model implements Runnable {
     private int numberOfAddhoccarsinPark;
     private int numberOfPasscarsinPark;
     private int numberOfOpenSpots;
+    private int totalCarsPassed;
     private Car[][][] cars;
     private Random randomGenerator;
 
@@ -336,8 +337,12 @@ public class Simulator extends Model implements Runnable {
                 data.put("car_price", CARPRICE);
             }
 
+            totalCarsPassed++;
+
             data.put("profit", this.profit);
             data.put("time_passed", this.hour);
+            data.put("minutes", this.minute);
+            data.put("cars", totalCarsPassed);
             data.put("doubled", car.getisParkedDouble());
             sendEvent(data);
             carcounterRemove(car);

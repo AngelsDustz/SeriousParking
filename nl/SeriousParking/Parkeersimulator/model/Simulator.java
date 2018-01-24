@@ -223,17 +223,17 @@ public class Simulator extends Model implements Runnable {
 
     private void carcounterADD(Car car){
         if (car.getisParkedDouble()==true){
-           NumberOfCarsParkedDouble++;
+           NumberOfCarsParkedDouble=NumberOfCarsParkedDouble+.5;
 
 
             if (car.getHasToPay() == true) {
-                numberOfAddhoccarsinPark++;
+                numberOfAddhoccarsinPark=numberOfAddhoccarsinPark+.5;
             } else {
-                numberOfPasscarsinPark++;
+                numberOfPasscarsinPark=numberOfPasscarsinPark+.5;
             }
         }
 
-        if (car.getHasToPay() == true) {
+        else if (car.getHasToPay() == true) {
             numberOfAddhoccarsinPark++;
         } else {
             numberOfPasscarsinPark++;
@@ -251,13 +251,12 @@ public class Simulator extends Model implements Runnable {
                 numberOfPasscarsinPark=numberOfPasscarsinPark-.5;
             }
         }
-        else {
-            if (car.getHasToPay() == true) {
+        else if (car.getHasToPay() == true) {
                 numberOfAddhoccarsinPark--;
-            } else {
-                numberOfPasscarsinPark--;
-            }
+        } else {
+          numberOfPasscarsinPark--;
         }
+
     }
 
 
@@ -272,7 +271,7 @@ public class Simulator extends Model implements Runnable {
             if (!car.getisParkedDouble()){
                 Location freeLocation = getFirstFreeLocation();
                 setCarAt(freeLocation, car);
-                carcounterADD(car);
+
 
                }
 
@@ -286,7 +285,7 @@ public class Simulator extends Model implements Runnable {
                     car2 = car2.copy(car);
                     setCarAt(loc1, car);
                     setCarAt(loc2, car2);
-                    carcounterADD(car);
+
                 }
                 else{
                     queue.addCar(car);
@@ -306,7 +305,7 @@ public class Simulator extends Model implements Runnable {
             if (!car.getisParkedDouble()){
                 Location freeLocation = getLastFreeLocation();
                 setCarAt(freeLocation, car);
-                carcounterADD(car);
+
 
             }
 
@@ -320,7 +319,7 @@ public class Simulator extends Model implements Runnable {
                     car2 = car2.copy(car);
                     setCarAt(loc1, car);
                     setCarAt(loc2, car2);
-                    carcounterADD(car);
+
                 }
                 else{
                     queue.addCar(car);
@@ -339,8 +338,7 @@ public class Simulator extends Model implements Runnable {
 	            car.setIsPaying(true);
 	            paymentCarQueue.addCar(car);
         	} else {
-               carcounterRemove(car);
-        	   carLeavesSpot(car);
+               carLeavesSpot(car);
 
         	}
             car = getFirstLeavingCar();
@@ -367,7 +365,6 @@ public class Simulator extends Model implements Runnable {
             data.put("time_passed", this.hour);
             data.put("doubled", car.getisParkedDouble());
             sendEvent(data);
-            carcounterRemove(car);
             carLeavesSpot(car);
             i++;
     	}
@@ -381,7 +378,10 @@ public class Simulator extends Model implements Runnable {
         // Let cars leave.
     	int i=0;
     	while (exitCarQueue.carsInQueue()>0 && i < exitSpeed){
-            exitCarQueue.removeCar();
+            carcounterRemove(exitCarQueue.removeCar());
+
+
+
             i++;
     	}
     }
@@ -420,6 +420,7 @@ public class Simulator extends Model implements Runnable {
     private void carLeavesSpot(Car car){
 
             removeCarAt(car.getLocation());
+
             exitCarQueue.addCar(car);
 
     }
@@ -463,6 +464,7 @@ public class Simulator extends Model implements Runnable {
         if (oldCar == null) {
             cars[location.getFloor()][location.getRow()][location.getPlace()] = car;
             car.setLocation(location);
+            carcounterADD(car);
             numberOfOpenSpots--;
             return true;
         }

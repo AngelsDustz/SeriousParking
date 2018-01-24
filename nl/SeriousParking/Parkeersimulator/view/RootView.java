@@ -3,6 +3,7 @@ package nl.SeriousParking.Parkeersimulator.view;
 
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
+import javafx.geometry.Side;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -60,6 +61,7 @@ public class RootView {
         TabPane tabPane         = new TabPane();
         TabPane pie             = new TabPane();
         BorderPane borderPane   = new BorderPane();
+        BorderPane pies         = new BorderPane();
         Button start            = new Button("Start/Stop");
         Button reset            = new Button("Reset");
         Button tick             = new Button("single tick");
@@ -101,15 +103,15 @@ public class RootView {
         TextViewTab.setContent(textview);
         tabPane.getTabs().add(TextViewTab);
 
-        Tab SimSettings = new Tab();
-        SimSettings.setText("Settings");
-        SimSettings.setContent(scrollPane);
-        tabPane.getTabs().add(SimSettings);
-
         Tab ProfitTab   = new Tab();
         ProfitTab.setText("Inkomsten");
         ProfitTab.setContent(profitView);
         tabPane.getTabs().add(ProfitTab);
+
+        Tab SimSettings = new Tab();
+        SimSettings.setText("Settings");
+        SimSettings.setContent(scrollPane);
+        tabPane.getTabs().add(SimSettings);
 
         Tab PieChart1 = new Tab();
         PieChart1.setText("Bezetting");
@@ -124,15 +126,17 @@ public class RootView {
         legend.setAlignment(Pos.CENTER);
 
         borderPane.setCenter(scrollPane2);
-        //borderPane.setRight(legend);
         borderPane.setBottom(toolBar);
 
-        splitPanetop.getItems().addAll(borderPane,pie);
+        pies.setCenter(pie);
+        pies.setBottom(legend);
+
+        splitPanetop.getItems().addAll(borderPane,pies);
 
         splitPanebottom.getItems().addAll(splitPanetop,tabPane);
 
         primaryStage.setScene(scene);
-        scene.getStylesheets().add("Chart.css");
+        scene.getStylesheets().add("Style.css");
 
         primaryStage.show();
     }

@@ -33,6 +33,8 @@ public class Simulator extends Model implements Runnable {
     private int day         = 0;
     private int hour        = 0;
     private int minute      = 0;
+    private int week        = 0;
+    private int year        = 0;
 
     private int tickPause   = SettingHandler.tickPause;
     private int chance      = SettingHandler.chance;
@@ -185,6 +187,11 @@ public class Simulator extends Model implements Runnable {
 
         while (day > 6) {
             day -= 7;
+            week++;
+        }
+        while (week > 51){
+            week -= 52;
+            year++;
         }
     }
 
@@ -601,6 +608,8 @@ public class Simulator extends Model implements Runnable {
         exitCarQueue.emptyQueue();
         numberOfOpenSpots   = numberOfFloors *numberOfRows * numberOfPlaces;
 
+        year    = 0;
+        week    = 0;
         day     = 0;
         hour    = 0;
         minute  = 0;
@@ -733,6 +742,14 @@ public class Simulator extends Model implements Runnable {
 
     public int getMinute() {
         return minute;
+    }
+
+    public int getWeek() {
+        return week;
+    }
+
+    public int getYear() {
+        return year;
     }
 }
 

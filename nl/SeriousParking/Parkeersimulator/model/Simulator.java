@@ -407,8 +407,6 @@ public class Simulator extends Model implements Runnable {
     	while (exitCarQueue.carsInQueue()>0 && i < exitSpeed){
             carcounterRemove(exitCarQueue.removeCar());
 
-
-
             i++;
     	}
     }

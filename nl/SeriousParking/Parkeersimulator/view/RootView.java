@@ -22,10 +22,9 @@ public class RootView {
 
     public void RootView(Stage primaryStage) {
         primaryStage.setTitle("SeriousParking Parkeersimulator");
-
+////////////////////////WINDOW INDELING////////////////////////////////////////////
         SplitPane splitPanebottom = new SplitPane();
         SplitPane splitPanetop = new SplitPane();
-
         Scene scene = new Scene(splitPanebottom,1500,900);
 
         splitPanebottom.setOrientation(Orientation.VERTICAL);
@@ -35,7 +34,9 @@ public class RootView {
         splitPanetop.setOrientation(Orientation.HORIZONTAL);
         splitPanetop.prefWidthProperty().bind(scene.widthProperty());
         splitPanetop.prefHeightProperty().bind(scene.heightProperty());
+/////////////////////////////////////////////////////////////////////////////////////////////
 
+////////////////////////////ADD VIEWS MODELS AND CONTROLLERS/////////////////////////////////
         Simulator model                 = new Simulator();
         SimulatorController controller  = new SimulatorController(model);
         SimView view                    = new SimView(controller, model);
@@ -44,28 +45,39 @@ public class RootView {
         SettingsController settingsc    = new SettingsController(handler);
         SimSettings simsettings         = new SimSettings(settingsc, handler);
 
-        TextView TextView               = new TextView(controller, model);
-
         Profit profit                   = new Profit();
         ProfitController profitC        = new ProfitController(profit);
         ProfitView profitView           = new ProfitView(profitC, profit);
 
-        model.addEventListner(profit);
+        Event event                     = new Event(controller, model);
 
-        ScrollPane scrollPane   = new ScrollPane(simsettings);
-        ScrollPane scrollPane2  = new ScrollPane(view);
+        model.addEventListner(profit);
+///////////////////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////VIEW PANES//////////////////////////////////////////////////////
+
         PieChartView piechart   = new PieChartView(controller, model);
         PieChartView2 piechart2 = new PieChartView2(controller, model);
         SimData legend          = new SimData(controller, model);
         TextView textview       = new TextView(controller, model);
+        BorderPane pies         = new BorderPane();
+        BorderPane borderPane   = new BorderPane();
+
         TabPane tabPane         = new TabPane();
         TabPane pie             = new TabPane();
-        BorderPane borderPane   = new BorderPane();
-        BorderPane pies         = new BorderPane();
+
+        ScrollPane scrollPane   = new ScrollPane(simsettings);
+        ScrollPane scrollPane2  = new ScrollPane(view);
+
+
+        /////////////////BUTTONS//////////////////////////////////////////////////////
         Button start            = new Button("Start/Stop");
         Button reset            = new Button("Reset");
         Button tick             = new Button("single tick");
         Button tick100          = new Button("tick +100");
+        start.setDefaultButton(true);
+        reset.setCancelButton(true);
+
         ToolBar toolBar         = new ToolBar();
 
         scrollPane.setFitToHeight(true);
@@ -89,18 +101,21 @@ public class RootView {
         });
 
 
-        start.setDefaultButton(true);
-        reset.setCancelButton(true);
-
         toolBar.getItems().addAll(start,reset,tick,tick100);
+        legend.setAlignment(Pos.CENTER);
+//////////////////////////TABS////////////////////////////////////////////////////////////////
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
         pie.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
-
 
         Tab TextViewTab = new Tab();
         TextViewTab.setText("Text View");
         TextViewTab.setContent(textview);
         tabPane.getTabs().add(TextViewTab);
+
+        Tab Events = new Tab();
+        Events.setText("Events");
+        Events.setContent(event);
+        tabPane.getTabs().add(Events);
 
         Tab ProfitTab   = new Tab();
         ProfitTab.setText("Inkomsten");
@@ -121,22 +136,19 @@ public class RootView {
         PieChart2.setText("AdHoc/pass");
         PieChart2.setContent(piechart2);
         pie.getTabs().add(PieChart2);
+        pies.setCenter(pie);
+        pies.setBottom(legend);
+//////////////////////////////////////////////////////////////////////////////////
 
-        legend.setAlignment(Pos.CENTER);
-
+////////////////////////////PUT THE STUFF IN THE SCENE////////////////////////////////////////
         borderPane.setCenter(scrollPane2);
         borderPane.setBottom(toolBar);
 
-        pies.setCenter(pie);
-        pies.setBottom(legend);
-
         splitPanetop.getItems().addAll(borderPane,pies);
-
         splitPanebottom.getItems().addAll(splitPanetop,tabPane);
 
         primaryStage.setScene(scene);
         scene.getStylesheets().add("Style.css");
-
         primaryStage.show();
     }
 }

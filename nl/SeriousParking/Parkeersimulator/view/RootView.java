@@ -5,6 +5,7 @@ import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import nl.SeriousParking.Parkeersimulator.controller.ProfitController;
@@ -13,12 +14,15 @@ import nl.SeriousParking.Parkeersimulator.controller.SettingsController;
 import nl.SeriousParking.Parkeersimulator.controller.SimulatorController;
 import nl.SeriousParking.Parkeersimulator.model.*;
 
+import static com.sun.org.apache.xerces.internal.utils.SecuritySupport.getResourceAsStream;
+
 
 public class RootView {
 
 
 
     public void RootView(Stage primaryStage) {
+        primaryStage.getIcons().add(new Image(RootView.class.getResourceAsStream("ico.png")));;
         primaryStage.setTitle("SeriousParking Parkeersimulator");
 ////////////////////////WINDOW INDELING////////////////////////////////////////////
         SplitPane splitPanebottom = new SplitPane();

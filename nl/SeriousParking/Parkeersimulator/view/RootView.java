@@ -3,7 +3,6 @@ package nl.SeriousParking.Parkeersimulator.view;
 
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
-import javafx.geometry.Side;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -53,7 +52,7 @@ public class RootView {
 
         Reservation Rmodel                = new Reservation();
         ReservationController controllerR = new ReservationController(Rmodel);
-        Event event                       = new Event(controllerR, Rmodel);
+        ReservationView reservationView = new ReservationView(controllerR, Rmodel);
 
         model.addEventListner(profit);
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -118,7 +117,7 @@ public class RootView {
 
         Tab Events = new Tab();
         Events.setText("Events");
-        Events.setContent(event);
+        Events.setContent(reservationView);
         tabPane.getTabs().add(Events);
 
         Tab ProfitTab   = new Tab();

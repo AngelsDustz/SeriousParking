@@ -13,7 +13,7 @@ import nl.SeriousParking.Parkeersimulator.model.Reservation;
 
 
 
-public class Event extends View<ReservationController, Reservation> {
+public class ReservationView extends View<ReservationController, Reservation> {
 
 
     private TextField[] input;
@@ -29,7 +29,7 @@ public class Event extends View<ReservationController, Reservation> {
     final HBox hb = new HBox();
 
 
-    public Event(ReservationController controller, Reservation model) {
+    public ReservationView(ReservationController controller, Reservation model) {
         super(controller, model);
 
         Label label = new Label("Reservationatie's");

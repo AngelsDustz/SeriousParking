@@ -36,11 +36,17 @@ public class Profit extends Model implements canEvent, Runnable {
     @Override
     public void doEvent(HashMap data) {
         //System.out.println("doEvent triggered.");
+        runData = data;
+        /*
         if (data != null) {
             runData = data;
         } else {
             reset();
-        }
+        }*/
+    }
+
+    public boolean isRun() {
+        return run;
     }
 
     public void reset() {
@@ -84,9 +90,11 @@ public class Profit extends Model implements canEvent, Runnable {
 
     @Override
     public void run() {
+        int cycles = 0;
+
         while (run) {
             if (runData != null) {
-                System.out.println("Sending new data.");
+                System.out.println("Get data at cycle: " + cycles);
 
                 if (runData.containsKey("profit")) {
                     this.profit = (double) runData.get("profit");
@@ -111,10 +119,11 @@ public class Profit extends Model implements canEvent, Runnable {
                     this.doubleLost += (double) runData.get("car_price");
                 }
 
-                notifyViews();
+                this.notifyViews();
             }
 
             runData = null;
+            cycles++;
 
             try {
                 Thread.sleep(10);

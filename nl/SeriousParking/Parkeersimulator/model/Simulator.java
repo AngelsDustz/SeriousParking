@@ -152,7 +152,7 @@ public class Simulator extends Model implements Runnable {
     }
 
     private void tick() {
-    	advanceTime();
+    	Date_time.advanceTime();
 
     	handleExit();
 
@@ -166,8 +166,8 @@ public class Simulator extends Model implements Runnable {
         setSettings();
 
         HashMap<String, Object> data = new HashMap<>();
-        data.put("time_passed", this.hour);
-        data.put("profit", this.profit);
+        data.put("time_passed", Date_time.getTickSinceStart());
+        data.put("profit", profit);
         sendEvent(data);
 
 
@@ -194,28 +194,7 @@ public class Simulator extends Model implements Runnable {
         }
     }
 
-    private void advanceTime(){
-        // Advance the time by one minute.
-        minute++;
-        while (minute > 59) {
-            minute -= 60;
-            hour++;
-        }
 
-        while (hour > 23) {
-            hour -= 24;
-            day++;
-        }
-
-        while (day > 6) {
-            day -= 7;
-            week++;
-        }
-        while (week > 51){
-            week -= 52;
-            year++;
-        }
-    }
 
     private void handleEntrance(){
         carsArriving();
@@ -382,9 +361,9 @@ public class Simulator extends Model implements Runnable {
 
             totalCarsPassed++;
 
-            data.put("profit", this.profit);
-            data.put("time_passed", this.hour);
-            data.put("minutes", this.minute);
+            data.put("profit", profit);
+            data.put("time_passed", Date_time.getTickSinceStart());
+            data.put("minutes", minute);
             data.put("cars", totalCarsPassed);
             data.put("doubled", car.getisParkedDouble());
             sendEvent(data);
@@ -625,6 +604,7 @@ public class Simulator extends Model implements Runnable {
             }
         }
 
+        Date_time.resetTimer();
         NumberOfCarsParkedDouble=0;
         numberOfAddhoccarsinPark=0;
         numberOfPasscarsinPark=0;

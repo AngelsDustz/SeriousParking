@@ -33,8 +33,13 @@ public class LineChartView {
         return lineChart;
     }
 
+    public void resetChart() {
+        lineChart.getData().clear();
+    }
+
     public void addData(int hours, double profit) {
-        if (interval >= 35 && lastHour != hours) {
+        if (interval >= 15 && lastHour != hours) {
+            System.out.println("Updating graph data.");
             series.getData().add(new XYChart.Data(hours, profit));
             lastHour = hours;
             interval = 0;

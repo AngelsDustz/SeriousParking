@@ -60,6 +60,10 @@ public class ProfitView extends View<ProfitController, Profit> {
                 lProfitHourVal.setText("€ " + dPerHour);
                 lDoubleLostVal.setText("€ " + dLost);
                 lineChart.addData(model.getCars(), dPerHour);
+
+                if (model.getCars() == 0) {
+                    lineChart.resetChart();
+                }
             }
         });
     }

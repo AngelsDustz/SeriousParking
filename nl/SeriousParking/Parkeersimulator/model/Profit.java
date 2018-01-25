@@ -1,6 +1,7 @@
 package nl.SeriousParking.Parkeersimulator.model;
 
 import nl.SeriousParking.Parkeersimulator.canEvent;
+import nl.SeriousParking.Parkeersimulator.view.View;
 
 import java.util.HashMap;
 
@@ -10,13 +11,22 @@ public class Profit extends Model implements canEvent, Runnable {
     private double profit;
     private double perHour;
     private double doubleLost;
+    private boolean threadMade;
     private int hours;
     private int minutes;
     private int cars;
 
     public Profit() {
-        run     = false;
-        runData = null;
+        run         = false;
+        runData     = null;
+        threadMade  = false;
+
+        if (!threadMade) {
+            System.out.println("Starting new thread.");
+            new Thread(this).start();
+            threadMade = true;
+            run = true;
+        }
     }
 
     private double calcPerHour(int hours, double profit) {
@@ -25,14 +35,27 @@ public class Profit extends Model implements canEvent, Runnable {
 
     @Override
     public void doEvent(HashMap data) {
-        System.out.println("doEvent triggered.");
-        runData = data;
-
-        if (run == false) {
-            System.out.println("Starting new thread.");
-            new Thread(this).start();
-            run = true;
+        //System.out.println("doEvent triggered.");
+        if (data != null) {
+            runData = data;
+        } else {
+            reset();
         }
+    }
+
+    public void reset() {
+        System.out.println("Reset called");
+        runData     = null;
+        profit      = 0.0;
+        perHour     = 0.0;
+        doubleLost  = 0.0;
+        hours       = 0;
+        minutes     = 0;
+        cars        = 0;
+
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("cars", this.cars);
+        doEvent(data);
     }
 
     public double getProfit() {
@@ -63,15 +86,15 @@ public class Profit extends Model implements canEvent, Runnable {
     public void run() {
         while (run) {
             if (runData != null) {
-                System.out.println("Got new data.");
+                System.out.println("Sending new data.");
 
                 if (runData.containsKey("profit")) {
                     this.profit = (double) runData.get("profit");
                 }
 
                 if (runData.containsKey("time_passed")) {
-                    this.hours = (int) runData.get("time_passed");
-                    this.hours++;
+                    int ticks   = (int) runData.get("time_passed");
+                    this.hours  = (ticks/60)+1;
                 }
 
                 if (runData.containsKey("minutes")) {
@@ -89,8 +112,9 @@ public class Profit extends Model implements canEvent, Runnable {
                 }
 
                 notifyViews();
-                runData = null;
             }
+
+            runData = null;
 
             try {
                 Thread.sleep(10);

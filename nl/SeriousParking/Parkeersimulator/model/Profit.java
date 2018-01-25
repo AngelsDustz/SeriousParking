@@ -1,18 +1,32 @@
 package nl.SeriousParking.Parkeersimulator.model;
 
 import nl.SeriousParking.Parkeersimulator.canEvent;
+import nl.SeriousParking.Parkeersimulator.view.View;
 
 import java.util.HashMap;
 
-public class Profit extends Model implements canEvent {
+public class Profit extends Model implements canEvent, Runnable {
+    private boolean run;
+    private HashMap<String, Object> runData;
     private double profit;
     private double perHour;
     private double doubleLost;
+    private boolean threadMade;
     private int hours;
     private int minutes;
     private int cars;
 
     public Profit() {
+        run         = false;
+        runData     = null;
+        threadMade  = false;
+
+        if (!threadMade) {
+            System.out.println("Starting new thread.");
+            new Thread(this).start();
+            threadMade = true;
+            run = true;
+        }
     }
 
     private double calcPerHour(int hours, double profit) {
@@ -21,28 +35,33 @@ public class Profit extends Model implements canEvent {
 
     @Override
     public void doEvent(HashMap data) {
+        //System.out.println("doEvent triggered.");
+        runData = data;
+        /*
         if (data != null) {
-            this.profit     = (double) data.get("profit");
-            this.hours      = (int) data.get("time_passed");
-            this.hours++;
-            this.minutes    = (int) data.get("minutes");
-            this.cars       = (int) data.get("cars");
-            this.perHour    = calcPerHour(this.hours, this.profit);
-
-            if ((boolean) data.get("doubled")) {
-                this.doubleLost += (double) data.get("car_price");
-            }
-
+            runData = data;
         } else {
-            //If we receive NULL assume a reset.
-            this.profit     = 0.0;
-            this.hours      = 0;
-            this.perHour    = 0.0;
-            this.doubleLost = 0.0;
-            this.minutes    = 0;
-        }
+            reset();
+        }*/
+    }
 
-        this.notifyViews();
+    public boolean isRun() {
+        return run;
+    }
+
+    public void reset() {
+        System.out.println("Reset called");
+        runData     = null;
+        profit      = 0.0;
+        perHour     = 0.0;
+        doubleLost  = 0.0;
+        hours       = 0;
+        minutes     = 0;
+        cars        = 0;
+
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("cars", this.cars);
+        doEvent(data);
     }
 
     public double getProfit() {
@@ -67,5 +86,50 @@ public class Profit extends Model implements canEvent {
 
     public int getMinutes() {
         return minutes;
+    }
+
+    @Override
+    public void run() {
+        int cycles = 0;
+
+        while (run) {
+            if (runData != null) {
+                System.out.println("Get data at cycle: " + cycles);
+
+                if (runData.containsKey("profit")) {
+                    this.profit = (double) runData.get("profit");
+                }
+
+                if (runData.containsKey("time_passed")) {
+                    int ticks   = (int) runData.get("time_passed");
+                    this.hours  = (ticks/60)+1;
+                }
+
+                if (runData.containsKey("minutes")) {
+                    this.minutes = (int) runData.get("minutes");
+                }
+
+                if (runData.containsKey("cars")) {
+                    this.cars = (int) runData.get("cars");
+                }
+
+                this.perHour = calcPerHour(this.hours, this.profit);
+
+                if (runData.containsKey("doubled") && (boolean) runData.get("doubled")) {
+                    this.doubleLost += (double) runData.get("car_price");
+                }
+
+                this.notifyViews();
+            }
+
+            runData = null;
+            cycles++;
+
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

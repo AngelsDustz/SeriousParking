@@ -10,16 +10,17 @@ public class Date_time {
    private static double years;
 
     private void Date_time() {
-        tickSinceStart = 0;
-        minutes = 0;
-        hours = 0;
-        days = 0;
-        weeks = 0;
-        years = 0;
+        tickSinceStart  = 0;
+        minutes         = 0;
+        hours           = 0;
+        days            = 0;
+        weeks           = 0;
+        years           = 0;
     }
 
     protected static void advanceTime(){
         // Advance the time by one minute.
+        tickSinceStart++;
         minutes++;
         while (minutes > 59) {
             minutes -= 60;
@@ -42,12 +43,12 @@ public class Date_time {
     }
 
     public static void resetTimer(){
-        tickSinceStart = 0;
-        minutes = 0;
-        hours = 0;
-        days = 0;
-        weeks = 0;
-        years = 0;
+        tickSinceStart  = 0;
+        minutes         = 0;
+        hours           = 0;
+        days            = 0;
+        weeks           = 0;
+        years           = 0;
     }
 
     public static int getTickSinceStart() {

@@ -76,11 +76,11 @@ public class SettingHandler extends Model{
     }
 
     public static void setTickPause(int tickPause) {
-        if(tickPause>25) {
+        if(tickPause>0) {
             SettingHandler.tickPause = tickPause;
         }
         else {
-            SettingHandler.tickPause=25;
+            SettingHandler.tickPause=5;
         }
 
     }

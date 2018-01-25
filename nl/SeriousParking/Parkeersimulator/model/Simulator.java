@@ -1,5 +1,6 @@
 package nl.SeriousParking.Parkeersimulator.model;
 
+import javafx.application.Platform;
 import nl.SeriousParking.Parkeersimulator.SimulatorView;
 import nl.SeriousParking.Parkeersimulator.canEvent;
 
@@ -99,6 +100,7 @@ public class Simulator extends Model implements Runnable {
 
 
     }
+
     /**
      * @name startSimulator
      *
@@ -113,6 +115,7 @@ public class Simulator extends Model implements Runnable {
 
         new Thread(this).start();
     }
+
     private void setGarageSizeValue(){
           numberOfOpenSpots  = numberOfFloors * numberOfRows * numberOfPlaces;
     }
@@ -150,29 +153,29 @@ public class Simulator extends Model implements Runnable {
     }
 
     private void tick() {
-        System.out.println("Start advanceTime.");
     	Date_time.advanceTime();
-        System.out.println("End advanceTime.");
 
-        System.out.println("Start handleExit.");
     	handleExit();
-        System.out.println("End handleExit.");
 
-        System.out.println("Start carTick.");
         carTick();
-        System.out.println("End carTick.");
 
-        System.out.println("Start notifyViews.");
-        notifyViews();
-        System.out.println("End notifyViews.");
+        // This fucker crashes.
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                //
+                notifyViews();
+            }
+        });
 
-        System.out.println("Start handleEntrance.");
         handleEntrance();
-        System.out.println("End handleEntrance.");
 
-        System.out.println("Start setSettings.");
         setSettings();
-        System.out.println("End setSettings.");
+
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("time_passed", Date_time.getTickSinceStart());
+        data.put("profit", profit);
+        sendEvent(data);
 
 
     	// Pause.
@@ -365,9 +368,9 @@ public class Simulator extends Model implements Runnable {
 
             totalCarsPassed++;
 
-            data.put("profit", this.profit);
-            data.put("time_passed", this.hour);
-            data.put("minutes", this.minute);
+            data.put("profit", profit);
+            data.put("time_passed", Date_time.getTickSinceStart());
+            data.put("minutes", minute);
             data.put("cars", totalCarsPassed);
             data.put("doubled", car.getisParkedDouble());
             sendEvent(data);
@@ -607,6 +610,7 @@ public class Simulator extends Model implements Runnable {
                 }
             }
         }
+
         Date_time.resetTimer();
         NumberOfCarsParkedDouble=0;
         numberOfAddhoccarsinPark=0;

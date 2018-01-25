@@ -13,8 +13,15 @@ import nl.SeriousParking.Parkeersimulator.controller.ReservationController;
 import nl.SeriousParking.Parkeersimulator.controller.SettingsController;
 import nl.SeriousParking.Parkeersimulator.controller.SimulatorController;
 import nl.SeriousParking.Parkeersimulator.model.*;
-
 import static com.sun.org.apache.xerces.internal.utils.SecuritySupport.getResourceAsStream;
+import nl.SeriousParking.Parkeersimulator.controller.RuntimeController;
+import nl.SeriousParking.Parkeersimulator.controller.SettingsController;
+import nl.SeriousParking.Parkeersimulator.controller.SimulatorController;
+import nl.SeriousParking.Parkeersimulator.model.Profit;
+import nl.SeriousParking.Parkeersimulator.model.Runtime;
+import nl.SeriousParking.Parkeersimulator.model.SettingHandler;
+import nl.SeriousParking.Parkeersimulator.model.Simulator;
+
 
 
 public class RootView {
@@ -25,9 +32,9 @@ public class RootView {
         primaryStage.getIcons().add(new Image(RootView.class.getResourceAsStream("ico.png")));;
         primaryStage.setTitle("SeriousParking Parkeersimulator");
 ////////////////////////WINDOW INDELING////////////////////////////////////////////
-        SplitPane splitPanebottom = new SplitPane();
-        SplitPane splitPanetop = new SplitPane();
-        Scene scene = new Scene(splitPanebottom,1500,900);
+        SplitPane splitPanebottom   = new SplitPane();
+        SplitPane splitPanetop      = new SplitPane();
+        Scene scene                 = new Scene(splitPanebottom,1500,900);
 
         splitPanebottom.setOrientation(Orientation.VERTICAL);
         splitPanebottom.prefWidthProperty().bind(scene.widthProperty());
@@ -51,11 +58,20 @@ public class RootView {
         ProfitController profitC        = new ProfitController(profit);
         ProfitView profitView           = new ProfitView(profitC, profit);
 
+
         ReservationContainer Rmodel        = new ReservationContainer();
         ReservationController controllerR  = new ReservationController(Rmodel);
         ReservationView reservationView    = new ReservationView(controllerR, Rmodel);
 
+        Runtime runtime                     = new Runtime();
+        RuntimeController runtimeController = new RuntimeController(runtime);
+        RuntimeView runtimeView             = new RuntimeView(runtimeController, runtime);
+
+        Event event                     = new Event(controller, model);
+
+
         model.addEventListner(profit);
+        model.addEventListner(runtime);
 ///////////////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////VIEW PANES//////////////////////////////////////////////////////
@@ -105,7 +121,7 @@ public class RootView {
         });
 
 
-        toolBar.getItems().addAll(start,reset,tick,tick100);
+        toolBar.getItems().addAll(start,reset,tick,tick100, runtimeView);
         legend.setAlignment(Pos.CENTER);
 //////////////////////////TABS////////////////////////////////////////////////////////////////
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);

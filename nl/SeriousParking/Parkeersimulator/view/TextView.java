@@ -63,7 +63,7 @@ public class TextView extends View<SimulatorController, Simulator>  {
             @Override
             public void run() {
                 timeLbl.setText("Year :  "+model.getYear()+"  week :  "+model.getWeek()+"  day :  "+model.getDay()+"  time :  "+model.getHour()+" : "+model.getMinute()+" : 00");
-                total1.setText(""+model.getNumberOfPasscarsinPark()+"/"+model.getNumberOfAddhoccarsinPark());
+                total1.setText(""+(+model.getNumberOfPasscarsinPark()+model.getNumberOfAddhoccarsinPark()));
                 passcar1.setText(""+model.getNumberOfPasscarsinPark());
                 adhoccar1.setText(""+model.getNumberOfAddhoccarsinPark());
                 dubbel1.setText(""+model.getNumberOfCarsParkedDouble());

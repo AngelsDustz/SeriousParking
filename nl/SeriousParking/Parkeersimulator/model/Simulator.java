@@ -99,6 +99,7 @@ public class Simulator extends Model implements Runnable {
 
 
     }
+
     /**
      * @name startSimulator
      *
@@ -113,6 +114,7 @@ public class Simulator extends Model implements Runnable {
 
         new Thread(this).start();
     }
+
     private void setGarageSizeValue(){
           numberOfOpenSpots  = numberOfFloors * numberOfRows * numberOfPlaces;
     }
@@ -150,29 +152,23 @@ public class Simulator extends Model implements Runnable {
     }
 
     private void tick() {
-        System.out.println("Start advanceTime.");
     	advanceTime();
-        System.out.println("End advanceTime.");
 
-        System.out.println("Start handleExit.");
     	handleExit();
-        System.out.println("End handleExit.");
 
-        System.out.println("Start carTick.");
         carTick();
-        System.out.println("End carTick.");
 
-        System.out.println("Start notifyViews.");
+        // This fucker crashes.
         notifyViews();
-        System.out.println("End notifyViews.");
 
-        System.out.println("Start handleEntrance.");
         handleEntrance();
-        System.out.println("End handleEntrance.");
 
-        System.out.println("Start setSettings.");
         setSettings();
-        System.out.println("End setSettings.");
+
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("time_passed", this.hour);
+        data.put("profit", this.profit);
+        sendEvent(data);
 
 
     	// Pause.

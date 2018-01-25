@@ -21,6 +21,7 @@ public class LineChartView {
         series      = new XYChart.Series();
 
         lineChart.setTitle("Gemiddelde inkomen per auto");
+        lineChart.setCreateSymbols(false);
         xAxis.setLabel("Auto's");
         yAxis.setLabel("Gemiddelde Winst");
 

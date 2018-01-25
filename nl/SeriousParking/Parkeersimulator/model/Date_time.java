@@ -9,13 +9,13 @@ public class Date_time {
    private static int weeks;
    private static double years;
 
-    public void Date_time() {
-        this.tickSinceStart = 0;
-        this.minutes = 0;
-        this.hours = 0;
-        this.days = 0;
-        this.weeks = 0;
-        this.years = 0;
+    private void Date_time() {
+        tickSinceStart = 0;
+        minutes = 0;
+        hours = 0;
+        days = 0;
+        weeks = 0;
+        years = 0;
     }
 
     protected static void advanceTime(){
@@ -39,6 +39,15 @@ public class Date_time {
             weeks -= 52;
             years++;
         }
+    }
+
+    public static void resetTimer(){
+        tickSinceStart = 0;
+        minutes = 0;
+        hours = 0;
+        days = 0;
+        weeks = 0;
+        years = 0;
     }
 
     public static int getTickSinceStart() {

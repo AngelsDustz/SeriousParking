@@ -607,7 +607,7 @@ public class Simulator extends Model implements Runnable {
                 }
             }
         }
-
+        Date_time.resetTimer();
         NumberOfCarsParkedDouble=0;
         numberOfAddhoccarsinPark=0;
         numberOfPasscarsinPark=0;

@@ -19,6 +19,7 @@ public class Event extends View<SimulatorController, Simulator>{
     private TextField dubbelPB  = new TextField(""+0);
     private TextField dubbelAB  = new TextField(""+0);
 
+
     private Label pass      = new Label("passhouders");
     private Label adhoc     = new Label("Gasparkeerders");
     private Label dubbelP   = new Label("dubbelparkeerders Pass");

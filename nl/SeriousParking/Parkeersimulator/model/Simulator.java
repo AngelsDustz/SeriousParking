@@ -151,7 +151,7 @@ public class Simulator extends Model implements Runnable {
 
     private void tick() {
         System.out.println("Start advanceTime.");
-    	advanceTime();
+    	Date_time.advanceTime();
         System.out.println("End advanceTime.");
 
         System.out.println("Start handleExit.");
@@ -198,28 +198,7 @@ public class Simulator extends Model implements Runnable {
         }
     }
 
-    private void advanceTime(){
-        // Advance the time by one minute.
-        minute++;
-        while (minute > 59) {
-            minute -= 60;
-            hour++;
-        }
 
-        while (hour > 23) {
-            hour -= 24;
-            day++;
-        }
-
-        while (day > 6) {
-            day -= 7;
-            week++;
-        }
-        while (week > 51){
-            week -= 52;
-            year++;
-        }
-    }
 
     private void handleEntrance(){
         carsArriving();

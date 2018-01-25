@@ -9,9 +9,11 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import nl.SeriousParking.Parkeersimulator.controller.ProfitController;
+import nl.SeriousParking.Parkeersimulator.controller.ReservationController;
 import nl.SeriousParking.Parkeersimulator.controller.SettingsController;
 import nl.SeriousParking.Parkeersimulator.controller.SimulatorController;
 import nl.SeriousParking.Parkeersimulator.model.Profit;
+import nl.SeriousParking.Parkeersimulator.model.Reservation;
 import nl.SeriousParking.Parkeersimulator.model.SettingHandler;
 import nl.SeriousParking.Parkeersimulator.model.Simulator;
 
@@ -49,7 +51,9 @@ public class RootView {
         ProfitController profitC        = new ProfitController(profit);
         ProfitView profitView           = new ProfitView(profitC, profit);
 
-        Event event                     = new Event(controller, model);
+        Reservation Rmodel                = new Reservation();
+        ReservationController controllerR = new ReservationController(Rmodel);
+        Event event                       = new Event(controllerR, Rmodel);
 
         model.addEventListner(profit);
 ///////////////////////////////////////////////////////////////////////////////////////////

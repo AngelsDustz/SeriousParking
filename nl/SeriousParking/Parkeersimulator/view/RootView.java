@@ -3,12 +3,17 @@ package nl.SeriousParking.Parkeersimulator.view;
 
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
-import javafx.geometry.Side;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import nl.SeriousParking.Parkeersimulator.controller.ProfitController;
+import nl.SeriousParking.Parkeersimulator.controller.ReservationController;
+import nl.SeriousParking.Parkeersimulator.controller.SettingsController;
+import nl.SeriousParking.Parkeersimulator.controller.SimulatorController;
+import nl.SeriousParking.Parkeersimulator.model.*;
+import static com.sun.org.apache.xerces.internal.utils.SecuritySupport.getResourceAsStream;
 import nl.SeriousParking.Parkeersimulator.controller.RuntimeController;
 import nl.SeriousParking.Parkeersimulator.controller.SettingsController;
 import nl.SeriousParking.Parkeersimulator.controller.SimulatorController;
@@ -18,11 +23,13 @@ import nl.SeriousParking.Parkeersimulator.model.SettingHandler;
 import nl.SeriousParking.Parkeersimulator.model.Simulator;
 
 
+
 public class RootView {
 
 
 
     public void RootView(Stage primaryStage) {
+        primaryStage.getIcons().add(new Image(RootView.class.getResourceAsStream("ico.png")));;
         primaryStage.setTitle("SeriousParking Parkeersimulator");
 ////////////////////////WINDOW INDELING////////////////////////////////////////////
         SplitPane splitPanebottom   = new SplitPane();
@@ -51,11 +58,15 @@ public class RootView {
         ProfitController profitC        = new ProfitController(profit);
         ProfitView profitView           = new ProfitView(profitC, profit);
 
+
+        ReservationContainer Rmodel        = new ReservationContainer();
+        ReservationController controllerR  = new ReservationController(Rmodel);
+        ReservationView reservationView    = new ReservationView(controllerR, Rmodel);
+
         Runtime runtime                     = new Runtime();
         RuntimeController runtimeController = new RuntimeController(runtime);
         RuntimeView runtimeView             = new RuntimeView(runtimeController, runtime);
 
-        Event event                     = new Event(controller, model);
 
         model.addEventListner(profit);
         model.addEventListner(runtime);
@@ -121,7 +132,7 @@ public class RootView {
 
         Tab Events = new Tab();
         Events.setText("Events");
-        Events.setContent(event);
+        Events.setContent(reservationView);
         tabPane.getTabs().add(Events);
 
         Tab ProfitTab   = new Tab();

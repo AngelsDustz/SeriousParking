@@ -11,10 +11,7 @@ import nl.SeriousParking.Parkeersimulator.controller.ProfitController;
 import nl.SeriousParking.Parkeersimulator.controller.ReservationController;
 import nl.SeriousParking.Parkeersimulator.controller.SettingsController;
 import nl.SeriousParking.Parkeersimulator.controller.SimulatorController;
-import nl.SeriousParking.Parkeersimulator.model.Profit;
-import nl.SeriousParking.Parkeersimulator.model.Reservation;
-import nl.SeriousParking.Parkeersimulator.model.SettingHandler;
-import nl.SeriousParking.Parkeersimulator.model.Simulator;
+import nl.SeriousParking.Parkeersimulator.model.*;
 
 
 public class RootView {
@@ -50,9 +47,9 @@ public class RootView {
         ProfitController profitC        = new ProfitController(profit);
         ProfitView profitView           = new ProfitView(profitC, profit);
 
-        Reservation Rmodel                = new Reservation();
-        ReservationController controllerR = new ReservationController(Rmodel);
-        ReservationView reservationView = new ReservationView(controllerR, Rmodel);
+        ReservationContainer Rmodel        = new ReservationContainer();
+        ReservationController controllerR  = new ReservationController(Rmodel);
+        ReservationView reservationView    = new ReservationView(controllerR, Rmodel);
 
         model.addEventListner(profit);
 ///////////////////////////////////////////////////////////////////////////////////////////

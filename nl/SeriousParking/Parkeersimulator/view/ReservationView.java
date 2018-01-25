@@ -1,7 +1,5 @@
 package nl.SeriousParking.Parkeersimulator.view;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -10,27 +8,23 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import nl.SeriousParking.Parkeersimulator.controller.ReservationController;
 import nl.SeriousParking.Parkeersimulator.model.Reservation;
+import nl.SeriousParking.Parkeersimulator.model.ReservationContainer;
 
 
-
-public class ReservationView extends View<ReservationController, Reservation> {
+public class ReservationView extends View<ReservationController, ReservationContainer> {
 
 
     private TextField[] input;
 
     public TableView<Reservation> table = new TableView<Reservation>();
 
-    public ObservableList<Reservation> data =
-            FXCollections.observableArrayList(
-                    new Reservation("12:30", "Smith", "13:30"),
-                    new Reservation("12:30", "Johnson", "13:30")
-            );
 
     final HBox hb = new HBox();
 
 
-    public ReservationView(ReservationController controller, Reservation model) {
+    public ReservationView(ReservationController controller, ReservationContainer model) {
         super(controller, model);
+        input = new TextField[4];
 
         Label label = new Label("Reservationatie's");
         label.setFont(new Font("Arial", 20));
@@ -52,7 +46,7 @@ public class ReservationView extends View<ReservationController, Reservation> {
         EndTimeCol.setCellValueFactory(
                 new PropertyValueFactory<Reservation, String>("EndTime"));
 
-        table.setItems(data);
+        table.setItems(model.data);
         table.getColumns().addAll(StartTimeCol, NameCol, EndTimeCol);
 
         input[0] = new TextField();
@@ -99,5 +93,6 @@ public class ReservationView extends View<ReservationController, Reservation> {
     public void update() {
 
     }
+
 
 }

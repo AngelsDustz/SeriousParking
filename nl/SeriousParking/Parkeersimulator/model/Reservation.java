@@ -1,12 +1,16 @@
 package nl.SeriousParking.Parkeersimulator.model;
 
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
-public class Reservation extends Model {
+
+public class Reservation extends Model{
 
     public final SimpleStringProperty StartTime;
     public final SimpleStringProperty Name;
     public final SimpleStringProperty EndTime;
+
 
     public Reservation(String sTime, String lName, String EndTime) {
         this.StartTime = new SimpleStringProperty(sTime);
@@ -23,9 +27,7 @@ public class Reservation extends Model {
         StartTime.set(sTime);
     }
 
-    public String getName() {
-        return Name.get();
-    }
+    public String getName() { return Name.get(); }
 
     public void setName(String sTime) {
         Name.set(sTime);
@@ -38,4 +40,5 @@ public class Reservation extends Model {
     public void setEndTime(String sTime) {
         EndTime.set(sTime);
     }
+
 }

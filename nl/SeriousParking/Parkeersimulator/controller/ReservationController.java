@@ -1,23 +1,21 @@
 package nl.SeriousParking.Parkeersimulator.controller;
 
-import nl.SeriousParking.Parkeersimulator.model.Reservation;
-import static javax.xml.bind.DatatypeConverter.parseString;
+
+import nl.SeriousParking.Parkeersimulator.model.ReservationContainer;
 
 
-public class ReservationController extends Controller<Reservation> {
+public class ReservationController extends Controller<ReservationContainer> {
 
-    public ReservationController(Reservation model) {
+    public ReservationController(ReservationContainer model) {
         super(model);
     }
 
     public void add(String[] array) {
         try {
-            model.setStartTime(parseString(array[0]));
-            model.setName(parseString(array[1]));
-            model.setEndTime(parseString(array[2]));
+            model.AddReservation(array[0],array[1],array[2]);
         }
         catch (NumberFormatException e) {
-            model.notifyViews();
+
         }
     }
 

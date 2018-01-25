@@ -67,8 +67,6 @@ public class RootView {
         RuntimeController runtimeController = new RuntimeController(runtime);
         RuntimeView runtimeView             = new RuntimeView(runtimeController, runtime);
 
-        Event event                     = new Event(controller, model);
-
 
         model.addEventListner(profit);
         model.addEventListner(runtime);

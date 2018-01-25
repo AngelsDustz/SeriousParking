@@ -6,6 +6,7 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import nl.SeriousParking.Parkeersimulator.controller.SimulatorController;
+import nl.SeriousParking.Parkeersimulator.model.Date_time;
 import nl.SeriousParking.Parkeersimulator.model.Simulator;
 
 public class TextView extends View<SimulatorController, Simulator>  {
@@ -62,7 +63,7 @@ public class TextView extends View<SimulatorController, Simulator>  {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                timeLbl.setText("Year :  "+model.getYear()+"  week :  "+model.getWeek()+"  day :  "+model.getDay()+"  time :  "+model.getHour()+" : "+model.getMinute()+" : 00");
+                timeLbl.setText("Year :  "+ Date_time.getYears()+"  week :  "+Date_time.getWeeks()+"  day :  "+Date_time.getDays()+"  time :  "+Date_time.getHours()+" : "+Date_time.getMinutes()+" : 00");
                 total1.setText(""+(+model.getNumberOfPasscarsinPark()+model.getNumberOfAddhoccarsinPark()));
                 passcar1.setText(""+model.getNumberOfPasscarsinPark());
                 adhoccar1.setText(""+model.getNumberOfAddhoccarsinPark());

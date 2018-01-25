@@ -1,5 +1,6 @@
 package nl.SeriousParking.Parkeersimulator.model;
 
+import javafx.application.Platform;
 import nl.SeriousParking.Parkeersimulator.SimulatorView;
 import nl.SeriousParking.Parkeersimulator.canEvent;
 
@@ -159,7 +160,13 @@ public class Simulator extends Model implements Runnable {
         carTick();
 
         // This fucker crashes.
-        notifyViews();
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                //
+                notifyViews();
+            }
+        });
 
         handleEntrance();
 

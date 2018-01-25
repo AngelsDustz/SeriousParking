@@ -9,9 +9,11 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import nl.SeriousParking.Parkeersimulator.controller.ProfitController;
+import nl.SeriousParking.Parkeersimulator.controller.RuntimeController;
 import nl.SeriousParking.Parkeersimulator.controller.SettingsController;
 import nl.SeriousParking.Parkeersimulator.controller.SimulatorController;
 import nl.SeriousParking.Parkeersimulator.model.Profit;
+import nl.SeriousParking.Parkeersimulator.model.Runtime;
 import nl.SeriousParking.Parkeersimulator.model.SettingHandler;
 import nl.SeriousParking.Parkeersimulator.model.Simulator;
 
@@ -23,9 +25,9 @@ public class RootView {
     public void RootView(Stage primaryStage) {
         primaryStage.setTitle("SeriousParking Parkeersimulator");
 ////////////////////////WINDOW INDELING////////////////////////////////////////////
-        SplitPane splitPanebottom = new SplitPane();
-        SplitPane splitPanetop = new SplitPane();
-        Scene scene = new Scene(splitPanebottom,1500,900);
+        SplitPane splitPanebottom   = new SplitPane();
+        SplitPane splitPanetop      = new SplitPane();
+        Scene scene                 = new Scene(splitPanebottom,1500,900);
 
         splitPanebottom.setOrientation(Orientation.VERTICAL);
         splitPanebottom.prefWidthProperty().bind(scene.widthProperty());
@@ -49,9 +51,14 @@ public class RootView {
         ProfitController profitC        = new ProfitController(profit);
         ProfitView profitView           = new ProfitView(profitC, profit);
 
+        Runtime runtime                     = new Runtime();
+        RuntimeController runtimeController = new RuntimeController(runtime);
+        RuntimeView runtimeView             = new RuntimeView(runtimeController, runtime);
+
         Event event                     = new Event(controller, model);
 
         model.addEventListner(profit);
+        model.addEventListner(runtime);
 ///////////////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////VIEW PANES//////////////////////////////////////////////////////
@@ -101,7 +108,7 @@ public class RootView {
         });
 
 
-        toolBar.getItems().addAll(start,reset,tick,tick100);
+        toolBar.getItems().addAll(start,reset,tick,tick100, runtimeView);
         legend.setAlignment(Pos.CENTER);
 //////////////////////////TABS////////////////////////////////////////////////////////////////
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);

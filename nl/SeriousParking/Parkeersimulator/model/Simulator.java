@@ -1,7 +1,6 @@
 package nl.SeriousParking.Parkeersimulator.model;
 
 import javafx.application.Platform;
-import nl.SeriousParking.Parkeersimulator.SimulatorView;
 import nl.SeriousParking.Parkeersimulator.canEvent;
 
 import java.util.*;
@@ -82,6 +81,10 @@ public class Simulator extends Model implements Runnable, canEvent {
                 ((canEvent) m).doEvent(data);
             }
         }
+    }
+
+    public boolean isFirstRun() {
+        return firstRun;
     }
 
     public void addEventListner(Model m) {
@@ -221,6 +224,7 @@ public class Simulator extends Model implements Runnable, canEvent {
         carsEntering(entranceCarQueue);
 
     }
+
     
     private void handleExit(){
         carsReadyToLeave();
@@ -649,6 +653,7 @@ public class Simulator extends Model implements Runnable, canEvent {
 
         sendEvent(null);
         notifyViews();
+
     }
 
 
@@ -691,6 +696,8 @@ public class Simulator extends Model implements Runnable, canEvent {
     public double getNumberOfCarsParkedDouble() {
         return NumberOfCarsParkedDouble;
     }
+
+    public int getNumberOfCarsinQueue() { return (entranceCarQueue.carsInQueue()+ entrancePassQueue.carsInQueue()); }
 
     public int getTickPause() {
         return tickPause;

@@ -22,7 +22,6 @@ public class Profit extends Model implements canEvent, Runnable {
         threadMade  = false;
 
         if (!threadMade) {
-            System.out.println("Starting new thread.");
             new Thread(this).start();
             threadMade = true;
             run = true;
@@ -35,14 +34,7 @@ public class Profit extends Model implements canEvent, Runnable {
 
     @Override
     public void doEvent(HashMap data) {
-        //System.out.println("doEvent triggered.");
         runData = data;
-        /*
-        if (data != null) {
-            runData = data;
-        } else {
-            reset();
-        }*/
     }
 
     public boolean isRun() {
@@ -90,11 +82,9 @@ public class Profit extends Model implements canEvent, Runnable {
 
     @Override
     public void run() {
-        int cycles = 0;
 
         while (run) {
             if (runData != null) {
-                System.out.println("Get data at cycle: " + cycles);
 
                 if (runData.containsKey("profit")) {
                     this.profit = (double) runData.get("profit");
@@ -116,14 +106,15 @@ public class Profit extends Model implements canEvent, Runnable {
                 this.perHour = calcPerHour(this.hours, this.profit);
 
                 if (runData.containsKey("doubled") && (boolean) runData.get("doubled")) {
-                    this.doubleLost += (double) runData.get("car_price");
+                    if (runData.containsKey("car_price")) {
+                        this.doubleLost += (double) runData.get("car_price");
+                    }
                 }
 
                 this.notifyViews();
             }
 
             runData = null;
-            cycles++;
 
             try {
                 Thread.sleep(10);

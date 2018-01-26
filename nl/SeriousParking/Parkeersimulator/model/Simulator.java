@@ -235,8 +235,8 @@ public class Simulator extends Model implements Runnable {
 
     private void handleEntrance(){
         carsArriving();
+        carsEntering(entranceCarQueue);
 
-            carsEntering(entranceCarQueue);
         if (doubleEntrance)
         {
             carsOtherEntering(entranceCarQueue);
@@ -264,25 +264,28 @@ public class Simulator extends Model implements Runnable {
     }
 
     private void carcounterADD(Car car){
+        if (car.getReservation()){
+            numberOfReservations=numberOfReservations+.5;
+        }
+
         if (car.getisParkedDouble()){
            NumberOfCarsParkedDouble=NumberOfCarsParkedDouble+.5;
-            if (car.getReservation()){
-                numberOfReservations=numberOfReservations+.5;
-            }
 
             if (car.getHasToPay()) {
                 numberOfAddhoccarsinPark=numberOfAddhoccarsinPark+.5;
             } else {
                 numberOfPasscarsinPark=numberOfPasscarsinPark+.5;
             }
-        }
-
-        else if (car.getHasToPay()){
+        } else if (car.getHasToPay()){
             numberOfAddhoccarsinPark++;
         } else {
             numberOfPasscarsinPark++;
         }
 
+    }
+
+    public double getNumberOfReservations() {
+        return numberOfReservations;
     }
 
     private void carcounterRemove(Car car){

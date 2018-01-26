@@ -17,14 +17,18 @@ public class Car extends Model {
      * Constructor for objects of class Car
      */
     public Car() {
+
         reservationPreTime();
         active= false;
-        reservation    = false;
+
+
+        reservation         = false;
+
         isParkedDouble      = false;
-        hasToPay       = true;
+        hasToPay            = true;
         Random random       = new Random();
         int stayMinutes     = (int) (15 + random.nextFloat() * 3 * 60);
-        minutesLeft    = stayMinutes;
+        minutesLeft         = stayMinutes;
     }
 
     public void reservationPreTime(){
@@ -45,9 +49,7 @@ public class Car extends Model {
         this.active = active;
     }
 
-    public boolean isReservation() {
-        return reservation;
-    }
+
 
     public int getPreTime() {
         return preTime;

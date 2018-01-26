@@ -214,6 +214,7 @@ public class Simulator extends Model implements Runnable {
         }
         carsEntering(entranceCarQueue);
     }
+
     
     private void handleExit(){
         carsReadyToLeave();
@@ -637,6 +638,7 @@ public class Simulator extends Model implements Runnable {
 
         sendEvent(null);
         notifyViews();
+
     }
 
 
@@ -679,6 +681,8 @@ public class Simulator extends Model implements Runnable {
     public double getNumberOfCarsParkedDouble() {
         return NumberOfCarsParkedDouble;
     }
+
+    public int getNumberOfCarsinQueue() { return (entranceCarQueue.carsInQueue()+ entrancePassQueue.carsInQueue()); }
 
     public int getTickPause() {
         return tickPause;

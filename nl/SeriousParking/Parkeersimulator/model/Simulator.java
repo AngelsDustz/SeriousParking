@@ -6,7 +6,7 @@ import nl.SeriousParking.Parkeersimulator.canEvent;
 
 import java.util.*;
 
-public class Simulator extends Model implements Runnable {
+public class Simulator extends Model implements Runnable, canEvent {
     //@todo Make this a setting.
     private static final double CARPRICE = 12.50;
 
@@ -18,6 +18,7 @@ public class Simulator extends Model implements Runnable {
     private Queue entrancePassQueue;
     private Queue paymentCarQueue;
     private Queue exitCarQueue;
+    private Queue resetvationQueue;
 
     private int numberOfFloors;
     private int numberOfRows;
@@ -41,11 +42,14 @@ public class Simulator extends Model implements Runnable {
 
     private int tickPause   = SettingHandler.tickPause;
     private int chance      = SettingHandler.chance;
-
+    private int reservationchance =SettingHandler.reservationchance;
     private int weekDayArrivals; // average number of arriving cars per hour
     private int weekendArrivals;// average number of arriving cars per hour
     private int weekDayPassArrivals;// average number of arriving cars per hour
     private int weekendPassArrivals;// average number of arriving cars per hour
+    private int weekDayReservations;
+    private int WeekendReservations;
+
 
     private int enterSpeed; // number of cars that can enter per minute
     private int paymentSpeed; // number of cars that can pay per minute
@@ -58,6 +62,7 @@ public class Simulator extends Model implements Runnable {
 
         entranceCarQueue    = new Queue();
         entrancePassQueue   = new Queue();
+        resetvationQueue    = new Queue();
         paymentCarQueue     = new Queue();
         exitCarQueue        = new Queue();
         profit              = 0;
@@ -86,7 +91,9 @@ public class Simulator extends Model implements Runnable {
     private void setSettings(){
         tickPause   = SettingHandler.tickPause;
         chance      = SettingHandler.chance;
-
+        reservationchance=SettingHandler.reservationchance;
+        weekDayReservations = SettingHandler.weekDayReservations;
+        WeekendReservations = SettingHandler.WeekendReservations;
         weekDayArrivals     = SettingHandler.weekDayArrivals;
         weekendArrivals     = SettingHandler.weekendArrivals;
         weekDayPassArrivals = SettingHandler.weekDayPassArrivals;
@@ -205,12 +212,14 @@ public class Simulator extends Model implements Runnable {
 
     private void handleEntrance(){
         carsArriving();
+        carsEntering(resetvationQueue);
         carsEntering(entrancePassQueue);
         if (doubleEntrance==true) {
             carsOtherEntering(entrancePassQueue);
             carsOtherEntering(entranceCarQueue);
         }
         carsEntering(entranceCarQueue);
+
     }
     
     private void handleExit(){
@@ -221,10 +230,11 @@ public class Simulator extends Model implements Runnable {
     
     private void carsArriving(){
     	int numberOfCars = getNumberOfCars(weekDayArrivals, weekendArrivals);
-        addArrivingCars(numberOfCars, false);
+        addArrivingCars(numberOfCars, false, false);
     	numberOfCars = getNumberOfCars(weekDayPassArrivals, weekendPassArrivals);
-        addArrivingCars(numberOfCars, true);
-
+        addArrivingCars(numberOfCars, true, false);
+        numberOfCars = getNumberOfCars(weekDayPassArrivals, weekendPassArrivals);
+        addArrivingCars(numberOfCars, true, true);
     }
 
     private void carcounterADD(Car car){
@@ -407,10 +417,17 @@ public class Simulator extends Model implements Runnable {
         return (int)Math.round(numberOfCarsPerHour / 60);	
     }
     
-    private void addArrivingCars(int numberOfCars, boolean hasPass) {
+    private void addArrivingCars(int numberOfCars, boolean hasPass, boolean reservation) {
         // Add the cars to the back of the queue.
         for (int i = 0; i < numberOfCars; i++) {
             Car car =new Car();
+            if (hasPass){
+                int rand=randomGenerator.nextInt(100);
+                if (rand<=reservationchance && reservationchance!=0) {
+                    car.setReservation(true);
+                    System.out.println("reservation");
+                }
+            }
             car.setHasToPay(!hasPass);
             int rand= randomGenerator.nextInt(100);
             if (rand<=chance && chance!=0){
@@ -765,6 +782,14 @@ public class Simulator extends Model implements Runnable {
 
     public int getYear() {
         return year;
+    }
+
+    @Override
+    public void doEvent(HashMap m) {
+        Car car = new Car();
+        m.get("startTime");
+
+
     }
 }
 

@@ -1,7 +1,6 @@
 package nl.SeriousParking.Parkeersimulator.model;
 
 import javafx.application.Platform;
-import nl.SeriousParking.Parkeersimulator.SimulatorView;
 import nl.SeriousParking.Parkeersimulator.canEvent;
 
 import java.util.*;

@@ -1,5 +1,6 @@
 package nl.SeriousParking.Parkeersimulator.view;
 
+import javafx.application.Platform;
 import javafx.geometry.Side;
 import javafx.scene.chart.PieChart;
 import javafx.scene.layout.VBox;
@@ -51,7 +52,7 @@ public class PieChartView extends View<SimulatorController, Simulator> implement
 
     @Override
     public void run() {
-        while (run) {
+        while (false && run) {
             Double adhocCars    = model.getNumberOfAddhoccarsinPark();
             Double passCars     = model.getNumberOfPasscarsinPark();
             Double percentCars  = ((adhocCars + passCars) / 100) * 100;

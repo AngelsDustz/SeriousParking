@@ -9,26 +9,26 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import nl.SeriousParking.Parkeersimulator.controller.ProfitController;
 import nl.SeriousParking.Parkeersimulator.controller.SimulatorController;
+import nl.SeriousParking.Parkeersimulator.model.Date_time;
 import nl.SeriousParking.Parkeersimulator.model.Profit;
 import nl.SeriousParking.Parkeersimulator.model.Simulator;
 
-public class ProfitView extends View<ProfitController, Profit> {
+public class ProfitView extends View<SimulatorController, Simulator> implements Runnable {
     private Label lProfitVal        = new Label();
     private Label lProfitHourVal    = new Label();
     private Label lDoubleLostVal    = new Label();
     protected LineChartView lineChart;
+    protected boolean run = false;
+    protected int last_hour;
 
-    public ProfitView(ProfitController controller, Profit model) {
+    public ProfitView(SimulatorController controller, Simulator model) {
         super(controller, model);
 
         HBox container      = new HBox();
-
         GridPane grid       = new GridPane();
         Label lProfit       = new Label("Winst");
         Label lPerHour      = new Label("Winst per uur");
         Label lLostDouble   = new Label("Misgelopen winst door dubbelparkeerders.");
-
-        //grid.getColumnConstraints().add(new ColumnConstraints(200));
 
         grid.add(lProfit, 0, 2);
         grid.add(lProfitVal, 2, 2);
@@ -39,32 +39,52 @@ public class ProfitView extends View<ProfitController, Profit> {
         grid.add(lLostDouble, 0, 6);
         grid.add(lDoubleLostVal, 2, 6);
 
+        last_hour = 0;
+
         lineChart = new LineChartView();
 
         container.getChildren().addAll(grid, lineChart.draw());
 
         this.getChildren().add(container);
         model.addView(this);
+
+        new Thread(this, "ProfitView").start();
+        run = true;
     }
 
     @Override
     public void update() {
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                Double dProfit  = model.getProfit();
-                Double dPerHour = model.getPerHour();
-                Double dLost    = model.getDoubleLost();
+    }
 
-                lProfitVal.setText("€ " + dProfit);
-                lProfitHourVal.setText("€ " + dPerHour);
-                lDoubleLostVal.setText("€ " + dLost);
-                lineChart.addData(model.getCars(), dPerHour);
+    @Override
+    public void run() {
+        while(run) {
+            //Get profit
+            //Get hours
+            //Calculate and add to linegraph.
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    int hours       = Date_time.getTickSinceStart();
+                    hours           = hours/60; //1 tick = 1 minute.
+                    hours++;
+                    Double profit   = model.getProfit();
+                    lProfitVal.setText("" + profit);
+                    profit = profit / hours;
+                    lProfitHourVal.setText("" + profit);
 
-                /*if (!model.isRun()) {
-                    lineChart.resetChart();
-                }*/
+                    if (hours != last_hour) {
+                        lineChart.addData(hours, profit);
+                        last_hour = hours;
+                    }
+                }
+            });
+
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-        });
+        }
     }
 }

@@ -3,6 +3,9 @@ package nl.SeriousParking.Parkeersimulator.view;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import nl.SeriousParking.Parkeersimulator.controller.SimulatorController;
+import nl.SeriousParking.Parkeersimulator.model.Date_time;
+import nl.SeriousParking.Parkeersimulator.model.Simulator;
 
 import java.util.HashMap;
 
@@ -13,6 +16,7 @@ public class LineChartView {
     protected XYChart.Series series;
     protected Integer interval = 0;
     protected Integer lastHour = 0;
+    boolean run = false;
 
     public LineChartView() {
         xAxis       = new NumberAxis();
@@ -22,8 +26,8 @@ public class LineChartView {
 
         lineChart.setTitle("Gemiddelde inkomen per auto");
         lineChart.setCreateSymbols(false);
-        xAxis.setLabel("Auto's");
-        yAxis.setLabel("Gemiddelde Winst");
+        xAxis.setLabel("Uren");
+        yAxis.setLabel("Winst per uur");
 
         series.setName("Auto's");
         lineChart.getData().add(series);
@@ -33,18 +37,11 @@ public class LineChartView {
         return lineChart;
     }
 
-    public void resetChart() {
-        lineChart.getData().clear();
+    public XYChart.Series getSeries() {
+        return series;
     }
 
-    public void addData(int hours, double profit) {
-        if (interval >= 15 && lastHour != hours) {
-            System.out.println("Updating graph data.");
-            series.getData().add(new XYChart.Data(hours, profit));
-            lastHour = hours;
-            interval = 0;
-        } else {
-            interval++;
-        }
+    public void addData(int hour, double profit) {
+        series.getData().add(new XYChart.Data(hour, profit));
     }
 }

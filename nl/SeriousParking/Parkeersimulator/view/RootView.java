@@ -54,10 +54,7 @@ public class RootView {
         SettingsController settingsc    = new SettingsController(handler);
         SimSettings simsettings         = new SimSettings(settingsc, handler);
 
-        Profit profit                   = new Profit();
-        ProfitController profitC        = new ProfitController(profit);
-        ProfitView profitView           = new ProfitView(profitC, profit);
-
+        ProfitView profitView           = new ProfitView(controller, model);
 
         ReservationContainer Rmodel        = new ReservationContainer();
         ReservationController controllerR  = new ReservationController(Rmodel);
@@ -66,10 +63,6 @@ public class RootView {
         Runtime runtime                     = new Runtime();
         RuntimeController runtimeController = new RuntimeController(runtime);
         RuntimeView runtimeView             = new RuntimeView(runtimeController, runtime);
-
-
-        model.addEventListner(profit);
-        model.addEventListner(runtime);
 ///////////////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////VIEW PANES//////////////////////////////////////////////////////

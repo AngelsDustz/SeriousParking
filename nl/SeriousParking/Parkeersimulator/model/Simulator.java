@@ -158,7 +158,6 @@ public class Simulator extends Model implements Runnable {
     private void tick() {
     	Date_time.advanceTime();
 
-    	handleExit();
 
         carTick();
 
@@ -166,12 +165,12 @@ public class Simulator extends Model implements Runnable {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                //
+                handleExit();
                 notifyViews();
+                handleEntrance();
             }
         });
 
-        handleEntrance();
 
         setSettings();
 
@@ -437,6 +436,9 @@ public class Simulator extends Model implements Runnable {
 
 
     private boolean locationIsValid(Location location) {
+        if (location == null) {
+            return false;
+        }
 
         int floor   = location.getFloor();
         int row     = location.getRow();

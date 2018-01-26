@@ -1,16 +1,11 @@
 package nl.SeriousParking.Parkeersimulator.view;
 
 import javafx.application.Platform;
-import javafx.scene.Scene;
-import javafx.scene.chart.LineChart;
 import javafx.scene.control.Label;
-import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import nl.SeriousParking.Parkeersimulator.controller.ProfitController;
 import nl.SeriousParking.Parkeersimulator.controller.SimulatorController;
 import nl.SeriousParking.Parkeersimulator.model.Date_time;
-import nl.SeriousParking.Parkeersimulator.model.Profit;
 import nl.SeriousParking.Parkeersimulator.model.Simulator;
 
 public class ProfitView extends View<SimulatorController, Simulator> implements Runnable {
@@ -81,7 +76,7 @@ public class ProfitView extends View<SimulatorController, Simulator> implements 
             });
 
             try {
-                Thread.sleep(1000);
+                Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

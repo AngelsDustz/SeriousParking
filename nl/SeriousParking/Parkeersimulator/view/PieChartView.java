@@ -52,7 +52,7 @@ public class PieChartView extends View<SimulatorController, Simulator> implement
 
     @Override
     public void run() {
-        while (false && run) {
+        while (run) {
             Double adhocCars    = model.getNumberOfAddhoccarsinPark();
             Double passCars     = model.getNumberOfPasscarsinPark();
             Double percentCars  = ((adhocCars + passCars) / 100) * 100;
@@ -61,10 +61,16 @@ public class PieChartView extends View<SimulatorController, Simulator> implement
             Double reservedCars = 0.0;
             Double freeSpots    = model.getNumberOfOpenSpots();
 
-            carSlice.setPieValue(percentCars);
-            dubbelpSlice.setPieValue(dubbleCars);
-            gereserveerdSlice.setPieValue(reservedCars);
-            VrijePlekkenSlice.setPieValue(freeSpots);
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    carSlice.setPieValue(percentCars);
+                    dubbelpSlice.setPieValue(dubbleCars);
+                    gereserveerdSlice.setPieValue(reservedCars);
+                    VrijePlekkenSlice.setPieValue(freeSpots);
+                }
+            });
+
 
             try {
                 Thread.sleep(100);

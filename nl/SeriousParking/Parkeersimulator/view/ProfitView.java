@@ -1,16 +1,11 @@
 package nl.SeriousParking.Parkeersimulator.view;
 
 import javafx.application.Platform;
-import javafx.scene.Scene;
-import javafx.scene.chart.LineChart;
 import javafx.scene.control.Label;
-import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import nl.SeriousParking.Parkeersimulator.controller.ProfitController;
 import nl.SeriousParking.Parkeersimulator.controller.SimulatorController;
 import nl.SeriousParking.Parkeersimulator.model.Date_time;
-import nl.SeriousParking.Parkeersimulator.model.Profit;
 import nl.SeriousParking.Parkeersimulator.model.Simulator;
 
 public class ProfitView extends View<SimulatorController, Simulator> implements Runnable {
@@ -65,22 +60,17 @@ public class ProfitView extends View<SimulatorController, Simulator> implements 
             Platform.runLater(new Runnable() {
                 @Override
                 public void run() {
-                    if (Date_time.getTickSinceStart() == 0) {
-                        if (!model.isRun()) {
-                            lineChart.reset();
-                        }
-                    } else {
-                        int hours = Date_time.getTickSinceStart();
-                        hours = hours / 60; //1 tick = 1 minute.
-                        Double profit = model.getProfit();
-                        lProfitVal.setText("" + profit);
-                        profit = profit / (hours + 1);
-                        lProfitHourVal.setText("" + profit);
+                    int hours       = Date_time.getTickSinceStart();
+                    hours           = hours/60; //1 tick = 1 minute.
+                    hours++;
+                    Double profit   = model.getProfit();
+                    lProfitVal.setText("" + profit);
+                    profit = profit / hours;
+                    lProfitHourVal.setText("" + profit);
 
-                        if (hours != last_hour) {
-                            lineChart.addData(hours, profit);
-                            last_hour = hours;
-                        }
+                    if (hours != last_hour) {
+                        lineChart.addData(hours-1, profit);
+                        last_hour = hours;
                     }
                 }
             });

@@ -49,7 +49,7 @@ public class SimView extends View<SimulatorController, Simulator> {
 
     @Override
     public void update() {
-        repaint();
+
         draw();
     }
 
@@ -126,11 +126,18 @@ public class SimView extends View<SimulatorController, Simulator> {
     }
 
     private void paintCar(int floor, int row, int place, Car car){
-
-        if (car.getHasToPay()) {
-            garage[floor][row][place].setFill(Color.DARKBLUE);
-        } else {
-            garage[floor][row][place].setFill(Color.DARKOLIVEGREEN);
+        if(car.isActive()){
+            if (car.getHasToPay()) {
+                garage[floor][row][place].setFill(Color.DARKBLUE);
+            } else {
+                garage[floor][row][place].setFill(Color.DARKOLIVEGREEN);
+            }
+        }else{
+            if (car.getHasToPay()) {
+                garage[floor][row][place].setFill(Color.LIGHTBLUE);
+            } else {
+                garage[floor][row][place].setFill(Color.LIGHTGREEN);
+            }
         }
     }
     private void draw() {
@@ -191,7 +198,5 @@ public class SimView extends View<SimulatorController, Simulator> {
             }
         }
     }
-    public void repaint() {
 
-    }
 }

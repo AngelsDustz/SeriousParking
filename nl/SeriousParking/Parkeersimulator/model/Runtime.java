@@ -1,16 +1,13 @@
 package nl.SeriousParking.Parkeersimulator.model;
 
 import javafx.application.Platform;
-import nl.SeriousParking.Parkeersimulator.canEvent;
 
-import java.util.Date;
-import java.util.HashMap;
 
 public class Runtime extends Model implements Runnable {
-    Date now = new Date();
-    Long startTime;
-    Long runTime;
-    boolean run;
+   // private Date now = new Date();
+    private Long startTime;
+    private Long runTime;
+    private boolean run;
 
     public Runtime() {
         startTime   = System.currentTimeMillis();

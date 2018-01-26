@@ -5,7 +5,7 @@ import nl.SeriousParking.Parkeersimulator.canEvent;
 
 import java.util.*;
 
-public class Simulator extends Model implements Runnable, canEvent {
+public class Simulator extends Model implements Runnable {
     //@todo Make this a setting.
     private static final double CARPRICE = 12.50;
 
@@ -14,7 +14,8 @@ public class Simulator extends Model implements Runnable, canEvent {
     private boolean firstRun;
     private boolean doubleEntrance;
 	private Queue entranceCarQueue;
-    private Queue entrancePassQueue;
+    private Queue preEntranceQueue;
+    private Queue backEntranceCarQueue;
     private Queue paymentCarQueue;
     private Queue exitCarQueue;
 
@@ -34,15 +35,9 @@ public class Simulator extends Model implements Runnable, canEvent {
 
     private ArrayList<Model> listners = new ArrayList<>();
 
-    private int day         = 0;
-    private int hour        = 0;
-    private int minute      = 0;
-    private int week        = 0;
-    private int year        = 0;
-
     private int tickPause   = SettingHandler.tickPause;
     private int chance      = SettingHandler.chance;
-    private int reservationchance =SettingHandler.reservationchance;
+    private int reservationShowchance =SettingHandler.reservationShowchance;
     private int weekDayArrivals; // average number of arriving cars per hour
     private int weekendArrivals;// average number of arriving cars per hour
     private int weekDayPassArrivals;// average number of arriving cars per hour
@@ -61,7 +56,8 @@ public class Simulator extends Model implements Runnable, canEvent {
         numberOfPasscarsinPark      = 0;
 
         entranceCarQueue    = new Queue();
-        entrancePassQueue   = new Queue();
+        backEntranceCarQueue = new Queue();
+        preEntranceQueue = new Queue();
         paymentCarQueue     = new Queue();
         exitCarQueue        = new Queue();
         profit              = 0;
@@ -82,7 +78,17 @@ public class Simulator extends Model implements Runnable, canEvent {
             }
         }
     }
+    public void CarToQueue(Car car){
+       car = preEntranceQueue.removeCar();
+        entranceCarQueue.addCar(car);
+        if (doubleEntrance){
+            car = preEntranceQueue.removeCar();
+            backEntranceCarQueue.addCar(car);
 
+        }
+
+
+    }
     public void addEventListner(Model m) {
         listners.add(m);
     }
@@ -197,14 +203,33 @@ public class Simulator extends Model implements Runnable, canEvent {
             for (int row = 0; row < getNumberOfRows(); row++) {
 
                 for (int place = 0; place < getNumberOfPlaces(); place++) {
+                            Car car = cars[floor][row][place];
+                    if (car!=null) {
+                        if(!car.getReservation()) {
+                            car.tick();
+                        } else {
+                            if (car.getPreTime() > 0) {
+                                car.setPreTime(car.getPreTime() - 1);
+                            }
+                            if(car.getPreTime()==0){
+                                chance=randomGenerator.nextInt(100);
+                                if(reservationShowchance< chance) {
+                                    car.setActive(true);
+                                } else {
+                                    car.noShow();
+                                }
 
-                    if (cars[floor][row][place]!=null) {
-                        cars[floor][row][place].tick();
+                                car.setPreTime(car.getPreTime()-1);
+                            } else {
+                                car.tick();
+                            }
+                        }
                     }
                 }
             }
         }
     }
+
 
 
 
@@ -363,9 +388,7 @@ public class Simulator extends Model implements Runnable, canEvent {
         }
     }
 
-    public boolean isRun() {
-        return run;
-    }
+
 
     private void carsPaying(){
         // Let cars pay.
@@ -387,7 +410,7 @@ public class Simulator extends Model implements Runnable, canEvent {
 
             data.put("profit", profit);
             data.put("time_passed", Date_time.getTickSinceStart());
-            data.put("minutes", minute);
+            data.put("minutes", Date_time.getMinutes());
             data.put("cars", totalCarsPassed);
             data.put("doubled", car.getisParkedDouble());
             sendEvent(data);
@@ -414,7 +437,7 @@ public class Simulator extends Model implements Runnable, canEvent {
         Random random = new Random();
 
         // Get the average number of cars that arrive per hour.
-        int averageNumberOfCarsPerHour = day < 5
+        int averageNumberOfCarsPerHour = Date_time.getDays() < 5
                 ? weekDay
                 : weekend;
 
@@ -432,11 +455,13 @@ public class Simulator extends Model implements Runnable, canEvent {
             car.setHasToPay(!hasPass);
             int rand= randomGenerator.nextInt(100);
             car.setReservation(reservation);
+            if(!car.getReservation()){car.setActive(true);}
             if (rand<=chance && chance!=0 && !reservation){
                 car.setParkedDouble(true);
             }
+            preEntranceQueue.addCar(car);
+            CarToQueue(car);
 
-            entranceCarQueue.addCar(car);
         }
 
     }
@@ -489,6 +514,7 @@ public class Simulator extends Model implements Runnable, canEvent {
 
         Car oldCar = getCarAt(location);
         if (oldCar == null) {
+
             cars[location.getFloor()][location.getRow()][location.getPlace()] = car;
             car.setLocation(location);
             carcounterADD(car);
@@ -499,7 +525,7 @@ public class Simulator extends Model implements Runnable, canEvent {
         return false;
     }
 
-    public Car removeCarAt(Location location) {
+    private Car removeCarAt(Location location) {
         if (!locationIsValid(location)) {
             return null;
         }
@@ -516,7 +542,7 @@ public class Simulator extends Model implements Runnable, canEvent {
         return cars[location.getFloor()][location.getRow()][location.getPlace()] = null;
     }
 
-    public Location getFirstFreeLocation() {
+    private Location getFirstFreeLocation() {
         for (int floor = 0; floor < getNumberOfFloors(); floor++) {
 
             for (int row = 0; row < getNumberOfRows(); row++) {
@@ -533,7 +559,7 @@ public class Simulator extends Model implements Runnable, canEvent {
         return null;
     }
 
-    public Location getLastFreeLocation() {
+    private Location getLastFreeLocation() {
         for (int floor = getNumberOfFloors()-1; floor >=0; floor--) {
 
             for (int row = getNumberOfRows()-1; row >=0; row--) {
@@ -550,7 +576,7 @@ public class Simulator extends Model implements Runnable, canEvent {
         return null;
     }
 
-    public Location[] getFirstFreeDoubleLocation() {
+    private Location[] getFirstFreeDoubleLocation() {
         Location[] locations = new Location[2];
         for (int floor = 0; floor < getNumberOfFloors(); floor++) {
             for (int row = 0; row < getNumberOfRows(); row++) {
@@ -576,7 +602,7 @@ public class Simulator extends Model implements Runnable, canEvent {
 
 
 
-    public Location[] getLastFreeDoubleLocation() {
+    private Location[] getLastFreeDoubleLocation() {
         Location[] locations = new Location[2];
         for (int floor = getNumberOfFloors()-1; floor >=0; floor--) {
             for (int row = getNumberOfRows()-1; row >=0; row--) {
@@ -601,7 +627,7 @@ public class Simulator extends Model implements Runnable, canEvent {
     }
 
 
-    public Car getFirstLeavingCar() {
+    private Car getFirstLeavingCar() {
         for (int floor = 0; floor < getNumberOfFloors(); floor++) {
 
             for (int row = 0; row < getNumberOfRows(); row++) {
@@ -635,18 +661,14 @@ public class Simulator extends Model implements Runnable, canEvent {
         NumberOfCarsParkedDouble=0;
         numberOfAddhoccarsinPark=0;
         numberOfPasscarsinPark=0;
-
+        preEntranceQueue.emptyQueue();
         entranceCarQueue.emptyQueue();
-        entrancePassQueue.emptyQueue();
+        backEntranceCarQueue.emptyQueue();
         paymentCarQueue.emptyQueue();
         exitCarQueue.emptyQueue();
         numberOfOpenSpots   = numberOfFloors *numberOfRows * numberOfPlaces;
 
-        year    = 0;
-        week    = 0;
-        day     = 0;
-        hour    = 0;
-        minute  = 0;
+
         profit  = 0;
         run     = false;
 
@@ -696,107 +718,9 @@ public class Simulator extends Model implements Runnable, canEvent {
         return NumberOfCarsParkedDouble;
     }
 
-    public int getNumberOfCarsinQueue() { return (entranceCarQueue.carsInQueue()+ entrancePassQueue.carsInQueue()); }
-
-    public int getTickPause() {
-        return tickPause;
-    }
-
-    public void setTickPause(int tickPause) {
-        this.tickPause = tickPause;
-    }
-
-    public int getChance() {
-        return chance;
-    }
-
-    public void setChance(int chance) {
-        this.chance = chance;
-    }
-
-    public int getWeekDayArrivals() {
-        return weekDayArrivals;
-    }
-
-    public void setWeekDayArrivals(int weekDayArrivals) {
-        this.weekDayArrivals = weekDayArrivals;
-    }
-
-    public int getWeekendArrivals() {
-        return weekendArrivals;
-    }
-
-    public void setWeekendArrivals(int weekendArrivals) {
-        this.weekendArrivals = weekendArrivals;
-    }
-
-    public int getWeekDayPassArrivals() {
-        return weekDayPassArrivals;
-    }
-
-    public void setWeekDayPassArrivals(int weekDayPassArrivals) {
-        this.weekDayPassArrivals = weekDayPassArrivals;
-    }
-
-    public int getWeekendPassArrivals() {
-        return weekendPassArrivals;
-    }
-
-    public void setWeekendPassArrivals(int weekendPassArrivals) {
-        this.weekendPassArrivals = weekendPassArrivals;
-    }
-
-    public int getEnterSpeed() {
-        return enterSpeed;
-    }
-
-    public void setEnterSpeed(int enterSpeed) {
-        this.enterSpeed = enterSpeed;
-    }
-
-    public int getPaymentSpeed() {
-        return paymentSpeed;
-    }
-
-    public void setPaymentSpeed(int paymentSpeed) {
-        this.paymentSpeed = paymentSpeed;
-    }
-
-    public int getExitSpeed() {
-        return exitSpeed;
-    }
-
-    public void setExitSpeed(int exitSpeed) {
-        this.exitSpeed = exitSpeed;
-    }
-
-    public int getDay() {
-        return day;
-    }
-
-    public int getHour() {
-        return hour;
-    }
-
-    public int getMinute() {
-        return minute;
-    }
-
-    public int getWeek() {
-        return week;
-    }
-
-    public int getYear() {
-        return year;
-    }
-
-    @Override
-    public void doEvent(HashMap m) {
-        Car car = new Car();
-        m.get("startTime");
+    public int getNumberOfCarsinQueue() { return (entranceCarQueue.carsInQueue()+backEntranceCarQueue.carsInQueue()); }
 
 
-    }
 }
 
 

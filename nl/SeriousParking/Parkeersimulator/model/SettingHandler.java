@@ -3,7 +3,7 @@ package nl.SeriousParking.Parkeersimulator.model;
 public class SettingHandler extends Model{
     protected static int tickPause;
     protected static int chance;
-    protected static int reservationchance;
+    protected static int reservationShowchance;
     protected static Boolean doubleEntrance;
 
     protected static int weekDayArrivals; // average number of arriving cars per hour
@@ -18,8 +18,8 @@ public class SettingHandler extends Model{
     protected static int weekDayReservations;
     protected static int WeekendReservations;
 
-    protected   static int garageFloors =3;
-    protected   static int garageRows   =6;
+    protected   static int garageFloors = 3;
+    protected   static int garageRows   = 6;
     protected   static int garagePlaces = 20;
 
     public SettingHandler() {
@@ -30,31 +30,31 @@ public class SettingHandler extends Model{
     }
     public void defaultValue(){
 
-    tickPause   = 150;
-    chance      = 1;
-    reservationchance= 5;
-    doubleEntrance = false;
-    garageFloors= 3;
-    garageRows=6;
-    garagePlaces=20;
+    tickPause                   = 150;
+    chance                      = 1;
+    reservationShowchance       = 80;
+    doubleEntrance              = false;
+    garageFloors                = 3;
+    garageRows                  = 6;
+    garagePlaces                = 20;
 
-    weekDayReservations=500;
-    WeekendReservations=10;
+    weekDayReservations         = 30;
+    WeekendReservations         = 10;
 
 
-        weekDayArrivals     = 100;
-    weekendArrivals     = 200;
-    weekDayPassArrivals = 50;
-    weekendPassArrivals = 5;
+    weekDayArrivals             = 100;
+    weekendArrivals             = 200;
+    weekDayPassArrivals         = 50;
+    weekendPassArrivals         = 5;
 
-    enterSpeed      = 3;
-    paymentSpeed    = 7;
-    exitSpeed       = 5;
+    enterSpeed                  = 2;
+    paymentSpeed                = 7;
+    exitSpeed                   = 5;
 
-    garageFloors= 3;
-    garageRows=6;
-    garagePlaces=20;
-   nofifier();
+    garageFloors                = 3;
+    garageRows                  = 6;
+    garagePlaces                = 20;
+    nofifier();
     }
 
     public static int getGarageFloors() {

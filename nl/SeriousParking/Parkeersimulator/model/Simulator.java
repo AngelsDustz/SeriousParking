@@ -359,6 +359,10 @@ public class Simulator extends Model implements Runnable, canEvent {
         }
     }
 
+    public boolean isRun() {
+        return run;
+    }
+
     private void carsPaying(){
         // Let cars pay.
     	int i=0;

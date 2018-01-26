@@ -64,7 +64,6 @@ public class RootView {
         RuntimeController runtimeController = new RuntimeController(runtime);
         RuntimeView runtimeView             = new RuntimeView(runtimeController, runtime);
 
-
         Rmodel.addEventListner(model);
 ///////////////////////////////////////////////////////////////////////////////////////////
 

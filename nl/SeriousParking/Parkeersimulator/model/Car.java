@@ -4,6 +4,7 @@ package nl.SeriousParking.Parkeersimulator.model;
 import java.util.Random;
 
 public class Car extends Model {
+    private boolean     reservation;
     private Location    location;
     private int         minutesLeft;
     private boolean     isPaying;
@@ -14,10 +15,19 @@ public class Car extends Model {
      * Constructor for objects of class Car
      */
     public Car() {
+        this.reservation    =false;
         this.hasToPay       = true;
         Random random       = new Random();
         int stayMinutes     = (int) (15 + random.nextFloat() * 3 * 60);
         this.minutesLeft    = stayMinutes;
+    }
+
+    public boolean getReservation() {
+        return reservation;
+    }
+
+    public void setReservation(boolean reservation) {
+        this.reservation = reservation;
     }
 
     public boolean getisParkedDouble() {
@@ -72,6 +82,7 @@ public class Car extends Model {
         copiedCar.isPaying       = car.isPaying ;
         copiedCar.hasToPay       = car.hasToPay;
         copiedCar.isParkedDouble = car.isParkedDouble;
+        copiedCar.reservation    = car.reservation;
 
         return copiedCar;
     }

@@ -83,10 +83,6 @@ public class Simulator extends Model implements Runnable, canEvent {
         }
     }
 
-    public boolean isFirstRun() {
-        return firstRun;
-    }
-
     public void addEventListner(Model m) {
         listners.add(m);
     }

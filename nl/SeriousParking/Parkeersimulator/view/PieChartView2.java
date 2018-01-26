@@ -38,6 +38,7 @@ public class PieChartView2 extends View<SimulatorController, Simulator> {
 
     @Override
     public void update() {
+
         abbonementSlice.setPieValue((model.getNumberOfPasscarsinPark()/percentage*100));
         adhocSlice.setPieValue((model.getNumberOfAddhoccarsinPark()/percentage*100));
     }

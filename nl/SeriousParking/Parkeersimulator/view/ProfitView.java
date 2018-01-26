@@ -69,7 +69,7 @@ public class ProfitView extends View<SimulatorController, Simulator> implements 
                     lProfitHourVal.setText("" + profit);
 
                     if (hours != last_hour) {
-                        lineChart.addData(hours, profit);
+                        lineChart.addData(hours-1, profit);
                         last_hour = hours;
                     }
                 }

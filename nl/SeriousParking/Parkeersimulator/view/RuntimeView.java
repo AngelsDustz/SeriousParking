@@ -10,7 +10,11 @@ public class RuntimeView extends View<RuntimeController, Runtime> {
 
     @Override
     public void update() {
-        output.setText("Runtime: " + model.getRunTime() + "ms");
+        Long runTime        = model.getRunTime();
+        int secondPassed    = Math.toIntExact(runTime/1000);
+        int minutesPassed   = secondPassed/60;
+
+        output.setText("Runtime: " + minutesPassed + ":" + (secondPassed%60));
     }
 
     public RuntimeView(RuntimeController controller, Runtime model) {

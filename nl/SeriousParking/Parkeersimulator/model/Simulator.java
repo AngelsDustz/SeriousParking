@@ -12,7 +12,9 @@ public class Simulator extends Model implements Runnable {
     private boolean run;
 	private double profit;
     private boolean firstRun;
+    private boolean GarageIsSet;
     private boolean doubleEntrance;
+
 	private Queue entranceCarQueue;
     private Queue preEntranceQueue;
     private Queue backEntranceCarQueue;
@@ -23,9 +25,9 @@ public class Simulator extends Model implements Runnable {
     private int numberOfFloors;
     private int numberOfRows;
     private int numberOfPlaces;
-
+    private int maxQueueSize;
     private int totalCarsPassed;
-    private boolean GarageIsSet;
+
     private double NumberOfCarsParkedDouble;
     private double numberOfAddhoccarsinPark;
     private double numberOfPasscarsinPark;
@@ -67,10 +69,10 @@ public class Simulator extends Model implements Runnable {
         numberOfFloors     = SettingHandler.garageFloors;
         numberOfRows       = SettingHandler.garageRows;
         numberOfPlaces     = SettingHandler.garagePlaces;
+        maxQueueSize       = SettingHandler.maxQueueSize;
 
-
-        firstRun        = true;
-        randomGenerator = new Random();
+        firstRun           = true;
+        randomGenerator    = new Random();
     }
 
     private void sendEvent(HashMap data) {
@@ -80,25 +82,13 @@ public class Simulator extends Model implements Runnable {
             }
         }
     }
-    public void CarToQueue(Car car){
-       car = preEntranceQueue.removeCar();
-        entranceCarQueue.addCar(car);
-        if (doubleEntrance){
-            car = preEntranceQueue.removeCar();
-            backEntranceCarQueue.addCar(car);
-
-        }
 
 
-    }
-    public void addEventListner(Model m) {
-        listners.add(m);
-    }
 
     private void setSettings(){
+        maxQueueSize       = SettingHandler.maxQueueSize;
         tickPause   = SettingHandler.tickPause;
         chance      = SettingHandler.chance;
-        //reservationchance=SettingHandler.reservationchance;
         weekDayReservations = SettingHandler.weekDayReservations;
         WeekendReservations = SettingHandler.WeekendReservations;
         weekDayArrivals     = SettingHandler.weekDayArrivals;
@@ -120,9 +110,9 @@ public class Simulator extends Model implements Runnable {
      *
      * This calls the thread to run the ticks.
      */
-    public void startSimulator() {
+    private void startSimulator() {
 
-        if(firstRun==true){
+        if(firstRun){
             cars        = new Car[numberOfFloors][numberOfRows][numberOfPlaces];
             setGarageSizeValue();
             firstRun    = false;
@@ -136,7 +126,7 @@ public class Simulator extends Model implements Runnable {
     }
 
     public void startStop(){
-        if (run==false){
+        if (!run){
            run=true;
                 startSimulator();
         } else {
@@ -158,9 +148,6 @@ public class Simulator extends Model implements Runnable {
         }).start();
     }
 
-    public void Stop(){
-       run = false;
-    }
 
     public void singleTick(){
         new Thread(() -> {tick();}).start();
@@ -168,11 +155,9 @@ public class Simulator extends Model implements Runnable {
 
     private void tick() {
     	Date_time.advanceTime();
-
-
         carTick();
 
-        // This fucker crashes.
+
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -233,15 +218,49 @@ public class Simulator extends Model implements Runnable {
     }
 
 
+    private void queueSizeHandler(Queue queue){
+        if(numberOfOpenSpots!=0){
+            while (queue.carsInQueue()>maxQueueSize){
+                queue.removeCar();
+                totalCarsPassed++;
+            }
+        } else {
+           while(queue.carsInQueue()>0){
+               queue.removeCar();
+               totalCarsPassed++;
+           }
+
+
+        }
+    }
+
+
+    private void carToQueue(){
+        Car car;
+        while(preEntranceQueue.carsInQueue()>0) {
+
+            car = preEntranceQueue.removeCar();
+            entranceCarQueue.addCar(car);
+            if (doubleEntrance && preEntranceQueue.carsInQueue()>0) {
+
+                car = preEntranceQueue.removeCar();
+                backEntranceCarQueue.addCar(car);
+
+            }
+        }
+
+    }
 
 
     private void handleEntrance(){
         carsArriving();
+        carToQueue();
         carsEntering(entranceCarQueue);
-
+        queueSizeHandler(entranceCarQueue);
         if (doubleEntrance)
         {
-            carsOtherEntering(entranceCarQueue);
+            carsBackEntering(backEntranceCarQueue);
+           queueSizeHandler(backEntranceCarQueue);
         }
 
 
@@ -267,12 +286,16 @@ public class Simulator extends Model implements Runnable {
 
     private void carcounterADD(Car car){
         if (car.getReservation()){
-            numberOfReservations=numberOfReservations+.5;
+            numberOfReservations++;
         }
 
         if (car.getisParkedDouble()){
            NumberOfCarsParkedDouble=NumberOfCarsParkedDouble+.5;
 
+
+            if (car.getReservation()){
+                numberOfReservations=numberOfReservations+.5;
+            }
             if (car.getHasToPay()) {
                 numberOfAddhoccarsinPark=numberOfAddhoccarsinPark+.5;
             } else {
@@ -290,17 +313,21 @@ public class Simulator extends Model implements Runnable {
         return numberOfReservations;
     }
 
-    private void carcounterRemove(Car car){
-        if (car.getisParkedDouble()==true){
+    private void carCounterRemove(Car car){
+         if (car.getReservation()){
+             numberOfReservations--;
+         }
+        if (car.getisParkedDouble()){
             NumberOfCarsParkedDouble=NumberOfCarsParkedDouble-.5;
+            if (car.getReservation()){numberOfReservations=numberOfReservations-.5;}
 
-            if (car.getHasToPay() == true) {
+            if (car.getHasToPay()) {
                 numberOfAddhoccarsinPark=numberOfAddhoccarsinPark-.5;
             } else {
                 numberOfPasscarsinPark=numberOfPasscarsinPark-.5;
             }
         }
-        else if (car.getHasToPay() == true) {
+        else if (car.getHasToPay()) {
                 numberOfAddhoccarsinPark--;
         } else {
           numberOfPasscarsinPark--;
@@ -342,12 +369,11 @@ public class Simulator extends Model implements Runnable {
             i++;
         }
     }
-    private void carsOtherEntering(Queue queue){
+    private void carsBackEntering(Queue queue){
         int i=0;
         // Remove car from the front of the queue and assign to a parking space.
-        while (queue.carsInQueue()>0 &&
-                getNumberOfOpenSpots()>0 &&
-                i<enterSpeed) {
+        while (queue.carsInQueue()>0 && getNumberOfOpenSpots()>0 && i<enterSpeed) {
+
             Car car = queue.removeCar();
 
             if (!car.getisParkedDouble()){
@@ -355,22 +381,19 @@ public class Simulator extends Model implements Runnable {
                 setCarAt(freeLocation, car);
 
 
-            }
-
-
-            else{
+            } else {
                 Location[] freeLocation = getLastFreeDoubleLocation();
-                if (freeLocation!=null) {
-                    Location loc1 = freeLocation[0];
-                    Location loc2 = freeLocation[1];
-                    Car car2 = new Car();
-                    car2 = car2.copy(car);
+
+
+                if (freeLocation != null) {
+                    Location loc1   = freeLocation[0];
+                    Location loc2   = freeLocation[1];
+                    Car car2        = new Car();
+                    car2            = car2.copy(car);
+
                     setCarAt(loc1, car);
                     setCarAt(loc2, car2);
 
-                }
-                else{
-                    queue.addCar(car);
                 }
             }
             i++;
@@ -411,7 +434,7 @@ public class Simulator extends Model implements Runnable {
                 data.put("car_price", CARPRICE);
             }
 
-            totalCarsPassed++;
+
 
             data.put("profit", profit);
             data.put("time_passed", Date_time.getTickSinceStart());
@@ -432,7 +455,7 @@ public class Simulator extends Model implements Runnable {
         // Let cars leave.
     	int i=0;
     	while (exitCarQueue.carsInQueue()>0 && i < exitSpeed){
-            carcounterRemove(exitCarQueue.removeCar());
+            carCounterRemove(exitCarQueue.removeCar());
 
             i++;
     	}
@@ -465,7 +488,6 @@ public class Simulator extends Model implements Runnable {
                 car.setParkedDouble(true);
             }
             preEntranceQueue.addCar(car);
-            CarToQueue(car);
 
         }
 
@@ -512,7 +534,7 @@ public class Simulator extends Model implements Runnable {
         return cars[location.getFloor()][location.getRow()][location.getPlace()];
     }
 
-    public boolean setCarAt(Location location, Car car) {
+    private boolean setCarAt(Location location, Car car) {
         if (!locationIsValid(location)) {
             return false;
         }
@@ -666,13 +688,14 @@ public class Simulator extends Model implements Runnable {
         NumberOfCarsParkedDouble=0;
         numberOfAddhoccarsinPark=0;
         numberOfPasscarsinPark=0;
+        totalCarsPassed=0;
         preEntranceQueue.emptyQueue();
         entranceCarQueue.emptyQueue();
         backEntranceCarQueue.emptyQueue();
         paymentCarQueue.emptyQueue();
         exitCarQueue.emptyQueue();
         numberOfOpenSpots   = numberOfFloors *numberOfRows * numberOfPlaces;
-
+        numberOfReservations=0;
 
         profit  = 0;
         run     = false;
@@ -682,6 +705,9 @@ public class Simulator extends Model implements Runnable {
 
     }
 
+    public int getTotalCarsPassed() {
+        return totalCarsPassed;
+    }
 
     public double getNumberOfPasscarsinPark() {
         return numberOfPasscarsinPark;
@@ -729,8 +755,15 @@ public class Simulator extends Model implements Runnable {
         return GarageIsSet;
     }
 
+    public boolean isDoubleEntrance() {
+        return doubleEntrance;
+    }
+
     public void setGarageIsSet(boolean garageIsSet) {
         GarageIsSet = garageIsSet;
+    }
+    public int getNumberOfCarsInBackQueue(){
+        return backEntranceCarQueue.carsInQueue();
     }
 }
 

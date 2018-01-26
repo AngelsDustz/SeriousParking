@@ -16,6 +16,7 @@ public class TextView extends View<SimulatorController, Simulator>  {
     Label passcar1   = new Label();
     Label adhoccar1  = new Label();
     Label queue1     = new Label();
+    Label queue2     = new Label();
 
     Label dubbel1    = new Label();
     Label reser1     = new Label();
@@ -31,7 +32,8 @@ public class TextView extends View<SimulatorController, Simulator>  {
         Label total     = new Label("totaal aantal auto's");
         Label passcar   = new Label("Abbonoment's houders");
         Label adhoccar  = new Label("Gast auto's");
-        Label queue     = new Label("Auto's in queue");
+        Label queue     = new Label("Auto's in  queue");
+        Label backqueue     = new Label("Auto's in achterste queue");
         Label dubbel    = new Label("dubbel geparkeerde auto's");
         Label reser     = new Label("gereserveerde plekken");
         Label free      = new Label("vrij plekken");
@@ -47,7 +49,8 @@ public class TextView extends View<SimulatorController, Simulator>  {
         grid.add(reser,1,9);
         grid.add(free,1,10);
         grid.add(queue,1,11);
-        grid.add(rev,1,12);
+        grid.add(backqueue,1,12);
+        grid.add(rev,1,13);
 
         grid.add(timeLbl,2,2);
         grid.add(total1,2,5);
@@ -57,7 +60,8 @@ public class TextView extends View<SimulatorController, Simulator>  {
         grid.add(reser1,2,9);
         grid.add(free1,2,10);
         grid.add(queue1,2,11);
-        grid.add(rev1,2,12);
+        grid.add(queue2,2,12);
+        grid.add(rev1,2,13);
 
         HBox container = new HBox(grid);
         this.getChildren().add(container);
@@ -78,6 +82,7 @@ public class TextView extends View<SimulatorController, Simulator>  {
                 reser1.setText(""+model.getNumberOfReservations());
                 free1.setText(""+model.getNumberOfOpenSpots());
                 queue1.setText(""+model.getNumberOfCarsInQueue());
+                queue2.setText(""+model.getNumberOfCarsInBackQueue());
                 rev1.setText("€ " + model.getProfit());
             }
         });

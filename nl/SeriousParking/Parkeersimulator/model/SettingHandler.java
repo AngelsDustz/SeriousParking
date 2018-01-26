@@ -10,13 +10,16 @@ public class SettingHandler extends Model{
     protected static int weekendArrivals; // average number of arriving cars per hour
     protected static int weekDayPassArrivals; // average number of arriving cars per hour
     protected static int weekendPassArrivals; // average number of arriving cars per hour
-    //jeroen - mijn tested minimum stable tick rate is 30 op 25 heb ik desync na een aantal minuten
+
+
     protected static int enterSpeed; // number of cars that can enter per minute
     protected static int paymentSpeed; // number of cars that can pay per minute
+    protected static int maxQueueSize;
     protected static int exitSpeed; // number of cars that can leave per minute
 
     protected static int weekDayReservations;
     protected static int WeekendReservations;
+
 
     protected   static int garageFloors = 3;
     protected   static int garageRows   = 6;
@@ -29,7 +32,7 @@ public class SettingHandler extends Model{
         notifyViews();
     }
     public void defaultValue(){
-
+    maxQueueSize                = 10;
     tickPause                   = 150;
     chance                      = 1;
     reservationShowchance       = 80;
@@ -38,7 +41,7 @@ public class SettingHandler extends Model{
     garageRows                  = 6;
     garagePlaces                = 20;
 
-    weekDayReservations         = 30;
+    weekDayReservations         = 50;
     WeekendReservations         = 10;
 
 
@@ -55,6 +58,38 @@ public class SettingHandler extends Model{
     garageRows                  = 6;
     garagePlaces                = 20;
     nofifier();
+    }
+
+    public static int getReservationShowchance() {
+        return reservationShowchance;
+    }
+
+    public static void setReservationShowchance(int reservationShowchance) {
+        SettingHandler.reservationShowchance = reservationShowchance;
+    }
+
+    public static int getMaxQueueSize() {
+        return maxQueueSize;
+    }
+
+    public static void setMaxQueueSize(int maxQueueSize) {
+        SettingHandler.maxQueueSize = maxQueueSize;
+    }
+
+    public static int getWeekDayReservations() {
+        return weekDayReservations;
+    }
+
+    public static void setWeekDayReservations(int weekDayReservations) {
+        SettingHandler.weekDayReservations = weekDayReservations;
+    }
+
+    public static int getWeekendReservations() {
+        return WeekendReservations;
+    }
+
+    public static void setWeekendReservations(int weekendReservations) {
+        WeekendReservations = weekendReservations;
     }
 
     public static int getGarageFloors() {

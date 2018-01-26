@@ -23,7 +23,7 @@ public class ProfitView extends View<SimulatorController, Simulator> implements 
         GridPane grid       = new GridPane();
         Label lProfit       = new Label("Winst");
         Label lPerHour      = new Label("Winst per uur");
-        Label lLostDouble   = new Label("Misgelopen winst door dubbelparkeerders.");
+        Label lLostDouble   = new Label("Misgelopen auto's door te lage inrij snelheid");
 
         grid.add(lProfit, 0, 2);
         grid.add(lProfitVal, 2, 2);
@@ -64,10 +64,10 @@ public class ProfitView extends View<SimulatorController, Simulator> implements 
                     hours           = hours/60; //1 tick = 1 minute.
                     hours++;
                     Double profit   = model.getProfit();
-                    lProfitVal.setText("" + profit);
+                    lProfitVal.setText(" " + profit);
                     profit = profit / hours;
-                    lProfitHourVal.setText("" + profit);
-
+                    lProfitHourVal.setText(" " + profit);
+                    lDoubleLostVal.setText(" "+ model.getTotalCarsPassed());
                     if (hours != last_hour) {
                         lineChart.addData(hours-1, profit);
                         last_hour = hours;

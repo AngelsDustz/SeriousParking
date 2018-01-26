@@ -25,6 +25,7 @@ public class Simulator extends Model implements Runnable {
     private int numberOfPlaces;
 
     private int totalCarsPassed;
+    private boolean GarageIsSet;
     private double NumberOfCarsParkedDouble;
     private double numberOfAddhoccarsinPark;
     private double numberOfPasscarsinPark;
@@ -51,6 +52,7 @@ public class Simulator extends Model implements Runnable {
     private int exitSpeed; // number of cars that can leave per minute
 
     public Simulator() {
+        GarageIsSet =  false;
         NumberOfCarsParkedDouble    = 0;
         numberOfAddhoccarsinPark    = 0;
         numberOfPasscarsinPark      = 0;
@@ -721,9 +723,15 @@ public class Simulator extends Model implements Runnable {
         return NumberOfCarsParkedDouble;
     }
 
-    public int getNumberOfCarsinQueue() { return (entranceCarQueue.carsInQueue()+backEntranceCarQueue.carsInQueue()); }
+    public int getNumberOfCarsInQueue() { return (entranceCarQueue.carsInQueue()+backEntranceCarQueue.carsInQueue()); }
 
+    public boolean isGarageIsSet() {
+        return GarageIsSet;
+    }
 
+    public void setGarageIsSet(boolean garageIsSet) {
+        GarageIsSet = garageIsSet;
+    }
 }
 
 

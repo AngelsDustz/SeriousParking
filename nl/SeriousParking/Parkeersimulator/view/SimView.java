@@ -94,8 +94,9 @@ public class SimView extends View<SimulatorController, Simulator> {
 
         defaultButton.setOnAction(e -> {
 
-         container.getChildren().clear();
-         CreateTable();
+            container.getChildren().clear();
+            controller.defaultValues();
+            CreateTable();
         });
 
         model.addView(this);

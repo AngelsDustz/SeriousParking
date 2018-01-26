@@ -97,6 +97,7 @@ public class RootView {
         scrollPane2.setFitToHeight(true);
 
         start.setOnAction(e -> {
+
             controller.startSimulator();
         });
 

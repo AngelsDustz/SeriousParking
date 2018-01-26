@@ -16,6 +16,7 @@ public class TextView extends View<SimulatorController, Simulator>  {
     Label passcar1   = new Label();
     Label adhoccar1  = new Label();
     Label queue1     = new Label();
+
     Label dubbel1    = new Label();
     Label reser1     = new Label();
     Label free1      = new Label();
@@ -74,9 +75,9 @@ public class TextView extends View<SimulatorController, Simulator>  {
                 passcar1.setText(""+model.getNumberOfPasscarsinPark());
                 adhoccar1.setText(""+model.getNumberOfAddhoccarsinPark());
                 dubbel1.setText(""+model.getNumberOfCarsParkedDouble());
-                reser1.setText("");
+                reser1.setText(""+model.getNumberOfReservations());
                 free1.setText(""+model.getNumberOfOpenSpots());
-                queue1.setText(""+model.getNumberOfCarsinQueue());
+                queue1.setText(""+model.getNumberOfCarsInQueue());
                 rev1.setText("€ " + model.getProfit());
             }
         });

@@ -65,28 +65,23 @@ public class ProfitView extends View<SimulatorController, Simulator> implements 
             Platform.runLater(new Runnable() {
                 @Override
                 public void run() {
-                    if (Date_time.getTickSinceStart() == 0) {
-                        if (!model.isRun()) {
-                            lineChart.reset();
-                        }
-                    } else {
-                        int hours = Date_time.getTickSinceStart();
-                        hours = hours / 60; //1 tick = 1 minute.
-                        Double profit = model.getProfit();
-                        lProfitVal.setText("" + profit);
-                        profit = profit / (hours + 1);
-                        lProfitHourVal.setText("" + profit);
+                    int hours       = Date_time.getTickSinceStart();
+                    hours           = hours/60; //1 tick = 1 minute.
+                    hours++;
+                    Double profit   = model.getProfit();
+                    lProfitVal.setText("" + profit);
+                    profit = profit / hours;
+                    lProfitHourVal.setText("" + profit);
 
-                        if (hours != last_hour) {
-                            lineChart.addData(hours, profit);
-                            last_hour = hours;
-                        }
+                    if (hours != last_hour) {
+                        lineChart.addData(hours, profit);
+                        last_hour = hours;
                     }
                 }
             });
 
             try {
-                Thread.sleep(100);
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

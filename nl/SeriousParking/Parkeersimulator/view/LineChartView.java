@@ -41,10 +41,6 @@ public class LineChartView {
         return series;
     }
 
-    public void reset() {
-        series.getData().clear();
-    }
-
     public void addData(int hour, double profit) {
         series.getData().add(new XYChart.Data(hour, profit));
     }

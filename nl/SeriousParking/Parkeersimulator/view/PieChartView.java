@@ -58,7 +58,7 @@ public class PieChartView extends View<SimulatorController, Simulator> implement
             Double percentCars  = ((adhocCars + passCars) / 100) * 100;
 
             Double dubbleCars   = model.getNumberOfCarsParkedDouble();
-            Double reservedCars = 0.0;
+            Double reservedCars = model.getNumberOfReservations();
             Double freeSpots    = model.getNumberOfOpenSpots();
 
             Platform.runLater(new Runnable() {

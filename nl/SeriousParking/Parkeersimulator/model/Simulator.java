@@ -17,7 +17,7 @@ public class Simulator extends Model implements Runnable, canEvent {
     private Queue entrancePassQueue;
     private Queue paymentCarQueue;
     private Queue exitCarQueue;
-    private Queue resetvationQueue;
+
 
     private int numberOfFloors;
     private int numberOfRows;
@@ -28,6 +28,7 @@ public class Simulator extends Model implements Runnable, canEvent {
     private double numberOfAddhoccarsinPark;
     private double numberOfPasscarsinPark;
     private double numberOfOpenSpots;
+    private double numberOfReservations;
     private Car[][][] cars;
     private Random randomGenerator;
 
@@ -61,7 +62,6 @@ public class Simulator extends Model implements Runnable, canEvent {
 
         entranceCarQueue    = new Queue();
         entrancePassQueue   = new Queue();
-        resetvationQueue    = new Queue();
         paymentCarQueue     = new Queue();
         exitCarQueue        = new Queue();
         profit              = 0;
@@ -90,7 +90,7 @@ public class Simulator extends Model implements Runnable, canEvent {
     private void setSettings(){
         tickPause   = SettingHandler.tickPause;
         chance      = SettingHandler.chance;
-        reservationchance=SettingHandler.reservationchance;
+        //reservationchance=SettingHandler.reservationchance;
         weekDayReservations = SettingHandler.weekDayReservations;
         WeekendReservations = SettingHandler.WeekendReservations;
         weekDayArrivals     = SettingHandler.weekDayArrivals;
@@ -116,6 +116,7 @@ public class Simulator extends Model implements Runnable, canEvent {
 
         if(firstRun==true){
             cars        = new Car[numberOfFloors][numberOfRows][numberOfPlaces];
+            setGarageSizeValue();
             firstRun    = false;
         }
 
@@ -129,8 +130,7 @@ public class Simulator extends Model implements Runnable, canEvent {
     public void startStop(){
         if (run==false){
            run=true;
-            setGarageSizeValue();
-            startSimulator();
+                startSimulator();
         } else {
           run=false;
         }
@@ -210,13 +210,13 @@ public class Simulator extends Model implements Runnable, canEvent {
 
     private void handleEntrance(){
         carsArriving();
-        carsEntering(resetvationQueue);
-        carsEntering(entrancePassQueue);
-        if (doubleEntrance==true) {
-            carsOtherEntering(entrancePassQueue);
+
+            carsEntering(entranceCarQueue);
+        if (doubleEntrance)
+        {
             carsOtherEntering(entranceCarQueue);
         }
-        carsEntering(entranceCarQueue);
+
 
     }
 
@@ -232,23 +232,27 @@ public class Simulator extends Model implements Runnable, canEvent {
         addArrivingCars(numberOfCars, false, false);
     	numberOfCars = getNumberOfCars(weekDayPassArrivals, weekendPassArrivals);
         addArrivingCars(numberOfCars, true, false);
-        numberOfCars = getNumberOfCars(weekDayPassArrivals, weekendPassArrivals);
+        numberOfCars = getNumberOfCars(weekDayReservations/2, WeekendReservations/2);
         addArrivingCars(numberOfCars, true, true);
+        numberOfCars = getNumberOfCars(weekDayReservations/2, WeekendReservations/2);
+        addArrivingCars(numberOfCars, false, true);
     }
 
     private void carcounterADD(Car car){
-        if (car.getisParkedDouble()==true){
+        if (car.getisParkedDouble()){
            NumberOfCarsParkedDouble=NumberOfCarsParkedDouble+.5;
+            if (car.getReservation()){
+                numberOfReservations=numberOfReservations+.5;
+            }
 
-
-            if (car.getHasToPay() == true) {
+            if (car.getHasToPay()) {
                 numberOfAddhoccarsinPark=numberOfAddhoccarsinPark+.5;
             } else {
                 numberOfPasscarsinPark=numberOfPasscarsinPark+.5;
             }
         }
 
-        else if (car.getHasToPay() == true) {
+        else if (car.getHasToPay()){
             numberOfAddhoccarsinPark++;
         } else {
             numberOfPasscarsinPark++;
@@ -424,22 +428,15 @@ public class Simulator extends Model implements Runnable, canEvent {
         // Add the cars to the back of the queue.
         for (int i = 0; i < numberOfCars; i++) {
             Car car =new Car();
-            if (hasPass){
-                int rand=randomGenerator.nextInt(100);
-                if (rand<=reservationchance && reservationchance!=0) {
-                    car.setReservation(true);
-                    System.out.println("reservation");
-                }
-            }
+
             car.setHasToPay(!hasPass);
             int rand= randomGenerator.nextInt(100);
-            if (rand<=chance && chance!=0){
+            car.setReservation(reservation);
+            if (rand<=chance && chance!=0 && !reservation){
                 car.setParkedDouble(true);
             }
-            else{
-                car.setParkedDouble(false);
-            }
-            entrancePassQueue.addCar(car);
+
+            entranceCarQueue.addCar(car);
         }
 
     }

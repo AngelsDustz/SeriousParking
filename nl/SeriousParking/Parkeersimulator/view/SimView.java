@@ -132,9 +132,6 @@ public class SimView extends View<SimulatorController, Simulator> {
         } else {
             garage[floor][row][place].setFill(Color.DARKOLIVEGREEN);
         }
-        if (car.getReservation()){
-            garage[floor][row][place].setFill(Color.ORANGE);
-        }
     }
     private void draw() {
 
@@ -152,6 +149,10 @@ public class SimView extends View<SimulatorController, Simulator> {
                         } else {
                             garage[floor][row][place].setStroke(Color.RED);
                             paintCar(floor, row, place, car);
+                        }
+                        if(car.getReservation()){
+                            garage[floor][row][place].setStroke(Color.ORANGE);
+
                         }
                     } else {
                         garage[floor][row][place].setFill(Color.ANTIQUEWHITE);

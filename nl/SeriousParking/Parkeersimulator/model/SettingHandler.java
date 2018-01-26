@@ -38,7 +38,7 @@ public class SettingHandler extends Model{
     garageRows=6;
     garagePlaces=20;
 
-    weekDayReservations=20;
+    weekDayReservations=500;
     WeekendReservations=10;
 
 

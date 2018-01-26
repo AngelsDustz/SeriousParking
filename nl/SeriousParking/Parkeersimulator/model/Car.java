@@ -15,12 +15,12 @@ public class Car extends Model {
      * Constructor for objects of class Car
      */
     public Car() {
-        reservation    = false;
+        reservation         = false;
         isParkedDouble      = false;
-        hasToPay       = true;
+        hasToPay            = true;
         Random random       = new Random();
         int stayMinutes     = (int) (15 + random.nextFloat() * 3 * 60);
-        minutesLeft    = stayMinutes;
+        minutesLeft         = stayMinutes;
     }
 
     public boolean getReservation() {

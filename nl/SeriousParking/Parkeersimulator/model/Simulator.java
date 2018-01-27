@@ -15,9 +15,9 @@ public class Simulator extends Model implements Runnable {
     private boolean GarageIsSet;
     private boolean doubleEntrance;
 
-	private Queue entranceCarQueue;
-    private Queue preEntranceQueue;
-    private Queue backEntranceCarQueue;
+	private Queue entranceAdhocQueue;
+    private Queue enteringCars;
+    private Queue entrancePassQueue  ;
     private Queue paymentCarQueue;
     private Queue exitCarQueue;
 
@@ -26,7 +26,8 @@ public class Simulator extends Model implements Runnable {
     private int numberOfRows;
     private int numberOfPlaces;
     private int maxQueueSize;
-    private int totalCarsPassed;
+    private int numberOfAdhocPassing;
+    private int numberOfPassCarsPassing;
 
     private double NumberOfCarsParkedDouble;
     private double numberOfAddhoccarsinPark;
@@ -54,14 +55,17 @@ public class Simulator extends Model implements Runnable {
     private int exitSpeed; // number of cars that can leave per minute
 
     public Simulator() {
+
         GarageIsSet =  false;
         NumberOfCarsParkedDouble    = 0;
         numberOfAddhoccarsinPark    = 0;
         numberOfPasscarsinPark      = 0;
+        numberOfAdhocPassing        = 0;
+        numberOfPassCarsPassing     = 0;
 
-        entranceCarQueue    = new Queue();
-        backEntranceCarQueue = new Queue();
-        preEntranceQueue = new Queue();
+        entranceAdhocQueue = new Queue();
+        entrancePassQueue   = new Queue();
+        enteringCars        = new Queue();
         paymentCarQueue     = new Queue();
         exitCarQueue        = new Queue();
         profit              = 0;
@@ -218,35 +222,36 @@ public class Simulator extends Model implements Runnable {
     }
 
 
-    private void queueSizeHandler(Queue queue){
+    private int carsPassingBy(Queue queue){
+        int carsPassed=0;
         if(numberOfOpenSpots!=0){
             while (queue.carsInQueue()>maxQueueSize){
                 queue.removeCar();
-                totalCarsPassed++;
+               carsPassed++;
             }
         } else {
            while(queue.carsInQueue()>0){
                queue.removeCar();
-               totalCarsPassed++;
+               carsPassed++;
            }
 
 
         }
+        return carsPassed;
     }
 
 
     private void carToQueue(){
         Car car;
-        while(preEntranceQueue.carsInQueue()>0) {
+        while(enteringCars.carsInQueue()>0) {
 
-            car = preEntranceQueue.removeCar();
-            entranceCarQueue.addCar(car);
-            if (doubleEntrance && preEntranceQueue.carsInQueue()>0) {
-
-                car = preEntranceQueue.removeCar();
-                backEntranceCarQueue.addCar(car);
-
+            car = enteringCars.removeCar();
+            if (car.getHasToPay() && !car.getReservation()){
+                entranceAdhocQueue.addCar(car);
+            } else {
+                entrancePassQueue.addCar(car);
             }
+
         }
 
     }
@@ -255,13 +260,16 @@ public class Simulator extends Model implements Runnable {
     private void handleEntrance(){
         carsArriving();
         carToQueue();
-        carsEntering(entranceCarQueue);
-        queueSizeHandler(entranceCarQueue);
-        if (doubleEntrance)
-        {
-            carsBackEntering(backEntranceCarQueue);
-           queueSizeHandler(backEntranceCarQueue);
-        }
+        carsEntering(entranceAdhocQueue);
+        numberOfAdhocPassing=carsPassingBy(entranceAdhocQueue)+numberOfAdhocPassing;
+
+        carsBackEntering(entrancePassQueue);
+        numberOfPassCarsPassing=carsPassingBy(entrancePassQueue)+numberOfPassCarsPassing;
+
+
+
+
+
 
 
     }
@@ -278,6 +286,7 @@ public class Simulator extends Model implements Runnable {
         addArrivingCars(numberOfCars, false, false);
     	numberOfCars = getNumberOfCars(weekDayPassArrivals, weekendPassArrivals);
         addArrivingCars(numberOfCars, true, false);
+
         numberOfCars = getNumberOfCars(weekDayReservations/2, WeekendReservations/2);
         addArrivingCars(numberOfCars, true, true);
         numberOfCars = getNumberOfCars(weekDayReservations/2, WeekendReservations/2);
@@ -439,7 +448,7 @@ public class Simulator extends Model implements Runnable {
             data.put("profit", profit);
             data.put("time_passed", Date_time.getTickSinceStart());
             data.put("minutes", Date_time.getMinutes());
-            data.put("cars", totalCarsPassed);
+            data.put("cars", numberOfAdhocPassing+numberOfPassCarsPassing);
             data.put("doubled", car.getisParkedDouble());
             sendEvent(data);
             carLeavesSpot(car);
@@ -487,7 +496,7 @@ public class Simulator extends Model implements Runnable {
             if (rand<=chance && chance!=0 && !reservation){
                 car.setParkedDouble(true);
             }
-            preEntranceQueue.addCar(car);
+            enteringCars.addCar(car);
 
         }
 
@@ -688,10 +697,11 @@ public class Simulator extends Model implements Runnable {
         NumberOfCarsParkedDouble=0;
         numberOfAddhoccarsinPark=0;
         numberOfPasscarsinPark=0;
-        totalCarsPassed=0;
-        preEntranceQueue.emptyQueue();
-        entranceCarQueue.emptyQueue();
-        backEntranceCarQueue.emptyQueue();
+        numberOfPassCarsPassing =0;
+        numberOfAdhocPassing    =0;
+        enteringCars.emptyQueue();
+        entranceAdhocQueue.emptyQueue();
+        entrancePassQueue.emptyQueue();
         paymentCarQueue.emptyQueue();
         exitCarQueue.emptyQueue();
         numberOfOpenSpots   = numberOfFloors *numberOfRows * numberOfPlaces;
@@ -706,7 +716,7 @@ public class Simulator extends Model implements Runnable {
     }
 
     public int getTotalCarsPassed() {
-        return totalCarsPassed;
+        return numberOfPassCarsPassing+numberOfAdhocPassing;
     }
 
     public double getNumberOfPasscarsinPark() {
@@ -749,7 +759,7 @@ public class Simulator extends Model implements Runnable {
         return NumberOfCarsParkedDouble;
     }
 
-    public int getNumberOfCarsInQueue() { return (entranceCarQueue.carsInQueue()+backEntranceCarQueue.carsInQueue()); }
+    public int getNumberOfCarsInQueue() { return entranceAdhocQueue.carsInQueue(); }
 
     public boolean isGarageIsSet() {
         return GarageIsSet;
@@ -763,7 +773,7 @@ public class Simulator extends Model implements Runnable {
         GarageIsSet = garageIsSet;
     }
     public int getNumberOfCarsInBackQueue(){
-        return backEntranceCarQueue.carsInQueue();
+        return entrancePassQueue.carsInQueue();
     }
 }
 

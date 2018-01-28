@@ -5,13 +5,12 @@ import java.util.Random;
 
 public abstract class Car extends Model {
 
-    protected Location    location;
-    private GarageSection section;
-    private boolean     allTransactionsComplete;
-    private int         minutesLeft;
-
-
-    private boolean     ParkedDouble;
+    protected   Location        location;
+    private     GarageSection   section;
+    private     boolean         allTransactionsComplete;
+    private     int             minutesLeft;
+    protected   int             TimeStayed;
+    private     boolean         ParkedDouble;
 
     /**
      * Constructor for objects of class Car
@@ -24,6 +23,7 @@ public abstract class Car extends Model {
         Random random       = new Random();
         int stayMinutes     = (int) (15 + random.nextFloat() * 3 * 60);
         minutesLeft         = stayMinutes;
+        TimeStayed          = stayMinutes;
     }
 
 

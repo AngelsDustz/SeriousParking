@@ -13,9 +13,9 @@ import nl.SeriousParking.Parkeersimulator.model.Simulator;
 
 public class TextView extends View<SimulatorController, Simulator>  {
     Label timeLbl    = new Label();
-    Label total1     = new Label();
+    Label adHoc1 = new Label();
     Label passcar1   = new Label();
-    Label adhoccar1  = new Label();
+    Label reservation1 = new Label();
     Label queue1     = new Label();
     Label queue2     = new Label();
 
@@ -30,9 +30,9 @@ public class TextView extends View<SimulatorController, Simulator>  {
         GridPane grid = new GridPane();
 
 
-        Label total     = new Label("totaal aantal auto's");
+        Label adhoc     = new Label("aantal adhoc auto's");
         Label passcar   = new Label("Abbonoment's houders");
-        Label adhoccar  = new Label("Gast auto's");
+        Label reservation  = new Label("reserveringen");
         Label queue     = new Label("Auto's Ad-hoc rij");
         Label backqueue     = new Label("Auto's in pashouder-gereserveerde rij");
         Label dubbel    = new Label("dubbel geparkeerde auto's");
@@ -43,9 +43,9 @@ public class TextView extends View<SimulatorController, Simulator>  {
         grid.getColumnConstraints().add(new ColumnConstraints(250));
         grid.getRowConstraints().add(new RowConstraints(50));
 
-        grid.add(total,1,5);
+        grid.add(adhoc,1,5);
         grid.add(passcar,1,6);
-        grid.add(adhoccar,1,7);
+        grid.add(reservation,1,7);
         grid.add(dubbel,1,8);
         grid.add(reser,1,9);
         grid.add(free,1,10);
@@ -54,9 +54,9 @@ public class TextView extends View<SimulatorController, Simulator>  {
         grid.add(rev,1,13);
 
         grid.add(timeLbl,2,2);
-        grid.add(total1,2,5);
+        grid.add(adHoc1,2,5);
         grid.add(passcar1,2,6);
-        grid.add(adhoccar1,2,7);
+        grid.add(reservation1,2,7);
         grid.add(dubbel1,2,8);
         grid.add(reser1,2,9);
         grid.add(free1,2,10);
@@ -77,11 +77,11 @@ public class TextView extends View<SimulatorController, Simulator>  {
             public void run() {
 
                 timeLbl.setText("Year :  "+ Date_time.getYears()+"  week :  "+Date_time.getWeeks()+"  day :  "+Date_time.getDays()+"  time :  "+Date_time.getHours()+" : "+Date_time.getMinutes()+" : 00");
-                total1.setText(""+(+model.getAdhocSection().getFilledspots()));
+                adHoc1.setText(""+(+model.getAdhocSection().getFilledspots()));
                 passcar1.setText(""+model.getPassSection().getFilledspots());
-                adhoccar1.setText(""+model.getPassSection().getFilledspots());
+                reservation1.setText(""+model.getReservationSection().getFilledspots());
                 dubbel1.setText(""+model.getNumberOfCarsParkedDouble());
-                reser1.setText(""+model.getReservationSection().getFilledspots());
+                reser1.setText(""+model.getReservationSection().getFreeSpots());
                 //TODO uitsplitsen per section aanroepen als model.get....Section.getFreeSpots()
                 free1.setText(""+model.getAdhocSection().getFreeSpots());
 

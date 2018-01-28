@@ -1,7 +1,6 @@
 package nl.SeriousParking.Parkeersimulator.view;
 
 import javafx.application.Platform;
-import javafx.geometry.Side;
 import javafx.scene.chart.PieChart;
 import javafx.scene.layout.VBox;
 import nl.SeriousParking.Parkeersimulator.controller.SimulatorController;
@@ -11,7 +10,8 @@ import nl.SeriousParking.Parkeersimulator.model.Simulator;
 public class PieChartView2 extends View<SimulatorController, Simulator> implements Runnable {
     PieChart.Data abbonementSlice;
     PieChart.Data adhocSlice;
-    double percentage;
+    PieChart.Data reservationSlice;
+    final  double SIZE =100;
     boolean run = false;
 
 
@@ -20,13 +20,15 @@ public class PieChartView2 extends View<SimulatorController, Simulator> implemen
 
         PieChart pieChart = new PieChart();
 
-        percentage=100;
-        abbonementSlice = new PieChart.Data("Abbonoment", (50/percentage*100));
-        adhocSlice = new PieChart.Data("AdHoc", (50/percentage*100));
+
+        reservationSlice= new PieChart.Data("Reserveringen",(33/SIZE*100));
+        abbonementSlice = new PieChart.Data("Abbonoment", (33/SIZE*100));
+        adhocSlice = new PieChart.Data("AdHoc", (33/SIZE*100));
 
 
 
         pieChart.getData().add(abbonementSlice);
+        pieChart.getData().add(reservationSlice);
         pieChart.getData().add(adhocSlice);
 
         pieChart.setLegendVisible(false);
@@ -49,14 +51,18 @@ public class PieChartView2 extends View<SimulatorController, Simulator> implemen
     @Override
     public void run() {
         while (run) {
-            Double adhoc    = model.getNumberOfAddhoccarsinPark()/100*100;
-            Double abbo     = model.getNumberOfPasscarsinPark()/100*100;
+            Double adhoc    = model.getAdhocSection().getFilledspots()/SIZE*100;
+            Double abbo     = model.getPassSection().getFilledspots()/SIZE*100;
+            Double res     = model.getReservationSection().getFilledspots()/SIZE*100;
+
+
 
             Platform.runLater(new Runnable() {
                 @Override
                 public void run() {
                     abbonementSlice.setPieValue(abbo);
                     adhocSlice.setPieValue(adhoc);
+                    reservationSlice.setPieValue(res);
                 }
             });
 

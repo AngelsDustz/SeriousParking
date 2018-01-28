@@ -8,6 +8,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.RowConstraints;
 import nl.SeriousParking.Parkeersimulator.controller.SimulatorController;
 import nl.SeriousParking.Parkeersimulator.model.Date_time;
+import nl.SeriousParking.Parkeersimulator.model.Garage;
 import nl.SeriousParking.Parkeersimulator.model.Simulator;
 
 public class TextView extends View<SimulatorController, Simulator>  {
@@ -32,11 +33,11 @@ public class TextView extends View<SimulatorController, Simulator>  {
         Label total     = new Label("totaal aantal auto's");
         Label passcar   = new Label("Abbonoment's houders");
         Label adhoccar  = new Label("Gast auto's");
-        Label queue     = new Label("Auto's in  queue");
-        Label backqueue     = new Label("Auto's in achterste queue");
+        Label queue     = new Label("Auto's Ad-hoc rij");
+        Label backqueue     = new Label("Auto's in pashouder-gereserveerde rij");
         Label dubbel    = new Label("dubbel geparkeerde auto's");
         Label reser     = new Label("gereserveerde plekken");
-        Label free      = new Label("vrij plekken");
+        Label free      = new Label("vrij ad-hoc plekken");
         Label rev       = new Label("Winst");
 
         grid.getColumnConstraints().add(new ColumnConstraints(250));
@@ -74,15 +75,19 @@ public class TextView extends View<SimulatorController, Simulator>  {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
+
                 timeLbl.setText("Year :  "+ Date_time.getYears()+"  week :  "+Date_time.getWeeks()+"  day :  "+Date_time.getDays()+"  time :  "+Date_time.getHours()+" : "+Date_time.getMinutes()+" : 00");
-                total1.setText(""+(+model.getNumberOfPasscarsinPark()+model.getNumberOfAddhoccarsinPark()));
-                passcar1.setText(""+model.getNumberOfPasscarsinPark());
-                adhoccar1.setText(""+model.getNumberOfAddhoccarsinPark());
+                total1.setText(""+(+model.getAdhocSection().getFilledspots()));
+                passcar1.setText(""+model.getPassSection().getFilledspots());
+                adhoccar1.setText(""+model.getPassSection().getFilledspots());
                 dubbel1.setText(""+model.getNumberOfCarsParkedDouble());
-                reser1.setText(""+model.getNumberOfReservations());
-                free1.setText(""+model.getNumberOfOpenSpots());
-                queue1.setText(""+model.getNumberOfCarsInQueue());
-                queue2.setText(""+model.getNumberOfCarsInBackQueue());
+                reser1.setText(""+model.getReservationSection().getFilledspots());
+                //TODO uitsplitsen per section aanroepen als model.get....Section.getFreeSpots()
+                free1.setText(""+model.getAdhocSection().getFreeSpots());
+
+
+                queue1.setText(""+ Garage.getNumberCarsInAdhocQueue());
+                queue2.setText(""+ Garage.getNumberCarsInPassQueue());
                 rev1.setText("€ " + model.getProfit());
             }
         });

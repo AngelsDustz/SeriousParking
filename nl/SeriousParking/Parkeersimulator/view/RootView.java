@@ -48,7 +48,7 @@ public class RootView {
 ////////////////////////////ADD VIEWS MODELS AND CONTROLLERS/////////////////////////////////
         Simulator model                 = new Simulator();
         SimulatorController controller  = new SimulatorController(model);
-        SimView view                    = new SimView(controller, model);
+        GarageView view                    = new GarageView(controller, model);
 
         SettingHandler handler          = new SettingHandler();
         SettingsController settingsc    = new SettingsController(handler);

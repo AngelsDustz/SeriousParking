@@ -1,5 +1,5 @@
 package nl.SeriousParking.Parkeersimulator.view;
-
+/*
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -200,4 +200,4 @@ public class SimView extends View<SimulatorController, Simulator> {
         }
     }
 
-}
+}*/

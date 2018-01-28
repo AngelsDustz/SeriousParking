@@ -8,6 +8,9 @@ import java.util.*;
 public class Simulator extends Model implements Runnable {
     //@todo Make this a setting.
     private static final double CARPRICE = 12.50;
+    private final int ADHOC =1;
+    private final int PASS  =2;
+    private final int RES  =3;
 
     private boolean run;
 	private double profit;
@@ -15,26 +18,33 @@ public class Simulator extends Model implements Runnable {
     private boolean GarageIsSet;
     private boolean doubleEntrance;
 
-	private Queue entranceAdhocQueue;
+
     private Queue enteringCars;
-    private Queue entrancePassQueue  ;
-    private Queue paymentCarQueue;
-    private Queue exitCarQueue;
 
 
-    private int numberOfFloors;
-    private int numberOfRows;
-    private int numberOfPlaces;
-    private int maxQueueSize;
+
+
+
+    private int adhocFloors;
+    private int adhocrows;
+    private int adhocplaces;
     private int numberOfAdhocPassing;
+
+
+
+
     private int numberOfPassCarsPassing;
 
     private double NumberOfCarsParkedDouble;
     private double numberOfAddhoccarsinPark;
     private double numberOfPasscarsinPark;
-    private double numberOfOpenSpots;
+
+
+
+
     private double numberOfReservations;
     private Car[][][] cars;
+
     private Random randomGenerator;
 
     private ArrayList<Model> listners = new ArrayList<>();
@@ -54,26 +64,39 @@ public class Simulator extends Model implements Runnable {
     private int paymentSpeed; // number of cars that can pay per minute
     private int exitSpeed; // number of cars that can leave per minute
 
+
+   private GarageSection adhocSection;
+   private GarageSection passSection;
+   private GarageSection reservationSection;
+
     public Simulator() {
 
-        GarageIsSet =  false;
+         adhocSection = new GarageSection(SettingHandler.adhocFloors,SettingHandler.adhocRows,SettingHandler.adhocplaces);
+         passSection = new GarageSection(SettingHandler.passFloors,SettingHandler.passRows,SettingHandler.passplaces);
+         reservationSection = new GarageSection(SettingHandler.reservationFloors,SettingHandler.reservationRows,SettingHandler.reservationplaces);
+
+         adhocFloors                = SettingHandler.getAdhocFloors();
+         adhocrows                  = SettingHandler.getAdhocRows();
+         adhocplaces                = SettingHandler.getAdhocplaces();
+         numberOfAdhocPassing       =0;
+
+
+
+
+        GarageIsSet =  true;
         NumberOfCarsParkedDouble    = 0;
         numberOfAddhoccarsinPark    = 0;
         numberOfPasscarsinPark      = 0;
         numberOfAdhocPassing        = 0;
         numberOfPassCarsPassing     = 0;
 
-        entranceAdhocQueue = new Queue();
-        entrancePassQueue   = new Queue();
+
+
         enteringCars        = new Queue();
-        paymentCarQueue     = new Queue();
-        exitCarQueue        = new Queue();
         profit              = 0;
 
-        numberOfFloors     = SettingHandler.garageFloors;
-        numberOfRows       = SettingHandler.garageRows;
-        numberOfPlaces     = SettingHandler.garagePlaces;
-        maxQueueSize       = SettingHandler.maxQueueSize;
+
+
 
         firstRun           = true;
         randomGenerator    = new Random();
@@ -90,11 +113,10 @@ public class Simulator extends Model implements Runnable {
 
 
     private void setSettings(){
-        maxQueueSize       = SettingHandler.maxQueueSize;
         tickPause   = SettingHandler.tickPause;
         chance      = SettingHandler.chance;
         weekDayReservations = SettingHandler.weekDayReservations;
-        WeekendReservations = SettingHandler.WeekendReservations;
+        WeekendReservations = SettingHandler.weekendReservations;
         weekDayArrivals     = SettingHandler.weekDayArrivals;
         weekendArrivals     = SettingHandler.weekendArrivals;
         weekDayPassArrivals = SettingHandler.weekDayPassArrivals;
@@ -117,17 +139,12 @@ public class Simulator extends Model implements Runnable {
     private void startSimulator() {
 
         if(firstRun){
-            cars        = new Car[numberOfFloors][numberOfRows][numberOfPlaces];
-            setGarageSizeValue();
-            firstRun    = false;
+
         }
 
         new Thread(this).start();
     }
 
-    private void setGarageSizeValue(){
-          numberOfOpenSpots  = numberOfFloors * numberOfRows * numberOfPlaces;
-    }
 
     public void startStop(){
         if (!run){
@@ -159,7 +176,7 @@ public class Simulator extends Model implements Runnable {
 
     private void tick() {
     	Date_time.advanceTime();
-        carTick();
+        adhocSection.Tick();
 
 
         Platform.runLater(new Runnable() {
@@ -188,83 +205,29 @@ public class Simulator extends Model implements Runnable {
         }
     }
 
-    private void carTick(){
-        for (int floor = 0; floor < getNumberOfFloors(); floor++) {
-
-            for (int row = 0; row < getNumberOfRows(); row++) {
-
-                for (int place = 0; place < getNumberOfPlaces(); place++) {
-                            Car car = cars[floor][row][place];
-                    if (car!=null) {
-                        if(!car.getReservation()) {
-                            car.tick();
-                        } else {
-                            if (car.getPreTime() > 0) {
-                                car.setPreTime(car.getPreTime() - 1);
-                            }
-                            if(car.getPreTime()==0){
-                                chance=randomGenerator.nextInt(100);
-                                if(reservationShowchance< chance) {
-                                    car.setActive(true);
-                                } else {
-                                    car.noShow();
-                                }
-
-                                car.setPreTime(car.getPreTime()-1);
-                            } else {
-                                car.tick();
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
 
 
-    private int carsPassingBy(Queue queue){
-        int carsPassed=0;
-        if(numberOfOpenSpots!=0){
-            while (queue.carsInQueue()>maxQueueSize){
-                queue.removeCar();
-               carsPassed++;
-            }
-        } else {
-           while(queue.carsInQueue()>0){
-               queue.removeCar();
-               carsPassed++;
-           }
 
 
-        }
-        return carsPassed;
-    }
 
 
-    private void carToQueue(){
-        Car car;
-        while(enteringCars.carsInQueue()>0) {
 
-            car = enteringCars.removeCar();
-            if (car.getHasToPay() && !car.getReservation()){
-                entranceAdhocQueue.addCar(car);
-            } else {
-                entrancePassQueue.addCar(car);
-            }
-
-        }
-
-    }
 
 
     private void handleEntrance(){
         carsArriving();
-        carToQueue();
-        carsEntering(entranceAdhocQueue);
-        numberOfAdhocPassing=carsPassingBy(entranceAdhocQueue)+numberOfAdhocPassing;
+        Garage.carToQueue(enteringCars);
 
-        carsBackEntering(entrancePassQueue);
-        numberOfPassCarsPassing=carsPassingBy(entrancePassQueue)+numberOfPassCarsPassing;
+        numberOfAdhocPassing=adhocSection.carsPassingBy(Garage.entranceAdhocQueue)+numberOfAdhocPassing;
+        adhocSection.carsEntering(Garage.entranceAdhocQueue);
+
+
+        passSection.carsEntering(Garage.entrancePassQueue);
+        numberOfPassCarsPassing=passSection.carsPassingBy(Garage.entrancePassQueue)+numberOfPassCarsPassing;
+
+        reservationSection.carsEntering(Garage.reservationQueue);
+       // numberOfReservationsPassing=passSection.carsPassingBy(Garage.entrancePassQueue)+numberOfPassCarsPassing;
+
 
 
 
@@ -276,21 +239,27 @@ public class Simulator extends Model implements Runnable {
 
     
     private void handleExit(){
-        carsReadyToLeave();
+        adhocSection.carsReadyToLeave();
+        adhocSection.carsLeaving();
+
+        passSection.carsReadyToLeave();
+        passSection.carsLeaving();
+
+
+       reservationSection.carsReadyToLeave();
+       reservationSection.carsLeaving();
         carsPaying();
-        carsLeaving();
     }
     
     private void carsArriving(){
     	int numberOfCars = getNumberOfCars(weekDayArrivals, weekendArrivals);
-        addArrivingCars(numberOfCars, false, false);
+        addArrivingCars(numberOfCars, ADHOC);
     	numberOfCars = getNumberOfCars(weekDayPassArrivals, weekendPassArrivals);
-        addArrivingCars(numberOfCars, true, false);
+        addArrivingCars(numberOfCars, PASS);
 
-        numberOfCars = getNumberOfCars(weekDayReservations/2, WeekendReservations/2);
-        addArrivingCars(numberOfCars, true, true);
-        numberOfCars = getNumberOfCars(weekDayReservations/2, WeekendReservations/2);
-        addArrivingCars(numberOfCars, false, true);
+
+        numberOfCars = getNumberOfCars(weekDayReservations, WeekendReservations);
+        addArrivingCars(numberOfCars, RES);
     }
 
     private void carcounterADD(Car car){
@@ -344,96 +313,13 @@ public class Simulator extends Model implements Runnable {
 
     }
 
-
-    private void carsEntering(Queue queue){
-        int i=0;
-
-        // Remove car from the front of the queue and assign to a parking space.
-        while (queue.carsInQueue()>0 && getNumberOfOpenSpots()>0 && i<enterSpeed) {
-            Car car = queue.removeCar();
-
-            if (!car.getisParkedDouble()){
-                Location freeLocation = getFirstFreeLocation();
-                setCarAt(freeLocation, car);
-
-            } else {
-                Location[] freeLocation = getFirstFreeDoubleLocation();
-
-
-                if (freeLocation != null) {
-                    Location loc1   = freeLocation[0];
-                    Location loc2   = freeLocation[1];
-                    Car car2        = new Car();
-                    car2            = car2.copy(car);
-
-                    setCarAt(loc1, car);
-                    setCarAt(loc2, car2);
-
-                } else {
-
-                    queue.addCar(car);
-                }
-            }
-
-            i++;
-        }
-    }
-    private void carsBackEntering(Queue queue){
-        int i=0;
-        // Remove car from the front of the queue and assign to a parking space.
-        while (queue.carsInQueue()>0 && getNumberOfOpenSpots()>0 && i<enterSpeed) {
-
-            Car car = queue.removeCar();
-
-            if (!car.getisParkedDouble()){
-                Location freeLocation = getLastFreeLocation();
-                setCarAt(freeLocation, car);
-
-
-            } else {
-                Location[] freeLocation = getLastFreeDoubleLocation();
-
-
-                if (freeLocation != null) {
-                    Location loc1   = freeLocation[0];
-                    Location loc2   = freeLocation[1];
-                    Car car2        = new Car();
-                    car2            = car2.copy(car);
-
-                    setCarAt(loc1, car);
-                    setCarAt(loc2, car2);
-
-                }
-            }
-            i++;
-        }
-    }
-
-    private void carsReadyToLeave(){
-        // Add leaving cars to the payment queue.
-        Car car = getFirstLeavingCar();
-
-        while (car!=null) {
-        	if (car.getHasToPay()){
-	            car.setIsPaying(true);
-	            paymentCarQueue.addCar(car);
-        	} else {
-               carLeavesSpot(car);
-
-        	}
-            car = getFirstLeavingCar();
-        }
-    }
-
-
-
     private void carsPaying(){
         // Let cars pay.
     	int i=0;
 
-    	while (paymentCarQueue.carsInQueue()>0 && i < paymentSpeed){
+    	while (Garage.paymentCarQueue.carsInQueue()>0 && i < paymentSpeed){
             HashMap<String, Object> data = new HashMap<>();
-            Car car = paymentCarQueue.removeCar();
+            Car car = Garage.paymentCarQueue.removeCar();
 
             if (car.getisParkedDouble()) {
                 this.profit += (CARPRICE/2);
@@ -451,7 +337,10 @@ public class Simulator extends Model implements Runnable {
             data.put("cars", numberOfAdhocPassing+numberOfPassCarsPassing);
             data.put("doubled", car.getisParkedDouble());
             sendEvent(data);
-            carLeavesSpot(car);
+
+
+
+            adhocSection.carLeavesSpot(car);
             i++;
     	}
     }
@@ -460,15 +349,7 @@ public class Simulator extends Model implements Runnable {
         return profit;
     }
 
-    private void carsLeaving(){
-        // Let cars leave.
-    	int i=0;
-    	while (exitCarQueue.carsInQueue()>0 && i < exitSpeed){
-            carCounterRemove(exitCarQueue.removeCar());
 
-            i++;
-    	}
-    }
     
     private int getNumberOfCars(int weekDay, int weekend){
         Random random = new Random();
@@ -484,16 +365,29 @@ public class Simulator extends Model implements Runnable {
         return (int)Math.round(numberOfCarsPerHour / 60);	
     }
     
-    private void addArrivingCars(int numberOfCars, boolean hasPass, boolean reservation) {
+    private void addArrivingCars(int numberOfCars, int type) {
         // Add the cars to the back of the queue.
         for (int i = 0; i < numberOfCars; i++) {
-            Car car =new Car();
+            Car car;
+           switch (type){
+               case ADHOC   :   car = new AdhocCar();
+                                break;
+               case PASS    :   car = new PassCar();
+                                break;
+               case RES     :   car = new ReservationCar();
+                                break;
+               default      :   car = new Car();
+                                break;
+           }
 
-            car.setHasToPay(!hasPass);
+
+
+
+
             int rand= randomGenerator.nextInt(100);
-            car.setReservation(reservation);
-            if(!car.getReservation()){car.setActive(true);}
-            if (rand<=chance && chance!=0 && !reservation){
+
+
+            if (rand<=chance && chance!=0 && !(car instanceof ReservationCar)){
                 car.setParkedDouble(true);
             }
             enteringCars.addCar(car);
@@ -502,210 +396,15 @@ public class Simulator extends Model implements Runnable {
 
     }
 
-    private void carLeavesSpot(Car car){
 
-            removeCarAt(car.getLocation());
-
-            exitCarQueue.addCar(car);
-
-    }
-
-
-    private boolean locationIsValid(Location location) {
-        if (location == null) {
-            return false;
-        }
-
-        int floor   = location.getFloor();
-        int row     = location.getRow();
-        int place   = location.getPlace();
-
-        if (floor < 0 || floor >= numberOfFloors) {
-            return false;
-        }
-
-        if (row < 0 || row > numberOfRows) {
-            return false;
-        }
-
-        if (place < 0 || place > numberOfPlaces) {
-            return false;
-        }
-
-        return true;
-    }
-
-    public Car getCarAt(Location location) {
-        if (!locationIsValid(location)) {
-            return null;
-        }
-
-        return cars[location.getFloor()][location.getRow()][location.getPlace()];
-    }
-
-    private boolean setCarAt(Location location, Car car) {
-        if (!locationIsValid(location)) {
-            return false;
-        }
-
-        Car oldCar = getCarAt(location);
-        if (oldCar == null) {
-
-            cars[location.getFloor()][location.getRow()][location.getPlace()] = car;
-            car.setLocation(location);
-            carcounterADD(car);
-            numberOfOpenSpots--;
-            return true;
-        }
-
-        return false;
-    }
-
-    private Car removeCarAt(Location location) {
-        if (!locationIsValid(location)) {
-            return null;
-        }
-
-        Car car = getCarAt(location);
-        if (car == null) {
-            return null;
-        }
-
-        cars[location.getFloor()][location.getRow()][location.getPlace()] = null;
-        car.setLocation(null);
-        numberOfOpenSpots++;
-
-        return cars[location.getFloor()][location.getRow()][location.getPlace()] = null;
-    }
-
-    private Location getFirstFreeLocation() {
-        for (int floor = 0; floor < getNumberOfFloors(); floor++) {
-
-            for (int row = 0; row < getNumberOfRows(); row++) {
-
-                for (int place = 0; place < getNumberOfPlaces(); place++) {
-                    Location location = new Location(floor, row, place);
-
-                    if (getCarAt(location) == null) {
-                        return location;
-                    }
-                }
-            }
-        }
-        return null;
-    }
-
-    private Location getLastFreeLocation() {
-        for (int floor = getNumberOfFloors()-1; floor >=0; floor--) {
-
-            for (int row = getNumberOfRows()-1; row >=0; row--) {
-
-                for (int place = getNumberOfPlaces()-1; place >=0; place--) {
-                    Location location = new Location(floor, row, place);
-
-                    if (getCarAt(location) == null) {
-                        return location;
-                    }
-                }
-            }
-        }
-        return null;
-    }
-
-    private Location[] getFirstFreeDoubleLocation() {
-        Location[] locations = new Location[2];
-        for (int floor = 0; floor < getNumberOfFloors(); floor++) {
-            for (int row = 0; row < getNumberOfRows(); row++) {
-                for (int place = 0; place < getNumberOfPlaces(); place++) {
-                    Location location = new Location(floor, row, place);
-                    if (getCarAt(location) == null) {
-                        if (place<numberOfPlaces-1){
-                            Location secondLocation = new Location(floor, row, place + 1);
-                            if (getCarAt(secondLocation) == null) {
-
-                                locations[0] = location;
-                                locations[1] = secondLocation;
-                                return locations;
-                            }
-                        }
-                    }
-                }
-            }
-
-        }
-        return null;
-    }
-
-
-
-    private Location[] getLastFreeDoubleLocation() {
-        Location[] locations = new Location[2];
-        for (int floor = getNumberOfFloors()-1; floor >=0; floor--) {
-            for (int row = getNumberOfRows()-1; row >=0; row--) {
-                for (int place = getNumberOfPlaces()-1; place >=0; place--) {
-                    Location location = new Location(floor, row, place);
-                    if (getCarAt(location) == null) {
-                        if (place<numberOfPlaces-1){
-                            Location secondLocation = new Location(floor, row, place - 1);
-                            if (getCarAt(secondLocation) == null) {
-
-                                locations[0] = location;
-                                locations[1] = secondLocation;
-                                return locations;
-                            }
-                        }
-                    }
-                }
-            }
-
-        }
-        return null;
-    }
-
-
-    private Car getFirstLeavingCar() {
-        for (int floor = 0; floor < getNumberOfFloors(); floor++) {
-
-            for (int row = 0; row < getNumberOfRows(); row++) {
-
-                for (int place = 0; place < getNumberOfPlaces(); place++) {
-                    Location location = new Location(floor, row, place);
-                    Car car = getCarAt(location);
-
-                    if (car != null && car.getMinutesLeft() <= 0 && !car.getIsPaying()) {
-                        return car;
-                    }
-                }
-            }
-        }
-
-        return null;
-    }
 
     public void ResetSim() {
-        for (int floor = 0; floor < getNumberOfFloors(); floor++) {
 
-            for (int row = 0; row < getNumberOfRows(); row++) {
-
-                for (int place = 0; place < getNumberOfPlaces(); place++) {
-                    cars[floor][row][place] = null;
-                }
-            }
-        }
 
         Date_time.resetTimer();
-        NumberOfCarsParkedDouble=0;
-        numberOfAddhoccarsinPark=0;
-        numberOfPasscarsinPark=0;
-        numberOfPassCarsPassing =0;
-        numberOfAdhocPassing    =0;
-        enteringCars.emptyQueue();
-        entranceAdhocQueue.emptyQueue();
-        entrancePassQueue.emptyQueue();
-        paymentCarQueue.emptyQueue();
-        exitCarQueue.emptyQueue();
-        numberOfOpenSpots   = numberOfFloors *numberOfRows * numberOfPlaces;
-        numberOfReservations=0;
+        adhocSection.clear();
+        passSection.clear();
+        reservationSection.clear();
 
         profit  = 0;
         run     = false;
@@ -727,53 +426,27 @@ public class Simulator extends Model implements Runnable {
         return numberOfAddhoccarsinPark;
     }
 
-    public int getNumberOfFloors() {
-        return numberOfFloors;
-    }
-
-    public int getNumberOfRows() {
-        return numberOfRows;
-    }
-
-    public int getNumberOfPlaces() {
-        return numberOfPlaces;
-    }
-
-    public void setNumberOfFloors(int numberOfFloors) {
-        this.numberOfFloors = numberOfFloors;
-    }
-
-    public void setNumberOfRows(int numberOfRows) {
-        this.numberOfRows = numberOfRows;
-    }
-
-    public void setNumberOfPlaces(int numberOfPlaces) {
-        this.numberOfPlaces = numberOfPlaces;
-    }
-
-    public double getNumberOfOpenSpots() {
-        return numberOfOpenSpots;
-    }
 
     public double getNumberOfCarsParkedDouble() {
         return NumberOfCarsParkedDouble;
     }
 
-    public int getNumberOfCarsInQueue() { return entranceAdhocQueue.carsInQueue(); }
+
 
     public boolean isGarageIsSet() {
         return GarageIsSet;
     }
 
-    public boolean isDoubleEntrance() {
-        return doubleEntrance;
-    }
 
-    public void setGarageIsSet(boolean garageIsSet) {
-        GarageIsSet = garageIsSet;
+
+    public GarageSection getAdhocSection(){return
+            adhocSection;
     }
-    public int getNumberOfCarsInBackQueue(){
-        return entrancePassQueue.carsInQueue();
+    public GarageSection getPassSection(){
+        return passSection;
+    }
+    public GarageSection getReservationSection(){
+        return reservationSection;
     }
 }
 

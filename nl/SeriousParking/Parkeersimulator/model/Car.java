@@ -4,14 +4,14 @@ package nl.SeriousParking.Parkeersimulator.model;
 import java.util.Random;
 
 public class Car extends Model {
-    private boolean     active;
-    private boolean     reservation;
-    private Location    location;
-    private int         preTime;
-    private int         minutesLeft;
-    private boolean     isPaying;
-    private boolean     hasToPay;
-    private boolean     isParkedDouble;
+    protected boolean     active;
+    protected boolean     reservation;
+    protected Location    location;
+    protected int         preTime;
+    protected int         minutesLeft;
+    protected boolean     isPaying;
+    protected boolean     hasToPay;
+    protected boolean     isParkedDouble;
 
     /**
      * Constructor for objects of class Car
@@ -124,5 +124,9 @@ public class Car extends Model {
         copiedCar.active      = car.active;
         return copiedCar;
     }
+
+
+
+
 }
 

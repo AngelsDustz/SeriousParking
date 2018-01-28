@@ -13,30 +13,31 @@ public class SimulatorController extends Controller<Simulator> {
     }
 
     public void startSimulator() {
-        if(model.isGarageIsSet()){
+        if (model.isGarageIsSet()) {
             model.startStop();
         }
     }
 
-    public void resetSimulator(){
-        if(model.isGarageIsSet()) {
+    public void resetSimulator() {
+        if (model.isGarageIsSet()) {
             model.ResetSim();
         }
     }
 
-    public void tick(){
-        if(model.isGarageIsSet()) {
+    public void tick() {
+        if (model.isGarageIsSet()) {
             model.singleTick();
         }
     }
 
     public void tickMany(int times) {
-        if( model.isGarageIsSet()){
+        if (model.isGarageIsSet()) {
             model.tickMany(times);
         }
     }
+}
 
-    public void SaveSettings(String[] array){
+   /* public void SaveSettings(String[] array){
         model.setNumberOfFloors(parseInt(array[0]));
         model.setNumberOfRows(parseInt(array[1]));
         model.setNumberOfPlaces(parseInt(array[2]));
@@ -48,4 +49,4 @@ public class SimulatorController extends Controller<Simulator> {
 
     }
 }
-
+*/

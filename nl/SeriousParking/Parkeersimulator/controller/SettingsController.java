@@ -31,15 +31,13 @@ public class SettingsController extends Controller<SettingHandler> {
             model.setWeekDayPassArrivals(parseInt(array[6]));
             model.setWeekendPassArrivals(parseInt(array[7]));
             model.setChance(parseInt(array[8]));
-            model.setGarageFloors(parseInt(array[9]));
-            model.setGarageRows(parseInt(array[10]));
-            model.setGaragePlaces(parseInt(array[11]));
 
-            model.nofifier();
+
+            model.notifyViews();
         }
 
         catch (NumberFormatException e){
-            model.nofifier();
+            model.notifyViews();
         }
     }
 }

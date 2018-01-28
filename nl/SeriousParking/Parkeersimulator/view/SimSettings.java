@@ -61,9 +61,7 @@ public class SimSettings extends View<SettingsController, SettingHandler> {
         input[6].setText(""+model.getWeekDayPassArrivals());
         input[7].setText(""+model.getWeekendPassArrivals());
         input[8].setText(""+model.getChance());
-        input[9].setText(""+model.getGarageFloors());
-        input[10].setText(""+model.getGarageRows());
-        input[11].setText(""+model.getGaragePlaces());
+
     }
 
     public void create(){
@@ -184,7 +182,7 @@ public class SimSettings extends View<SettingsController, SettingHandler> {
         container.getChildren().add(floorLbl);
 
         input[9] = new TextField();
-        input[9].setText(""+model.getGarageFloors());
+
         container.setConstraints(input[9],3,10);
         container.getChildren().add(input[9]);
         //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -196,7 +194,7 @@ public class SimSettings extends View<SettingsController, SettingHandler> {
         container.getChildren().add(rowLbl);
 
         input[10] = new TextField();
-        input[10].setText(""+model.getGarageRows());
+
         container.setConstraints(input[10],3,11);
         container.getChildren().add(input[10]);
         //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -208,7 +206,7 @@ public class SimSettings extends View<SettingsController, SettingHandler> {
         container.getChildren().add(placeLbl);
 
         input[11] = new TextField();
-        input[11].setText(""+model.getGaragePlaces());
+
         container.setConstraints(input[11],3,12);
         container.getChildren().add(input[11]);
         //////////////////////////////////////////////////////////////////////////////////////////////////

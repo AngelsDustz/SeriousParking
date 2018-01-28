@@ -80,14 +80,14 @@ public class TextView extends View<SimulatorController, Simulator>  {
                 adHoc1.setText(""+(+model.getAdhocSection().getFilledspots()));
                 passcar1.setText(""+model.getPassSection().getFilledspots());
                 reservation1.setText(""+model.getReservationSection().getFilledspots());
-                dubbel1.setText(""+model.getNumberOfCarsParkedDouble());
+                //dubbel1.setText(""+model.getNumberOfCarsParkedDouble());
                 reser1.setText(""+model.getReservationSection().getFreeSpots());
                 //TODO uitsplitsen per section aanroepen als model.get....Section.getFreeSpots()
                 free1.setText(""+model.getAdhocSection().getFreeSpots());
 
 
                 queue1.setText(""+ Garage.getNumberCarsInAdhocQueue());
-                queue2.setText(""+ Garage.getNumberCarsInPassQueue());
+                queue2.setText(""+ (Garage.getNumberCarsInPassQueue()+Garage.getNumberCarsInreservationQueue()));
                 rev1.setText("€ " + model.getProfit());
             }
         });

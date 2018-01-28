@@ -159,7 +159,7 @@ public class GarageSection extends Garage{
 
 
 
-    //todo fix these and reimplement
+    //todo reimplement
     private Location[] getFirstFreeDoubleLocation() {
         Location[] locations = new Location[2];
         for (int floor = 0; floor < floors; floor++) {
@@ -185,7 +185,7 @@ public class GarageSection extends Garage{
     }
 
 
-    //todo fix these and reimplement
+    //todo  reimplement
     private Location[] getLastFreeDoubleLocation() {
         Location[] locations = new Location[2];
         for (int floor = floors-1; floor >=0; floor--) {
@@ -216,13 +216,12 @@ public class GarageSection extends Garage{
         Car car = getFirstLeavingCar();
 
         while (car!=null) {
-            if (car.getHasToPay()){
-                car.setIsPaying(true);
-                paymentCarQueue.addCar(car);
-            } else {
+
+
                 carLeavesSpot(car);
 
-            }
+                drivingToExit.addCar(car);
+
             car = getFirstLeavingCar();
         }
     }
@@ -236,7 +235,7 @@ public class GarageSection extends Garage{
                     Location location = new Location(floor, row, place);
                     Car car = getCarAt(location);
 
-                    if (car != null && car.getMinutesLeft() <= 0 && !car.getIsPaying()) {
+                    if (car != null && car.getMinutesLeft() <= 0) {
                         return car;
                     }
                 }
@@ -246,54 +245,32 @@ public class GarageSection extends Garage{
         return null;
     }
     protected void Tick(){
-        int reservationShowchance   =   SettingHandler.reservationShowchance;
-        int chance;
-
         for (int floor = 0; floor < floors; floor++) {
-
             for (int row = 0; row < rows; row++) {
-
                 for (int place = 0; place < places; place++) {
                     Car car = section[floor][row][place];
                     if (car!=null) {
-                        if(!car.getReservation()) {
-                            car.tick();
-                        } else {
-                            if (car.getPreTime() > 0) {
-                                car.setPreTime(car.getPreTime() - 1);
-                            }
-                            if(car.getPreTime()==0){
-                               chance= new Random().nextInt(100);
-                                if(reservationShowchance< chance) {
-                                    car.setActive(true);
-                                } else {
-                                    car.noShow();
-                                }
-
-                                car.setPreTime(car.getPreTime()-1);
-                            } else {
-                                car.tick();
-                            }
-                        }
+                        car.tick();
                     }
                 }
             }
         }
     }
 
-    protected void carsEntering(Queue queue){
-        int i=0;
+    protected void carsEntering(Queue queue) {
+        int i = 0;
 
         // Remove car from the front of the queue and assign to a parking space.
-        while (queue.carsInQueue()>0 && freeSpots>0 && i<SettingHandler.enterSpeed) {
+        while (queue.carsInQueue() > 0 && freeSpots > 0 && i < SettingHandler.enterSpeed) {
             Car car = queue.removeCar();
 
-        if (!car.getisParkedDouble()){
-            Location freeLocation = getFirstFreeLocation();
-            setCarAt(freeLocation, car);
+            if (!car.isParkedDouble()) {
+                Location freeLocation = getFirstFreeLocation();
+                setCarAt(freeLocation, car);
+                //Todo Rework ParkedDouble
+            }   /*else {
 
-        } else {
-            Location[] freeLocation = getFirstFreeDoubleLocation();
+          Location[] freeLocation = getFirstFreeDoubleLocation();
 
 
                 if (freeLocation != null) {
@@ -309,36 +286,37 @@ public class GarageSection extends Garage{
 
                     queue.addCar(car);
                 }
+            } */
+                i++;
+
+        }
+    }
+
+        public void carsLeaving () {
+            // Let cars leave.
+            int exitSpeed = SettingHandler.exitSpeed;
+            int i = 0;
+            while (exitCarQueue.carsInQueue() > 0 && i < exitSpeed) {
+                exitCarQueue.removeCar();
+
+                i++;
             }
-            i++;
         }
-    }
+        //todo  reimplement
 
-    protected void carsLeaving(){
-        // Let cars leave.
-        int exitSpeed = SettingHandler.exitSpeed;
-        int i=0;
-        while (exitCarQueue.carsInQueue()>0 && i < exitSpeed){
-            exitCarQueue.removeCar();
-
-            i++;
-        }
-    }
-    //todo fix these and reimplement
-    /*
     private void carsBackEntering(Queue queue){
         int i=0;
         // Remove car from the front of the queue and assign to a parking space.
-        while (queue.carsInQueue()>0 && getNumberOfOpenSpots()>0 && i<enterSpeed) {
+        while (queue.carsInQueue()>0 && freeSpots>0 && i<SettingHandler.enterSpeed) {
 
             Car car = queue.removeCar();
 
-            if (!car.getisParkedDouble()){
+            if (!car.isParkedDouble()){
                 Location freeLocation = getLastFreeLocation();
                 setCarAt(freeLocation, car);
 
-
-            } else {
+                //Todo reimplement parkedDouble
+            }/* else {
                 Location[] freeLocation = getLastFreeDoubleLocation();
 
 
@@ -352,10 +330,11 @@ public class GarageSection extends Garage{
                     setCarAt(loc2, car2);
 
                 }
-            }
+            }*/
             i++;
         }
-   } */
+   }
+
     protected int carsPassingBy(Queue queue){
         int carsPassed=0;
         if(freeSpots!=0){

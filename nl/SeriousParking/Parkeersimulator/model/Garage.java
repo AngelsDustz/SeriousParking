@@ -8,11 +8,11 @@ public class Garage
      Garage() {
     }
 
-    protected static void carToQueue(Queue queue){
+    protected static void carToQueue(){
         Car car;
-        while(queue.carsInQueue()>0) {
+        while(arrivingCars.carsInQueue()>0) {
 
-            car = queue.removeCar();
+            car = arrivingCars.removeCar();
             if (car instanceof AdhocCar){
                 entranceAdhocQueue.addCar(car);
             }
@@ -26,11 +26,24 @@ public class Garage
 
         }
 
+        int i =0;
+        while (i<SettingHandler.getDriveTroughSpeed()) {
+            car = Garage.drivingToExit.removeCar();
+            if (car.areAllTransactionsComplete()) {
+                Garage.exitCarQueue.addCar(car);
+            } else {
+                Garage.paymentCarQueue.addCar(car);
+            }
+            i++;
+        }
     }
 
+    protected static Queue arrivingCars = new Queue();
     protected static Queue     entrancePassQueue          = new Queue();
     protected static Queue     reservationQueue           = new Queue();
     protected static Queue     entranceAdhocQueue         = new Queue();
+
+    protected static Queue     drivingToExit              = new Queue();
     protected static Queue     paymentCarQueue            = new Queue();
     protected static Queue     exitCarQueue               = new Queue();
 
@@ -42,6 +55,11 @@ public class Garage
         return entrancePassQueue.carsInQueue();
 
     }
+    public static int getNumberCarsInreservationQueue(){
+        return reservationQueue.carsInQueue();
+
+    }
+
 }
 
 

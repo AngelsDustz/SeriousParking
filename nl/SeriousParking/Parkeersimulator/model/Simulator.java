@@ -1,7 +1,6 @@
 package nl.SeriousParking.Parkeersimulator.model;
 
 import javafx.application.Platform;
-import nl.SeriousParking.Parkeersimulator.canEvent;
 
 import java.util.*;
 
@@ -19,39 +18,29 @@ public class Simulator extends Model implements Runnable {
     private boolean doubleEntrance;
 
 
-    private Queue enteringCars;
 
 
 
 
 
-    private int adhocFloors;
-    private int adhocrows;
-    private int adhocplaces;
+
     private int numberOfAdhocPassing;
 
 
 
 
-    private int numberOfPassCarsPassing;
-
-    private double NumberOfCarsParkedDouble;
-    private double numberOfAddhoccarsinPark;
-    private double numberOfPasscarsinPark;
-
 
 
 
     private double numberOfReservations;
-    private Car[][][] cars;
+
 
     private Random randomGenerator;
 
-    private ArrayList<Model> listners = new ArrayList<>();
 
     private int tickPause   = SettingHandler.tickPause;
     private int chance      = SettingHandler.chance;
-    private int reservationShowchance =SettingHandler.reservationShowchance;
+
     private int weekDayArrivals; // average number of arriving cars per hour
     private int weekendArrivals;// average number of arriving cars per hour
     private int weekDayPassArrivals;// average number of arriving cars per hour
@@ -69,31 +58,24 @@ public class Simulator extends Model implements Runnable {
    private GarageSection passSection;
    private GarageSection reservationSection;
 
+   private TicketMachine ticketMachine;
+
     public Simulator() {
 
          adhocSection = new GarageSection(SettingHandler.adhocFloors,SettingHandler.adhocRows,SettingHandler.adhocplaces);
          passSection = new GarageSection(SettingHandler.passFloors,SettingHandler.passRows,SettingHandler.passplaces);
          reservationSection = new GarageSection(SettingHandler.reservationFloors,SettingHandler.reservationRows,SettingHandler.reservationplaces);
+         ticketMachine = new TicketMachine();
 
-         adhocFloors                = SettingHandler.getAdhocFloors();
-         adhocrows                  = SettingHandler.getAdhocRows();
-         adhocplaces                = SettingHandler.getAdhocplaces();
          numberOfAdhocPassing       =0;
 
 
 
 
         GarageIsSet =  true;
-        NumberOfCarsParkedDouble    = 0;
-        numberOfAddhoccarsinPark    = 0;
-        numberOfPasscarsinPark      = 0;
+
         numberOfAdhocPassing        = 0;
-        numberOfPassCarsPassing     = 0;
-
-
-
-        enteringCars        = new Queue();
-        profit              = 0;
+       profit              = 0;
 
 
 
@@ -102,13 +84,7 @@ public class Simulator extends Model implements Runnable {
         randomGenerator    = new Random();
     }
 
-    private void sendEvent(HashMap data) {
-        for (Model m : listners) {
-            if (m instanceof canEvent) {
-                ((canEvent) m).doEvent(data);
-            }
-        }
-    }
+
 
 
 
@@ -137,11 +113,6 @@ public class Simulator extends Model implements Runnable {
      * This calls the thread to run the ticks.
      */
     private void startSimulator() {
-
-        if(firstRun){
-
-        }
-
         new Thread(this).start();
     }
 
@@ -176,12 +147,15 @@ public class Simulator extends Model implements Runnable {
 
     private void tick() {
     	Date_time.advanceTime();
-        adhocSection.Tick();
+
 
 
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
+                adhocSection.Tick();
+                passSection.Tick();
+                reservationSection.Tick();
                 handleExit();
                 notifyViews();
                 handleEntrance();
@@ -191,10 +165,7 @@ public class Simulator extends Model implements Runnable {
 
         setSettings();
 
-        HashMap<String, Object> data = new HashMap<>();
-        data.put("time_passed", Date_time.getTickSinceStart());
-        data.put("profit", profit);
-        sendEvent(data);
+
 
 
     	// Pause.
@@ -216,14 +187,14 @@ public class Simulator extends Model implements Runnable {
 
     private void handleEntrance(){
         carsArriving();
-        Garage.carToQueue(enteringCars);
+        Garage.carToQueue();
 
         numberOfAdhocPassing=adhocSection.carsPassingBy(Garage.entranceAdhocQueue)+numberOfAdhocPassing;
         adhocSection.carsEntering(Garage.entranceAdhocQueue);
 
 
         passSection.carsEntering(Garage.entrancePassQueue);
-        numberOfPassCarsPassing=passSection.carsPassingBy(Garage.entrancePassQueue)+numberOfPassCarsPassing;
+        //numberOfPassCarsPassing=passSection.carsPassingBy(Garage.entrancePassQueue)+numberOfPassCarsPassing;
 
         reservationSection.carsEntering(Garage.reservationQueue);
        // numberOfReservationsPassing=passSection.carsPassingBy(Garage.entrancePassQueue)+numberOfPassCarsPassing;
@@ -239,6 +210,9 @@ public class Simulator extends Model implements Runnable {
 
     
     private void handleExit(){
+
+        ticketMachine.handlePayment();
+
         adhocSection.carsReadyToLeave();
         adhocSection.carsLeaving();
 
@@ -248,7 +222,7 @@ public class Simulator extends Model implements Runnable {
 
        reservationSection.carsReadyToLeave();
        reservationSection.carsLeaving();
-        carsPaying();
+
     }
     
     private void carsArriving(){
@@ -262,7 +236,7 @@ public class Simulator extends Model implements Runnable {
         addArrivingCars(numberOfCars, RES);
     }
 
-    private void carcounterADD(Car car){
+   /* private void carcounterADD(Car car){
         if (car.getReservation()){
             numberOfReservations++;
         }
@@ -312,38 +286,8 @@ public class Simulator extends Model implements Runnable {
         }
 
     }
+*/
 
-    private void carsPaying(){
-        // Let cars pay.
-    	int i=0;
-
-    	while (Garage.paymentCarQueue.carsInQueue()>0 && i < paymentSpeed){
-            HashMap<String, Object> data = new HashMap<>();
-            Car car = Garage.paymentCarQueue.removeCar();
-
-            if (car.getisParkedDouble()) {
-                this.profit += (CARPRICE/2);
-                data.put("car_price", (CARPRICE/2));
-            } else {
-                this.profit += CARPRICE;
-                data.put("car_price", CARPRICE);
-            }
-
-
-
-            data.put("profit", profit);
-            data.put("time_passed", Date_time.getTickSinceStart());
-            data.put("minutes", Date_time.getMinutes());
-            data.put("cars", numberOfAdhocPassing+numberOfPassCarsPassing);
-            data.put("doubled", car.getisParkedDouble());
-            sendEvent(data);
-
-
-
-            adhocSection.carLeavesSpot(car);
-            i++;
-    	}
-    }
 
     public double getProfit() {
         return profit;
@@ -376,24 +320,11 @@ public class Simulator extends Model implements Runnable {
                                 break;
                case RES     :   car = new ReservationCar();
                                 break;
-               default      :   car = new Car();
+               default      :   car = new BadCar();
                                 break;
            }
-
-
-
-
-
-            int rand= randomGenerator.nextInt(100);
-
-
-            if (rand<=chance && chance!=0 && !(car instanceof ReservationCar)){
-                car.setParkedDouble(true);
-            }
-            enteringCars.addCar(car);
-
+            Garage.arrivingCars.addCar(car);
         }
-
     }
 
 
@@ -409,26 +340,9 @@ public class Simulator extends Model implements Runnable {
         profit  = 0;
         run     = false;
 
-        sendEvent(null);
+        ticketMachine.reset();
         notifyViews();
 
-    }
-
-    public int getTotalCarsPassed() {
-        return numberOfPassCarsPassing+numberOfAdhocPassing;
-    }
-
-    public double getNumberOfPasscarsinPark() {
-        return numberOfPasscarsinPark;
-    }
-
-    public double getNumberOfAddhoccarsinPark() {
-        return numberOfAddhoccarsinPark;
-    }
-
-
-    public double getNumberOfCarsParkedDouble() {
-        return NumberOfCarsParkedDouble;
     }
 
 

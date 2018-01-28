@@ -5,7 +5,7 @@ public class SettingHandler extends Model{
     protected static int chance;
     protected static int reservationShowchance;
     protected static Boolean doubleEntrance;
-
+    protected static int driveTroughSpeed;
     protected static int weekDayArrivals; // average number of arriving cars per hour
     protected static int weekendArrivals; // average number of arriving cars per hour
     protected static int weekDayPassArrivals; // average number of arriving cars per hour
@@ -262,5 +262,9 @@ public class SettingHandler extends Model{
 
     public static void setReservationplaces(int reservationplaces) {
         SettingHandler.reservationplaces = reservationplaces;
+    }
+
+    public static int getDriveTroughSpeed() {
+        return driveTroughSpeed;
     }
 }

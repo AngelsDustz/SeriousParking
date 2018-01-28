@@ -3,76 +3,42 @@ package nl.SeriousParking.Parkeersimulator.model;
 
 import java.util.Random;
 
-public class Car extends Model {
-    protected boolean     active;
-    protected boolean     reservation;
+public abstract class Car extends Model {
+
     protected Location    location;
-    protected int         preTime;
-    protected int         minutesLeft;
-    protected boolean     isPaying;
-    protected boolean     hasToPay;
-    protected boolean     isParkedDouble;
+    private GarageSection section;
+    private boolean     allTransactionsComplete;
+    private int         minutesLeft;
+
+
+    private boolean     ParkedDouble;
 
     /**
      * Constructor for objects of class Car
      */
-    public Car() {
-
-        reservationPreTime();
-        active= false;
+    public  Car() {
 
 
-        reservation         = false;
-
-        isParkedDouble      = false;
-        hasToPay            = true;
+        ParkedDouble        = false;
+        allTransactionsComplete=false;
         Random random       = new Random();
         int stayMinutes     = (int) (15 + random.nextFloat() * 3 * 60);
         minutesLeft         = stayMinutes;
     }
 
-    public void reservationPreTime(){
 
-        Random random = new Random();
-        preTime= random.nextInt(60);
+    public abstract Car copy(Car car);
+    public abstract double PaymentMethod(double reservationCost, double pricePerHour);
+
+    public void setSection(GarageSection section){
+        this.section = section;
     }
-    public void noShow(){
-       minutesLeft= (60 -preTime);
-
-    }
-
-    public boolean isActive() {
-        return active;
+    public GarageSection getSection(){
+        return section;
     }
 
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
-
-
-    public int getPreTime() {
-        return preTime;
-    }
-
-    public void setPreTime(int preTime) {
-        this.preTime = preTime;
-    }
-
-    public boolean getReservation() {
-        return reservation;
-    }
-
-    public void setReservation(boolean reservation) {
-        this.reservation = reservation;
-    }
-
-    public boolean getisParkedDouble() {
-        return isParkedDouble;
-    }
-
-    public void setParkedDouble(boolean parkedDouble) {
-        isParkedDouble = parkedDouble;
+    public void tick() {
+        minutesLeft--;
     }
 
     public Location getLocation() {
@@ -83,6 +49,14 @@ public class Car extends Model {
         this.location = location;
     }
 
+    public boolean areAllTransactionsComplete() {
+        return allTransactionsComplete;
+    }
+
+    public void setAllTransactionsComplete(boolean allTransactionsComplete) {
+        this.allTransactionsComplete = allTransactionsComplete;
+    }
+
     public int getMinutesLeft() {
         return minutesLeft;
     }
@@ -90,43 +64,13 @@ public class Car extends Model {
     public void setMinutesLeft(int minutesLeft) {
         this.minutesLeft = minutesLeft;
     }
-    
-    public boolean getIsPaying() {
-        return isPaying;
+
+    public boolean isParkedDouble() {
+        return ParkedDouble;
     }
 
-    public void setIsPaying(boolean isPaying) {
-        this.isPaying = isPaying;
+    public void setParkedDouble(boolean parkedDouble) {
+        ParkedDouble = parkedDouble;
     }
-
-    public boolean getHasToPay() {
-        return hasToPay;
-    }
-
-    public void setHasToPay(boolean hasToPay) {
-        this.hasToPay = hasToPay;
-    }
-
-    public void tick() {
-        minutesLeft--;
-    }
-
-    public Car copy(Car car){
-        Car copiedCar =new Car();
-
-        copiedCar.location       = car.location;
-        copiedCar.minutesLeft    = car.minutesLeft ;
-        copiedCar.isPaying       = car.isPaying ;
-        copiedCar.hasToPay       = car.hasToPay;
-        copiedCar.isParkedDouble = car.isParkedDouble;
-        copiedCar.reservation    = car.reservation;
-        copiedCar.preTime        = car.preTime;
-        copiedCar.active      = car.active;
-        return copiedCar;
-    }
-
-
-
-
 }
 

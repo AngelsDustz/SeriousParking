@@ -1,6 +1,8 @@
 package nl.SeriousParking.Parkeersimulator.model;
 
-public class PassCar extends Car {
+public class BadCar extends Car {
+   //this type must be destroyed after Creation
+
     @Override
     public Car copy(Car car) {
         return null;
@@ -8,9 +10,6 @@ public class PassCar extends Car {
 
     @Override
     public double PaymentMethod(double reservationCost, double pricePerHour) {
-
-        //TODO payment LOGIC
-        setAllTransactionsComplete(true);
-        return 0.0;
+    return Double.MAX_VALUE;
     }
 }

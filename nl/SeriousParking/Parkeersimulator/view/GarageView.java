@@ -4,10 +4,12 @@ import javafx.geometry.Insets;
 
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
+import javafx.scene.paint.Color.*;
 import javafx.scene.shape.Rectangle;
 import nl.SeriousParking.Parkeersimulator.controller.SimulatorController;
 import nl.SeriousParking.Parkeersimulator.model.*;
+import static javafx.scene.paint.Color.rgb;
+
 
 public class GarageView extends View<SimulatorController,Simulator> {
     Rectangle[][][] AdhocSpots;
@@ -25,13 +27,11 @@ public class GarageView extends View<SimulatorController,Simulator> {
         container.setPadding(new Insets(15, 12, 15, 12));
         container.setSpacing(40);
 
-
-
-      AdhocSpots=createTable(SettingHandler.getAdhocFloors(),SettingHandler.getAdhocRows(),SettingHandler.getAdhocplaces(),container);
-      PassSpots=createTable(SettingHandler.getPassFloors(),SettingHandler.getPassRows(),SettingHandler.getPassplaces(),container);
-      ReservationSpots=createTable(SettingHandler.getReservationFloors(),SettingHandler.getReservationRows(),SettingHandler.getReservationplaces(),container);
-      this.getChildren().add(container);
-      model.addView(this);
+        AdhocSpots=createTable(SettingHandler.getAdhocFloors(),SettingHandler.getAdhocRows(),SettingHandler.getAdhocplaces(),container);
+        PassSpots=createTable(SettingHandler.getPassFloors(),SettingHandler.getPassRows(),SettingHandler.getPassplaces(),container);
+        ReservationSpots=createTable(SettingHandler.getReservationFloors(),SettingHandler.getReservationRows(),SettingHandler.getReservationplaces(),container);
+        this.getChildren().add(container);
+        model.addView(this);
 
     }
 
@@ -65,7 +65,7 @@ public class GarageView extends View<SimulatorController,Simulator> {
                     table[floor][row][place].setHeight(8);
                     table[floor][row][place].setArcWidth(2);
                     table[floor][row][place].setArcHeight(2);
-                    table[floor][row][place].setFill(Color.ANTIQUEWHITE);
+                    table[floor][row][place].setFill(rgb(105, 110, 120));
                     rowContainer.getChildren().add(table[floor][row][place]);
                 }
             }
@@ -85,11 +85,10 @@ public class GarageView extends View<SimulatorController,Simulator> {
 
                     Car car= model.getAdhocSection().getCarAt(new Location(floor,row,place));
                     if(car instanceof AdhocCar){
-
-                        AdhocSpots[floor][row][place].setFill(Color.LIGHTBLUE);
+                        AdhocSpots[floor][row][place].setFill(rgb(0,255,0));
                     }
                     if (car ==null){
-                        AdhocSpots[floor][row][place].setFill(Color.ANTIQUEWHITE);
+                        AdhocSpots[floor][row][place].setFill(rgb(150,255,170));
                     }
 
                 }
@@ -107,11 +106,11 @@ public class GarageView extends View<SimulatorController,Simulator> {
                     Car car= model.getPassSection().getCarAt(new Location(floor,row,place));
                     if(car instanceof PassCar){
 
-                      PassSpots[floor][row][place].setFill(Color.GREENYELLOW);
+                      PassSpots[floor][row][place].setFill(rgb(53,144,255));
                     }
 
                     if (car ==null){
-                        PassSpots[floor][row][place].setFill(Color.ANTIQUEWHITE);
+                        PassSpots[floor][row][place].setFill(rgb(135,255,255));
                     }
 
                 }
@@ -130,10 +129,10 @@ public class GarageView extends View<SimulatorController,Simulator> {
                     Car car= model.getReservationSection().getCarAt(new Location(floor,row,place));
 
                     if(car instanceof ReservationCar){
-                        ReservationSpots[floor][row][place].setFill(Color.BLACK);
+                        ReservationSpots[floor][row][place].setFill(rgb(255,110,0));
                     }
                     if (car ==null){
-                        ReservationSpots[floor][row][place].setFill(Color.ANTIQUEWHITE);
+                        ReservationSpots[floor][row][place].setFill(rgb(255,215,120));
                     }
 
                 }

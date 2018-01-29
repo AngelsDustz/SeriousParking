@@ -8,16 +8,11 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import nl.SeriousParking.Parkeersimulator.controller.ProfitController;
 import nl.SeriousParking.Parkeersimulator.controller.ReservationController;
 import nl.SeriousParking.Parkeersimulator.controller.SettingsController;
 import nl.SeriousParking.Parkeersimulator.controller.SimulatorController;
 import nl.SeriousParking.Parkeersimulator.model.*;
-import static com.sun.org.apache.xerces.internal.utils.SecuritySupport.getResourceAsStream;
 import nl.SeriousParking.Parkeersimulator.controller.RuntimeController;
-import nl.SeriousParking.Parkeersimulator.controller.SettingsController;
-import nl.SeriousParking.Parkeersimulator.controller.SimulatorController;
-import nl.SeriousParking.Parkeersimulator.model.Profit;
 import nl.SeriousParking.Parkeersimulator.model.Runtime;
 import nl.SeriousParking.Parkeersimulator.model.SettingHandler;
 import nl.SeriousParking.Parkeersimulator.model.Simulator;
@@ -81,7 +76,7 @@ public class RootView {
 
         ScrollPane scrollPane   = new ScrollPane(simsettings);
         ScrollPane scrollPane2  = new ScrollPane(view);
-
+        scrollPane2.setStyle("-fx-background-color: rgb(185, 195, 205);");
 
         /////////////////BUTTONS//////////////////////////////////////////////////////
         Button start            = new Button("Start/Stop");

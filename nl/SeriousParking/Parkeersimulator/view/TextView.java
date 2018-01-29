@@ -23,6 +23,7 @@ public class TextView extends View<SimulatorController, Simulator>  {
     Label reser1     = new Label();
     Label free1      = new Label();
     Label rev1       = new Label();
+    Label lAdhocPass    = new Label();
 
     public  TextView(SimulatorController controller, Simulator model) {
         super(controller, model);
@@ -30,15 +31,16 @@ public class TextView extends View<SimulatorController, Simulator>  {
         GridPane grid = new GridPane();
 
 
-        Label adhoc     = new Label("aantal adhoc auto's");
-        Label passcar   = new Label("Abbonoment's houders");
-        Label reservation  = new Label("reserveringen");
-        Label queue     = new Label("Auto's Ad-hoc rij");
+        Label adhoc         = new Label("aantal adhoc auto's");
+        Label passcar       = new Label("Abbonoment's houders");
+        Label reservation   = new Label("reserveringen");
+        Label queue         = new Label("Auto's Ad-hoc rij");
         Label backqueue     = new Label("Auto's in pashouder-gereserveerde rij");
-        Label dubbel    = new Label("dubbel geparkeerde auto's");
-        Label reser     = new Label("gereserveerde plekken");
-        Label free      = new Label("vrij ad-hoc plekken");
-        Label rev       = new Label("Winst");
+        Label dubbel        = new Label("dubbel geparkeerde auto's");
+        Label reser         = new Label("gereserveerde plekken");
+        Label free          = new Label("vrij ad-hoc plekken");
+        Label adhocPass     = new Label("ad-hoc misgelopen.");
+        Label rev           = new Label("Winst");
 
         grid.getColumnConstraints().add(new ColumnConstraints(250));
         grid.getRowConstraints().add(new RowConstraints(50));
@@ -52,6 +54,7 @@ public class TextView extends View<SimulatorController, Simulator>  {
         grid.add(queue,1,11);
         grid.add(backqueue,1,12);
         grid.add(rev,1,13);
+        grid.add(adhocPass, 1, 14);
 
         grid.add(timeLbl,2,2);
         grid.add(adHoc1,2,5);
@@ -63,6 +66,7 @@ public class TextView extends View<SimulatorController, Simulator>  {
         grid.add(queue1,2,11);
         grid.add(queue2,2,12);
         grid.add(rev1,2,13);
+        grid.add(lAdhocPass, 2, 14);
 
         HBox container = new HBox(grid);
         this.getChildren().add(container);
@@ -84,6 +88,7 @@ public class TextView extends View<SimulatorController, Simulator>  {
                 reser1.setText(""+model.getReservationSection().getFreeSpots());
                 //TODO uitsplitsen per section aanroepen als model.get....Section.getFreeSpots()
                 free1.setText(""+model.getAdhocSection().getFreeSpots());
+                lAdhocPass.setText("" + model.getNumberOfAdhocPassing());
 
 
                 queue1.setText(""+ Garage.getNumberCarsInAdhocQueue());

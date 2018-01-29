@@ -10,53 +10,27 @@ public class Simulator extends Model implements Runnable {
     private final int ADHOC =1;
     private final int PASS  =2;
     private final int RES  =3;
-
     private boolean run;
     private boolean firstRun;
     private boolean GarageIsSet;
     private boolean doubleEntrance;
-
-
-
-
-
-
-
-
     private int numberOfAdhocPassing;
-
-
-
-
-
-
-
     private double numberOfReservations;
-
-
     private Random randomGenerator;
-
-
     private int tickPause   = SettingHandler.tickPause;
     private int chance      = SettingHandler.chance;
-
     private int weekDayArrivals; // average number of arriving cars per hour
     private int weekendArrivals;// average number of arriving cars per hour
     private int weekDayPassArrivals;// average number of arriving cars per hour
     private int weekendPassArrivals;// average number of arriving cars per hour
     private int weekDayReservations;
     private int WeekendReservations;
-
-
     private int enterSpeed; // number of cars that can enter per minute
     private int paymentSpeed; // number of cars that can pay per minute
     private int exitSpeed; // number of cars that can leave per minute
-
-
    private GarageSection adhocSection;
    private GarageSection passSection;
    private GarageSection reservationSection;
-
    private TicketMachine ticketMachine;
 
     public Simulator() {
@@ -174,14 +148,9 @@ public class Simulator extends Model implements Runnable {
         }
     }
 
-
-
-
-
-
-
-
-
+    public int getNumberOfAdhocPassing() {
+        return numberOfAdhocPassing;
+    }
 
     private void handleEntrance(){
         carsArriving();
@@ -196,31 +165,17 @@ public class Simulator extends Model implements Runnable {
 
         reservationSection.carsEntering(Garage.reservationQueue);
        // numberOfReservationsPassing=passSection.carsPassingBy(Garage.entrancePassQueue)+numberOfPassCarsPassing;
-
-
-
-
-
-
-
-
     }
 
     
     private void handleExit(){
-
         ticketMachine.handlePayment();
-
         adhocSection.carsReadyToLeave();
         adhocSection.carsLeaving();
-
         passSection.carsReadyToLeave();
         passSection.carsLeaving();
-
-
-       reservationSection.carsReadyToLeave();
-       reservationSection.carsLeaving();
-
+        reservationSection.carsReadyToLeave();
+        reservationSection.carsLeaving();
     }
     
     private void carsArriving(){
@@ -311,16 +266,25 @@ public class Simulator extends Model implements Runnable {
         // Add the cars to the back of the queue.
         for (int i = 0; i < numberOfCars; i++) {
             Car car;
-           switch (type){
-               case ADHOC   :   car = new AdhocCar();
-                                break;
-               case PASS    :   car = new PassCar();
-                                break;
-               case RES     :   car = new ReservationCar();
-                                break;
-               default      :   car = new BadCar();
-                                break;
-           }
+
+            switch (type){
+                case ADHOC:
+                    car = new AdhocCar();
+                    break;
+
+                case PASS:
+                    car = new PassCar();
+                    break;
+
+                case RES:
+                    car = new ReservationCar();
+                    break;
+
+                default:
+                    car = new BadCar();
+                    break;
+            }
+
             Garage.arrivingCars.addCar(car);
         }
     }

@@ -297,7 +297,7 @@ public class GarageSection extends Garage{
             int exitSpeed = SettingHandler.exitSpeed;
             int i = 0;
             while (exitCarQueue.carsInQueue() > 0 && i < exitSpeed) {
-                exitCarQueue.removeCar();
+                   exitCarQueue.removeCar();
 
                 i++;
             }

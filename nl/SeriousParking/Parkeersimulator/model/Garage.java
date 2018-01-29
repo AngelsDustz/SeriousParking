@@ -38,7 +38,7 @@ public class Garage
         }
     }
 
-    protected static Queue arrivingCars = new Queue();
+    protected static Queue     arrivingCars               = new Queue();
     protected static Queue     entrancePassQueue          = new Queue();
     protected static Queue     reservationQueue           = new Queue();
     protected static Queue     entranceAdhocQueue         = new Queue();

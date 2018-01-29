@@ -353,8 +353,8 @@ public class Simulator extends Model implements Runnable {
 
 
 
-    public GarageSection getAdhocSection(){return
-            adhocSection;
+    public GarageSection getAdhocSection(){
+        return adhocSection;
     }
     public GarageSection getPassSection(){
         return passSection;

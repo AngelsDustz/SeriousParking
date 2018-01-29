@@ -22,16 +22,16 @@ public class SettingHandler extends Model{
 
 
     protected static int  adhocFloors = 1;
-    protected static int  adhocRows   =3;
+    protected static int  adhocRows  =6;
     protected static int  adhocplaces =30;
 
     protected static int  passFloors = 1;
-    protected static int passRows =3;
+    protected static int passRows =6;
     protected static int  passplaces =30;
 
 
     protected static int  reservationFloors = 1;
-    protected static int  reservationRows   =3;
+    protected static int  reservationRows   =6;
     protected static int  reservationplaces =30;
 
     public SettingHandler() {
@@ -58,16 +58,16 @@ public class SettingHandler extends Model{
         paymentSpeed = 6;
 
         adhocFloors = 1;
-        adhocRows = 3;
+        adhocRows = 6;
         adhocplaces = 30;
 
         passFloors = 1;
-        passRows = 3;
+        passRows = 6;
         passplaces = 30;
 
 
         reservationFloors = 1;
-        reservationRows = 3;
+        reservationRows = 6;
         reservationplaces = 30;
     }
 

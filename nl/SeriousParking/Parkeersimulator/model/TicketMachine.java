@@ -47,8 +47,9 @@ public class TicketMachine {
             Car car = Garage.paymentCarQueue.removeCar();
 
             car.PaymentMethod(reservationCost,pricePerHour);
-
-
+            if (car.areAllTransactionsComplete()) {
+                Garage.exitCarQueue.addCar(Garage.paymentCarQueue.removeCar());
+            }
 
 
             data.put("profit", profit);
@@ -60,7 +61,7 @@ public class TicketMachine {
 
 
 
-            car.getSection().carLeavesSpot(car);
+           // car.getSection().carLeavesSpot(car);
             i++;
         }
     }

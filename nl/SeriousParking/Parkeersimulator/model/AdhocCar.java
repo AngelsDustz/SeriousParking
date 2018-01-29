@@ -10,8 +10,8 @@ public class AdhocCar extends Car {
     public double PaymentMethod(double reservationCost, double pricePerHour) {
 
         double payment;
-        payment = super.TimeStayed*(pricePerHour/60);
-        //TODO payment LOGIC
+        payment = super.timeStayed *(pricePerHour/60);
+
         setAllTransactionsComplete(true);
         return payment;
     }

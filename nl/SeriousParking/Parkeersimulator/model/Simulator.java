@@ -12,7 +12,6 @@ public class Simulator extends Model implements Runnable {
     private final int RES  =3;
 
     private boolean run;
-	private double profit;
     private boolean firstRun;
     private boolean GarageIsSet;
     private boolean doubleEntrance;
@@ -75,7 +74,6 @@ public class Simulator extends Model implements Runnable {
         GarageIsSet =  true;
 
         numberOfAdhocPassing        = 0;
-       profit              = 0;
 
 
 
@@ -290,7 +288,7 @@ public class Simulator extends Model implements Runnable {
 
 
     public double getProfit() {
-        return profit;
+        return ticketMachine.getProfit();
     }
 
 
@@ -337,7 +335,7 @@ public class Simulator extends Model implements Runnable {
         passSection.clear();
         reservationSection.clear();
 
-        profit  = 0;
+
         run     = false;
 
         ticketMachine.reset();
@@ -362,6 +360,9 @@ public class Simulator extends Model implements Runnable {
     public GarageSection getReservationSection(){
         return reservationSection;
     }
+
+
+
 }
 
 

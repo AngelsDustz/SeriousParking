@@ -8,10 +8,11 @@ public class ReservationCar extends Car {
 
     @Override
     public double PaymentMethod(double reservationCost, double pricePerHour) {
+        double payment;
+        payment = (super.timeStayed *(pricePerHour/60))+reservationCost;
 
-        //TODO payment LOGIC
         setAllTransactionsComplete(true);
-        return 0.0;
+        return payment;
     }
 
 }

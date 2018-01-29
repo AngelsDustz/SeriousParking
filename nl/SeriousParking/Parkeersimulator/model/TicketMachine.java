@@ -8,9 +8,9 @@ import java.util.HashMap;
 public class TicketMachine {
 
     private ArrayList<Model> listners = new ArrayList<>();
-    double profit;
-    double reservationCost;
-    double pricePerHour;
+    private double profit;
+    private double reservationCost=2.00;
+    private double pricePerHour = 1.50;
     public TicketMachine() {
     }
 
@@ -24,8 +24,8 @@ public class TicketMachine {
 
     public void handlePayment(){
 
-        carsPaying();
 
+        carsPaying();
 
         HashMap<String, Object> data = new HashMap<>();
         data.put("time_passed", Date_time.getTickSinceStart());
@@ -46,7 +46,7 @@ public class TicketMachine {
             HashMap<String, Object> data = new HashMap<>();
             Car car = Garage.paymentCarQueue.removeCar();
 
-            car.PaymentMethod(reservationCost,pricePerHour);
+            profit=profit+car.PaymentMethod(reservationCost,pricePerHour);
             if (car.areAllTransactionsComplete()) {
                 Garage.exitCarQueue.addCar(Garage.paymentCarQueue.removeCar());
             }
@@ -64,5 +64,9 @@ public class TicketMachine {
            // car.getSection().carLeavesSpot(car);
             i++;
         }
+    }
+
+    public double getProfit() {
+        return profit;
     }
 }

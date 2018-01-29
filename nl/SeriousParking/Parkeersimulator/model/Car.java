@@ -9,7 +9,7 @@ public abstract class Car extends Model {
     private     GarageSection   section;
     private     boolean         allTransactionsComplete;
     private     int             minutesLeft;
-    protected   int             TimeStayed;
+    protected   int timeStayed;
     private     boolean         ParkedDouble;
 
     /**
@@ -23,7 +23,7 @@ public abstract class Car extends Model {
         Random random       = new Random();
         int stayMinutes     = (int) (15 + random.nextFloat() * 3 * 60);
         minutesLeft         = stayMinutes;
-        TimeStayed          = stayMinutes;
+        timeStayed = stayMinutes;
     }
 
 

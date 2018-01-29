@@ -5,7 +5,7 @@ public class SettingHandler extends Model{
     protected static int chance;
     protected static int reservationShowchance;
     protected static Boolean doubleEntrance;
-    protected static int driveTroughSpeed;
+
     protected static int weekDayArrivals; // average number of arriving cars per hour
     protected static int weekendArrivals; // average number of arriving cars per hour
     protected static int weekDayPassArrivals; // average number of arriving cars per hour
@@ -19,7 +19,7 @@ public class SettingHandler extends Model{
     protected static int maxQueueSize;
     protected static int exitSpeed; // number of cars that can leave per minute
 
-
+    protected static int driveTroughSpeed= 10;
 
     protected static int  adhocFloors = 1;
     protected static int  adhocRows  =6;

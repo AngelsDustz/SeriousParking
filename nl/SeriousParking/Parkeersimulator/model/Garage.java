@@ -27,7 +27,7 @@ public class Garage
         }
 
         int i =0;
-        while (i<SettingHandler.getDriveTroughSpeed()) {
+        while (drivingToExit.carsInQueue()>0 && i<SettingHandler.getDriveTroughSpeed()) {
             car = Garage.drivingToExit.removeCar();
             if (car.areAllTransactionsComplete()) {
                 Garage.exitCarQueue.addCar(car);

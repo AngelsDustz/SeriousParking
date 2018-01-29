@@ -214,8 +214,9 @@ public class GarageSection extends Garage{
     protected void carsReadyToLeave(){
         // Add leaving cars to the payment queue.
         Car car = getFirstLeavingCar();
-
-        while (car!=null) {
+        int i=0;
+        //TODO make a max amount of cars driving out setting;
+        while (car!=null&& i<SettingHandler.driveTroughSpeed &&drivingToExit.carsInQueue()<15) {
 
 
                 carLeavesSpot(car);
@@ -223,6 +224,7 @@ public class GarageSection extends Garage{
                 drivingToExit.addCar(car);
 
             car = getFirstLeavingCar();
+            i++;
         }
     }
 

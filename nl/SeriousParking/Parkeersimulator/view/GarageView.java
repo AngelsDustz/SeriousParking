@@ -4,7 +4,6 @@ import javafx.geometry.Insets;
 
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color.*;
 import javafx.scene.shape.Rectangle;
 import nl.SeriousParking.Parkeersimulator.controller.SimulatorController;
 import nl.SeriousParking.Parkeersimulator.model.*;
@@ -12,24 +11,23 @@ import static javafx.scene.paint.Color.rgb;
 
 
 public class GarageView extends View<SimulatorController,Simulator> {
-    Rectangle[][][] AdhocSpots;
-    Rectangle[][][] PassSpots;
-    Rectangle[][][] ReservationSpots;
+   private Rectangle[][][] PassSpots;
+   private Rectangle[][][] AdhocReservationSpots;
 
 
 
-    HBox container;
 
-    public GarageView(SimulatorController controller, Simulator model) {
+
+     GarageView(SimulatorController controller, Simulator model) {
         super(controller, model);
+        HBox container;
         container = new HBox();
 
         container.setPadding(new Insets(15, 12, 15, 12));
         container.setSpacing(40);
 
-        AdhocSpots=createTable(SettingHandler.getAdhocFloors(),SettingHandler.getAdhocRows(),SettingHandler.getAdhocplaces(),container);
+        AdhocReservationSpots=createTable(SettingHandler.getAdhocReservationFloors(),SettingHandler.getAdhocReservationRows(),SettingHandler.getAdhocReservationplaces(),container);
         PassSpots=createTable(SettingHandler.getPassFloors(),SettingHandler.getPassRows(),SettingHandler.getPassplaces(),container);
-        ReservationSpots=createTable(SettingHandler.getReservationFloors(),SettingHandler.getReservationRows(),SettingHandler.getReservationplaces(),container);
         this.getChildren().add(container);
         model.addView(this);
 
@@ -37,9 +35,9 @@ public class GarageView extends View<SimulatorController,Simulator> {
 
     @Override
     public void update() {
-        drawAdhocSpots();
+        drawAdhocReservationSpots();
         drawPassSpots();
-        drawReservationSpots();
+        //drawReservationSpots();
 
 
     }
@@ -75,70 +73,59 @@ public class GarageView extends View<SimulatorController,Simulator> {
 
 
 
-    private void drawAdhocSpots() {
+    private void drawAdhocReservationSpots() {
 
-        for (int floor = 0; floor <SettingHandler.getAdhocFloors(); floor++) {
+        for (int floor = 0; floor < model.getAdhocReservationSection().getFloors(); floor++) {
 
-            for (int row = 0; row <SettingHandler.getAdhocRows(); row++) {
+            for (int row = 0; row < model.getAdhocReservationSection().getRows(); row++) {
 
-                for (int place = 0; place < SettingHandler.getAdhocplaces(); place++) {
+                for (int place = 0; place < model.getAdhocReservationSection().getPlaces(); place++) {
 
-                    Car car= model.getAdhocSection().getCarAt(new Location(floor,row,place));
-                    if(car instanceof AdhocCar){
-                        AdhocSpots[floor][row][place].setFill(rgb(0,255,0));
+                    Car car = model.getAdhocReservationSection().getCarAt(new Location(floor, row, place));
+                    if(car!=null&& car.isParkedDouble()){    AdhocReservationSpots[floor][row][place].setStroke(rgb(140,0,0));}
+                    if (car instanceof AdhocCar) {
+                        AdhocReservationSpots[floor][row][place].setFill(rgb(0, 255, 0));
                     }
-                    if (car ==null){
-                        AdhocSpots[floor][row][place].setFill(rgb(150,255,170));
+                    if (car instanceof ReservationCar) {
+                        if(((ReservationCar) car).isActive()) {
+                            AdhocReservationSpots[floor][row][place].setFill(rgb(255, 110, 0));
+
+                        } else {
+                            AdhocReservationSpots[floor][row][place].setFill(rgb(255, 204, 170));
+                        }
                     }
+                    if (car == null) {
+                        AdhocReservationSpots[floor][row][place].setFill(rgb(150, 255, 170));
+                    }
+
 
                 }
             }
         }
     }
+
     private void drawPassSpots() {
 
-        for (int floor = 0; floor <SettingHandler.getPassFloors(); floor++) {
+        for (int floor = 0; floor < SettingHandler.getPassFloors(); floor++) {
 
-            for (int row = 0; row <SettingHandler.getPassRows(); row++) {
+            for (int row = 0; row < SettingHandler.getPassRows(); row++) {
 
                 for (int place = 0; place < SettingHandler.getPassplaces(); place++) {
 
-                    Car car= model.getPassSection().getCarAt(new Location(floor,row,place));
-                    if(car instanceof PassCar){
+                    Car car = model.getPassSection().getCarAt(new Location(floor, row, place));
 
-                      PassSpots[floor][row][place].setFill(rgb(53,144,255));
+                    if (car instanceof PassCar) {
+                        PassSpots[floor][row][place].setFill(rgb(53, 144, 255));
                     }
-
-                    if (car ==null){
-                        PassSpots[floor][row][place].setFill(rgb(135,255,255));
-                    }
-
-                }
-            }
-        }
-    }
-
-    private void drawReservationSpots() {
-
-        for (int floor = 0; floor <SettingHandler.getReservationFloors(); floor++) {
-
-            for (int row = 0; row <SettingHandler.getReservationRows(); row++) {
-
-                for (int place = 0; place < SettingHandler.getReservationplaces(); place++) {
-
-                    Car car= model.getReservationSection().getCarAt(new Location(floor,row,place));
-
-                    if(car instanceof ReservationCar){
-                        ReservationSpots[floor][row][place].setFill(rgb(255,110,0));
-                    }
-                    if (car ==null){
-                        ReservationSpots[floor][row][place].setFill(rgb(255,215,120));
+                    if (car == null) {
+                        PassSpots[floor][row][place].setFill(rgb(135, 255, 255));
                     }
 
                 }
             }
         }
     }
+
 
 
 }

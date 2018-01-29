@@ -5,7 +5,7 @@ public class SettingHandler extends Model{
     protected static int chance;
     protected static int reservationShowchance;
     protected static Boolean doubleEntrance;
-
+    protected static int chanseToParkDouble=80;
     protected static int weekDayArrivals; // average number of arriving cars per hour
     protected static int weekendArrivals; // average number of arriving cars per hour
     protected static int weekDayPassArrivals; // average number of arriving cars per hour
@@ -21,18 +21,16 @@ public class SettingHandler extends Model{
 
     protected static int driveTroughSpeed= 10;
 
-    protected static int  adhocFloors = 1;
-    protected static int  adhocRows  =6;
-    protected static int  adhocplaces =30;
+    protected static int adhocReservationFloors = 2;
+    protected static int adhocReservationRows =6;
+    protected static int adhocReservationplaces =30;
 
     protected static int  passFloors = 1;
     protected static int passRows =6;
     protected static int  passplaces =30;
 
 
-    protected static int  reservationFloors = 1;
-    protected static int  reservationRows   =6;
-    protected static int  reservationplaces =30;
+
 
     public SettingHandler() {
     defaultValue();
@@ -45,7 +43,7 @@ public class SettingHandler extends Model{
         weekendPassArrivals =5; // average number of arriving cars per hour
         weekDayReservations =30;
         weekendReservations =10;
-
+        chanseToParkDouble =80;
 
 
         maxQueueSize = 10;
@@ -57,18 +55,15 @@ public class SettingHandler extends Model{
         exitSpeed =4;
         paymentSpeed = 6;
 
-        adhocFloors = 1;
-        adhocRows = 6;
-        adhocplaces = 30;
+        adhocReservationFloors = 1;
+        adhocReservationRows = 6;
+        adhocReservationplaces = 30;
 
         passFloors = 1;
         passRows = 6;
         passplaces = 30;
 
 
-        reservationFloors = 1;
-        reservationRows = 6;
-        reservationplaces = 30;
     }
 
 
@@ -192,28 +187,28 @@ public class SettingHandler extends Model{
         return doubleEntrance;
     }
 
-    public static int getAdhocFloors() {
-        return adhocFloors;
+    public static int getAdhocReservationFloors() {
+        return adhocReservationFloors;
     }
 
-    public static void setAdhocFloors(int adhocFloors) {
-        SettingHandler.adhocFloors = adhocFloors;
+    public static void setAdhocReservationFloors(int adhocReservationFloors) {
+        SettingHandler.adhocReservationFloors = adhocReservationFloors;
     }
 
-    public static int getAdhocRows() {
-        return adhocRows;
+    public static int getAdhocReservationRows() {
+        return adhocReservationRows;
     }
 
-    public static void setAdhocRows(int adhocRows) {
-        SettingHandler.adhocRows = adhocRows;
+    public static void setAdhocReservationRows(int adhocReservationRows) {
+        SettingHandler.adhocReservationRows = adhocReservationRows;
     }
 
-    public static int getAdhocplaces() {
-        return adhocplaces;
+    public static int getAdhocReservationplaces() {
+        return adhocReservationplaces;
     }
 
-    public static void setAdhocplaces(int adhocplaces) {
-        SettingHandler.adhocplaces = adhocplaces;
+    public static void setAdhocReservationplaces(int adhocReservationplaces) {
+        SettingHandler.adhocReservationplaces = adhocReservationplaces;
     }
 
     public static int getPassFloors() {
@@ -240,31 +235,9 @@ public class SettingHandler extends Model{
         SettingHandler.passplaces = passplaces;
     }
 
-    public static int getReservationFloors() {
-        return reservationFloors;
-    }
 
-    public static void setReservationFloors(int reservationFloors) {
-        SettingHandler.reservationFloors = reservationFloors;
-    }
 
-    public static int getReservationRows() {
-        return reservationRows;
-    }
-
-    public static void setReservationRows(int reservationRows) {
-        SettingHandler.reservationRows = reservationRows;
-    }
-
-    public static int getReservationplaces() {
-        return reservationplaces;
-    }
-
-    public static void setReservationplaces(int reservationplaces) {
-        SettingHandler.reservationplaces = reservationplaces;
-    }
-
-    public static int getDriveTroughSpeed() {
+   public static int getDriveTroughSpeed() {
         return driveTroughSpeed;
     }
 }

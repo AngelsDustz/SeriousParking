@@ -24,6 +24,7 @@ public class Main extends Application {
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent e) {
+
                 Platform.exit();
                 System.exit(0);
             }

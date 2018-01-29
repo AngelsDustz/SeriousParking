@@ -51,20 +51,20 @@ public class SimSettings extends View<SettingsController, SettingHandler> {
         updateValues();
     }
 
-       public void updateValues(){
-        input[0].setText(""+model.getTickPause());
-        input[1].setText(""+model.getEnterSpeed());
-        input[2].setText(""+model.getExitSpeed());
-        input[3].setText(""+model.getPaymentSpeed());
-        input[4].setText(""+model.getWeekDayArrivals());
-        input[5].setText(""+model.getWeekendArrivals());
-        input[6].setText(""+model.getWeekDayPassArrivals());
-        input[7].setText(""+model.getWeekendPassArrivals());
-        input[8].setText(""+model.getChance());
+       private void updateValues(){
+        input[0].setText(""+SettingHandler.getTickPause());
+        input[1].setText(""+SettingHandler.getEnterSpeed());
+        input[2].setText(""+SettingHandler.getExitSpeed());
+        input[3].setText(""+SettingHandler.getPaymentSpeed());
+        input[4].setText(""+SettingHandler.getWeekDayArrivals());
+        input[5].setText(""+SettingHandler.getWeekendArrivals());
+        input[6].setText(""+SettingHandler.getWeekDayPassArrivals());
+        input[7].setText(""+SettingHandler.getWeekendPassArrivals());
+        input[8].setText(""+SettingHandler.getChance());
 
     }
 
-    public void create(){
+    private void create(){
 
 
         //////////////////////////////////////////////////////////////////////////////////////////////////

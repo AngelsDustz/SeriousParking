@@ -3,31 +3,28 @@ package nl.SeriousParking.Parkeersimulator.model;
 public class Garage
 
 
-
 {
-     Garage() {
+    Garage() {
     }
 
-    protected static void carToQueue(){
+
+    protected static void CarsArrivingInQueue() {
         Car car;
-        while(arrivingCars.carsInQueue()>0) {
+        while (arrivingCars.carsInQueue() > 0) {
 
             car = arrivingCars.removeCar();
-            if (car instanceof AdhocCar){
+            if (car instanceof AdhocCar) {
                 entranceAdhocQueue.addCar(car);
             }
 
-            if(car instanceof PassCar){
-                entrancePassQueue.addCar(car);
-            }
-            if (car instanceof  ReservationCar){
-                reservationQueue.addCar(car);
+            if (car instanceof PassCar || car instanceof ReservationCar) {
+                entrancePassReservationQueue.addCar(car);
             }
 
         }
 
-        int i =0;
-        while (drivingToExit.carsInQueue()>0 && i<SettingHandler.getDriveTroughSpeed()) {
+        int i = 0;
+        while (drivingToExit.carsInQueue() > 0 && i < SettingHandler.getDriveTroughSpeed()) {
             car = Garage.drivingToExit.removeCar();
             if (car.areAllTransactionsComplete()) {
                 Garage.exitCarQueue.addCar(car);
@@ -38,28 +35,23 @@ public class Garage
         }
     }
 
-    protected static Queue     arrivingCars               = new Queue();
-    protected static Queue     entrancePassQueue          = new Queue();
-    protected static Queue     reservationQueue           = new Queue();
-    protected static Queue     entranceAdhocQueue         = new Queue();
+    protected static Queue arrivingCars = new Queue();
+    protected static Queue entrancePassReservationQueue = new Queue();
+    protected static Queue entranceAdhocQueue = new Queue();
 
-    protected static Queue     drivingToExit              = new Queue();
-    protected static Queue     paymentCarQueue            = new Queue();
-    protected static Queue     exitCarQueue               = new Queue();
+    protected static Queue drivingToExit = new Queue();
+    protected static Queue paymentCarQueue = new Queue();
+    protected static Queue exitCarQueue = new Queue();
 
-    public static int getNumberCarsInAdhocQueue(){
+    public static int getNumberCarsInAdhocQueue() {
         return entranceAdhocQueue.carsInQueue();
 
     }
-    public static int getNumberCarsInPassQueue(){
-        return entrancePassQueue.carsInQueue();
+
+    public static int getNumberCarsInPassQueue() {
+        return entrancePassReservationQueue.carsInQueue();
 
     }
-    public static int getNumberCarsInreservationQueue(){
-        return reservationQueue.carsInQueue();
-
-    }
-
 }
 
 

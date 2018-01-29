@@ -81,18 +81,21 @@ public class TextView extends View<SimulatorController, Simulator>  {
             public void run() {
 
                 timeLbl.setText("Year :  "+ Date_time.getYears()+"  week :  "+Date_time.getWeeks()+"  day :  "+Date_time.getDays()+"  time :  "+Date_time.getHours()+" : "+Date_time.getMinutes()+" : 00");
-                adHoc1.setText(""+(+model.getAdhocSection().getFilledspots()));
+                adHoc1.setText(""+(+model.getAdhocReservationSection().getFilledspots()));
                 passcar1.setText(""+model.getPassSection().getFilledspots());
-                reservation1.setText(""+model.getReservationSection().getFilledspots());
+
+                //TODO fix NUMBERS NOW PART OF SAME SECTION
+                // reservation1.setText(""+model.getReservationSection().getFilledspots());
                 //dubbel1.setText(""+model.getNumberOfCarsParkedDouble());
-                reser1.setText(""+model.getReservationSection().getFreeSpots());
+                //TODO FIX NUMBERS NOW PART OF SAME SECTION
+               // reser1.setText(""+model.getReservationSection().getFreeSpots());
                 //TODO uitsplitsen per section aanroepen als model.get....Section.getFreeSpots()
-                free1.setText(""+model.getAdhocSection().getFreeSpots());
+                free1.setText(""+model.getAdhocReservationSection().getFreeSpots());
                 lAdhocPass.setText("" + model.getNumberOfAdhocPassing());
 
 
                 queue1.setText(""+ Garage.getNumberCarsInAdhocQueue());
-                queue2.setText(""+ (Garage.getNumberCarsInPassQueue()+Garage.getNumberCarsInreservationQueue()));
+                queue2.setText(""+ (Garage.getNumberCarsInPassQueue()));
                 rev1.setText("€ " + model.getProfit());
             }
         });

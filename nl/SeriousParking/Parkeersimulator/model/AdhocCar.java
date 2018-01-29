@@ -1,10 +1,21 @@
 package nl.SeriousParking.Parkeersimulator.model;
 
 public class AdhocCar extends Car {
-    @Override
-    public Car copy(Car car) {
-        return null;
+     AdhocCar() {
+        super();
     }
+
+    @Override
+    protected Car copy(Car car) {
+        car.ParkedDouble                 = this.ParkedDouble;
+        car.allTransactionsComplete      = this.allTransactionsComplete;
+        car.timeStayed                   =  this.timeStayed;
+        car.minutesLeft                  = this.minutesLeft;
+        car.primary=false;
+
+        return car;
+    }
+
 
     @Override
     public double PaymentMethod(double reservationCost, double pricePerHour) {

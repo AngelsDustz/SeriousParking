@@ -5,19 +5,20 @@ import java.util.Random;
 
 public abstract class Car extends Model {
 
-    protected   Location        location;
-    private     GarageSection   section;
-    private     boolean         allTransactionsComplete;
-    private     int             minutesLeft;
-    protected   int timeStayed;
-    private     boolean         ParkedDouble;
+    Location        location;
+    boolean         primary;
+    boolean         allTransactionsComplete;
+    int             minutesLeft;
+    int             timeStayed;
+    boolean         ParkedDouble;
+
 
     /**
      * Constructor for objects of class Car
      */
     public  Car() {
 
-
+        primary             = true;
         ParkedDouble        = false;
         allTransactionsComplete=false;
         Random random       = new Random();
@@ -26,16 +27,11 @@ public abstract class Car extends Model {
         timeStayed = stayMinutes;
     }
 
+    protected abstract Car copy(Car car);
 
-    public abstract Car copy(Car car);
+
+
     public abstract double PaymentMethod(double reservationCost, double pricePerHour);
-
-    public void setSection(GarageSection section){
-        this.section = section;
-    }
-    public GarageSection getSection(){
-        return section;
-    }
 
     public void tick() {
         minutesLeft--;

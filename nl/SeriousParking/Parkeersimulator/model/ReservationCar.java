@@ -1,9 +1,36 @@
 package nl.SeriousParking.Parkeersimulator.model;
 
+import java.util.Random;
+
 public class ReservationCar extends Car {
+    private boolean active;
+    private int leadTime;
+    ReservationCar() {
+         super();
+         active=false;
+         leadTime =  new Random().nextInt(15);
+    }
+
     @Override
-    public Car copy(Car car) {
-        return null;
+    protected Car copy(Car car) {
+        car.ParkedDouble                 = this.ParkedDouble;
+        car.allTransactionsComplete      = this.allTransactionsComplete;
+        car.timeStayed                   =  this.timeStayed;
+        car.minutesLeft                  = this.minutesLeft;
+        car.primary=false;
+        return car;
+    }
+
+    protected void carShows(){
+        if (leadTime>0){
+            leadTime--;
+        }
+        if (leadTime==0){
+            if(new Random().nextInt(100)<SettingHandler.getReservationShowchance()){
+                active=true;
+            }
+            leadTime--;
+        }
     }
 
     @Override
@@ -15,4 +42,7 @@ public class ReservationCar extends Car {
         return payment;
     }
 
+    public boolean isActive() {
+        return active;
+    }
 }

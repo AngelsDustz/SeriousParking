@@ -28,16 +28,16 @@ public class Simulator extends Model implements Runnable {
     private int enterSpeed; // number of cars that can enter per minute
     private int paymentSpeed; // number of cars that can pay per minute
     private int exitSpeed; // number of cars that can leave per minute
-   private GarageSection adhocSection;
+   private GarageSection adhocReservationSection;
    private GarageSection passSection;
-   private GarageSection reservationSection;
+
    private TicketMachine ticketMachine;
 
     public Simulator() {
 
-         adhocSection = new GarageSection(SettingHandler.adhocFloors,SettingHandler.adhocRows,SettingHandler.adhocplaces);
+         adhocReservationSection = new GarageSection(SettingHandler.adhocReservationFloors,SettingHandler.adhocReservationRows,SettingHandler.adhocReservationplaces);
          passSection = new GarageSection(SettingHandler.passFloors,SettingHandler.passRows,SettingHandler.passplaces);
-         reservationSection = new GarageSection(SettingHandler.reservationFloors,SettingHandler.reservationRows,SettingHandler.reservationplaces);
+
          ticketMachine = new TicketMachine();
 
          numberOfAdhocPassing       =0;
@@ -125,9 +125,9 @@ public class Simulator extends Model implements Runnable {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                adhocSection.Tick();
+                adhocReservationSection.Tick();
                 passSection.Tick();
-                reservationSection.Tick();
+
                 handleExit();
                 notifyViews();
                 handleEntrance();
@@ -154,28 +154,24 @@ public class Simulator extends Model implements Runnable {
 
     private void handleEntrance(){
         carsArriving();
-        Garage.carToQueue();
+        Garage.CarsArrivingInQueue();
+        EnteringGarage(Garage.entranceAdhocQueue);
+        EnteringGarage(Garage.entrancePassReservationQueue);
 
-        numberOfAdhocPassing=adhocSection.carsPassingBy(Garage.entranceAdhocQueue)+numberOfAdhocPassing;
-        adhocSection.carsEntering(Garage.entranceAdhocQueue);
+        adhocReservationSection.carsEntering();
+        passSection.carsEntering();
 
 
-        passSection.carsEntering(Garage.entrancePassQueue);
-        //numberOfPassCarsPassing=passSection.carsPassingBy(Garage.entrancePassQueue)+numberOfPassCarsPassing;
-
-        reservationSection.carsEntering(Garage.reservationQueue);
-       // numberOfReservationsPassing=passSection.carsPassingBy(Garage.entrancePassQueue)+numberOfPassCarsPassing;
     }
 
     
     private void handleExit(){
         ticketMachine.handlePayment();
-        adhocSection.carsReadyToLeave();
-        adhocSection.carsLeaving();
+        adhocReservationSection.carsReadyToLeave();
+        adhocReservationSection.carsLeaving();
         passSection.carsReadyToLeave();
         passSection.carsLeaving();
-        reservationSection.carsReadyToLeave();
-        reservationSection.carsLeaving();
+
     }
     
     private void carsArriving(){
@@ -189,58 +185,20 @@ public class Simulator extends Model implements Runnable {
         addArrivingCars(numberOfCars, RES);
     }
 
-   /* private void carcounterADD(Car car){
-        if (car.getReservation()){
-            numberOfReservations++;
-        }
-
-        if (car.getisParkedDouble()){
-           NumberOfCarsParkedDouble=NumberOfCarsParkedDouble+.5;
-
-
-            if (car.getReservation()){
-                numberOfReservations=numberOfReservations+.5;
+    public  void EnteringGarage(Queue queue){
+        int i=0;
+        while (i<SettingHandler.enterSpeed){
+            Car car= queue.removeCar();
+            if (car instanceof AdhocCar || car instanceof ReservationCar){
+                adhocReservationSection.getSectionQueue().addCar(car);
             }
-            if (car.getHasToPay()) {
-                numberOfAddhoccarsinPark=numberOfAddhoccarsinPark+.5;
-            } else {
-                numberOfPasscarsinPark=numberOfPasscarsinPark+.5;
+            if(car instanceof PassCar){
+                passSection.getSectionQueue().addCar(car);
             }
-        } else if (car.getHasToPay()){
-            numberOfAddhoccarsinPark++;
-        } else {
-            numberOfPasscarsinPark++;
+        i++;
         }
 
     }
-
-    public double getNumberOfReservations() {
-        return numberOfReservations;
-    }
-
-    private void carCounterRemove(Car car){
-         if (car.getReservation()){
-             numberOfReservations--;
-         }
-        if (car.getisParkedDouble()){
-            NumberOfCarsParkedDouble=NumberOfCarsParkedDouble-.5;
-            if (car.getReservation()){numberOfReservations=numberOfReservations-.5;}
-
-            if (car.getHasToPay()) {
-                numberOfAddhoccarsinPark=numberOfAddhoccarsinPark-.5;
-            } else {
-                numberOfPasscarsinPark=numberOfPasscarsinPark-.5;
-            }
-        }
-        else if (car.getHasToPay()) {
-                numberOfAddhoccarsinPark--;
-        } else {
-          numberOfPasscarsinPark--;
-        }
-
-    }
-*/
-
 
     public double getProfit() {
         return ticketMachine.getProfit();
@@ -285,6 +243,13 @@ public class Simulator extends Model implements Runnable {
                     break;
             }
 
+
+            if(!(car instanceof ReservationCar)){
+                if(randomGenerator.nextInt(100)<SettingHandler.chanseToParkDouble) {
+                   // car.setParkedDouble(true);
+                }
+            }
+
             Garage.arrivingCars.addCar(car);
         }
     }
@@ -295,9 +260,8 @@ public class Simulator extends Model implements Runnable {
 
 
         Date_time.resetTimer();
-        adhocSection.clear();
+        adhocReservationSection.clear();
         passSection.clear();
-        reservationSection.clear();
 
 
         run     = false;
@@ -315,14 +279,11 @@ public class Simulator extends Model implements Runnable {
 
 
 
-    public GarageSection getAdhocSection(){
-        return adhocSection;
+    public GarageSection getAdhocReservationSection(){
+        return adhocReservationSection;
     }
     public GarageSection getPassSection(){
         return passSection;
-    }
-    public GarageSection getReservationSection(){
-        return reservationSection;
     }
 
 

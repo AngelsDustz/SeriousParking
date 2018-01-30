@@ -9,6 +9,7 @@ import javafx.scene.layout.RowConstraints;
 import nl.SeriousParking.Parkeersimulator.controller.SimulatorController;
 import nl.SeriousParking.Parkeersimulator.model.Date_time;
 import nl.SeriousParking.Parkeersimulator.model.Garage;
+import nl.SeriousParking.Parkeersimulator.model.SettingHandler;
 import nl.SeriousParking.Parkeersimulator.model.Simulator;
 
 public class TextView extends View<SimulatorController, Simulator>  {
@@ -27,10 +28,12 @@ public class TextView extends View<SimulatorController, Simulator>  {
     //Amount of cars in ad-hoc queue.
     private Label lblAdhocQueue         = new Label("Auto's Ad-hoc rij");
     private Label lblAdhocQueueAmount   = new Label();
+    private Label lblAdhocLimit         = new Label();
 
     //Amount of cars in pass queue.
     private Label lblPassQueue          = new Label("Auto's in pashouder-gereserveerde rij");
     private Label lblPassQueueAmount    = new Label();
+    private Label lblPassLimit          = new Label();
 
     //Amount of bad parked cars.
     private Label lblDoubleParked   = new Label("Dubbel geparkeerde auto's");
@@ -77,9 +80,11 @@ public class TextView extends View<SimulatorController, Simulator>  {
 
         grid.add(lblAdhocQueue,1,11);
         grid.add(lblAdhocQueueAmount,2,11);
+        grid.add(lblAdhocLimit, 4, 11);
 
         grid.add(lblPassQueue,1,12);
         grid.add(lblPassQueueAmount,2,12);
+        grid.add(lblPassLimit, 4, 12);
 
         grid.add(lblAdhocMiss, 1, 13);
         grid.add(lblAdhocMissAmount,2,13);
@@ -142,6 +147,19 @@ public class TextView extends View<SimulatorController, Simulator>  {
                 lblDoubles.setText(
                         "" + model.getAdhocReservationSection().getDoubleParked()
                 );
+
+                if (Garage.getNumberCarsInAdhocQueue() >= SettingHandler.getMaxQueueSize()) {
+                    lblAdhocLimit.setText("AD-HOC QUEUE ZIT VOL!");
+                } else {
+                    lblAdhocLimit.setText("");
+                }
+
+
+                if (Garage.getNumberCarsInPassQueue() >= SettingHandler.getMaxQueueSize()) {
+                    lblPassLimit.setText("PASSHOUDER QUEUE ZIT VOL!");
+                } else {
+                    lblPassLimit.setText("");
+                }
             }
         });
     }

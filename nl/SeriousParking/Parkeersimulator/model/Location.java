@@ -10,6 +10,7 @@ public class Location extends Model {
      */
     public Location(int floor, int row, int place) {
         super();
+
         this.floor  = floor;
         this.row    = row;
         this.place  = place;
@@ -19,7 +20,7 @@ public class Location extends Model {
      * Implement content equality.
      */
     public boolean equals(Object obj) {
-        if(obj instanceof Location) {
+        if (obj instanceof Location) {
             Location other = (Location) obj;
             return floor == other.getFloor() && row == other.getRow() && place == other.getPlace();
         } else {
@@ -65,5 +66,4 @@ public class Location extends Model {
     public int getPlace() {
         return place;
     }
-
 }

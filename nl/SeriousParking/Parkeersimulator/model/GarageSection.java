@@ -16,14 +16,14 @@ public class GarageSection extends Garage{
     Car[][][] section;
 
     public GarageSection(int floors,int rows,int places) {
-        sectionQueue = new Queue();
-        this.floors = floors;
-        this.rows = rows;
-        this.places = places;
-        section =new Car[floors][rows][places];
-        totalspots = this.floors*this.rows*this.places;
-        freeSpots = totalspots;
-        carsParked=0;
+        sectionQueue    = new Queue();
+        this.floors     = floors;
+        this.rows       = rows;
+        this.places     = places;
+        section         = new Car[floors][rows][places];
+        totalspots      = this.floors*this.rows*this.places;
+        freeSpots       = totalspots;
+        carsParked      = 0;
     }
 
 
@@ -39,8 +39,9 @@ public class GarageSection extends Garage{
                 }
             }
         }
-        freeSpots=totalspots;
-        carsParked=0;
+
+        freeSpots   = totalspots;
+        carsParked  = 0;
     }
 
 
@@ -116,17 +117,21 @@ public class GarageSection extends Garage{
 
 
     private boolean setCarAt(Location location, Car car) {
+        Car oldCar = getCarAt(location);
+
         if (!locationIsValid(location)) {
             return false;
         }
 
-        Car oldCar = getCarAt(location);
         if (oldCar == null) {
-
-           section[location.getFloor()][location.getRow()][location.getPlace()] = car;
+            section[location.getFloor()][location.getRow()][location.getPlace()] = car;
             car.setLocation(location);
             freeSpots--;
-            if(car.primary)carsParked++;
+
+            if (car.primary) {
+                carsParked++;
+            }
+
             return true;
         }
 
@@ -134,11 +139,13 @@ public class GarageSection extends Garage{
     }
 
     public void carLeavesSpot(Car car){
-
         removeCarAt(car.getLocation());
-        if(car.primary)carsParked--;
-        exitCarQueue.addCar(car);
 
+        if (car.primary) {
+            carsParked--;
+        }
+
+        exitCarQueue.addCar(car);
     }
 
     private Car removeCarAt(Location location) {
@@ -158,25 +165,23 @@ public class GarageSection extends Garage{
         return section[location.getFloor()][location.getRow()][location.getPlace()] = null;
     }
 
-
-
-
-
-
-
-
     //todo reimplement
     private Location[] getFirstFreeDoubleLocation() {
         Location[] locations = new Location[2];
+
         for (int floor = 0; floor < floors; floor++) {
+
             for (int row = 0; row < rows; row++) {
+
                 for (int place = 0; place < places; place++) {
                     Location location = new Location(floor, row, place);
+
                     if (getCarAt(location) == null) {
+
                         if (place<places-1){
                             Location secondLocation = new Location(floor, row, place + 1);
-                            if (getCarAt(secondLocation) == null) {
 
+                            if (getCarAt(secondLocation) == null) {
                                 locations[0] = location;
                                 locations[1] = secondLocation;
                                 return locations;
@@ -187,6 +192,7 @@ public class GarageSection extends Garage{
             }
 
         }
+
         return null;
     }
 
@@ -194,15 +200,20 @@ public class GarageSection extends Garage{
     //todo  reimplement
     private Location[] getLastFreeDoubleLocation() {
         Location[] locations = new Location[2];
+
         for (int floor = floors-1; floor >=0; floor--) {
+
             for (int row = rows-1; row >=0; row--) {
+
                 for (int place = places-1; place >=0; place--) {
                     Location location = new Location(floor, row, place);
+
                     if (getCarAt(location) == null) {
+
                         if (place<places-1){
                             Location secondLocation = new Location(floor, row, place - 1);
-                            if (getCarAt(secondLocation) == null) {
 
+                            if (getCarAt(secondLocation) == null) {
                                 locations[0] = location;
                                 locations[1] = secondLocation;
                                 return locations;
@@ -211,8 +222,8 @@ public class GarageSection extends Garage{
                     }
                 }
             }
-
         }
+
         return null;
     }
 
@@ -220,10 +231,11 @@ public class GarageSection extends Garage{
     protected void carsReadyToLeave(){
         // Add leaving cars to the payment queue.
         Car car = getFirstLeavingCar();
-        int i=0;
+        int i   = 0;
+
         while (car!=null&& i<SettingHandler.driveTroughSpeed &&drivingToExit.carsInQueue()<15) {
-                carLeavesSpot(car);
-                drivingToExit.addCar(car);
+            carLeavesSpot(car);
+            drivingToExit.addCar(car);
             car = getFirstLeavingCar();
             i++;
         }
@@ -249,12 +261,18 @@ public class GarageSection extends Garage{
     }
     protected void Tick(){
         for (int floor = 0; floor < floors; floor++) {
+
             for (int row = 0; row < rows; row++) {
+
                 for (int place = 0; place < places; place++) {
                     Car car = section[floor][row][place];
+
                     if (car!=null) {
                         car.tick();
-                        if (car instanceof ReservationCar){((ReservationCar) car).carShows();}
+
+                        if (car instanceof ReservationCar) {
+                            ((ReservationCar) car).carShows();
+                        }
                     }
                 }
             }
@@ -262,8 +280,6 @@ public class GarageSection extends Garage{
     }
 
     protected void carsEntering() {
-
-
         // Remove car from the front of the queue and assign to a parking space.
         while (sectionQueue.carsInQueue() > 0 && freeSpots > 0) {
             Car car = sectionQueue.removeCar();
@@ -272,58 +288,49 @@ public class GarageSection extends Garage{
                 Location freeLocation = getFirstFreeLocation();
                 setCarAt(freeLocation, car);
                 //Todo Rework ParkedDouble
-            }   else if(!(car instanceof ReservationCar)){
+            } else if (!(car instanceof ReservationCar)) {
                 Car car2;
+
                 if (car instanceof AdhocCar){
                     car2= new AdhocCar();
                 } else {
                     car2= new PassCar();
                 }
 
-
-
-                  car2 = car2.copy(car);
-          Location[] freeLocation = getFirstFreeDoubleLocation();
-
+                car2 = car2.copy(car);
+                Location[] freeLocation = getFirstFreeDoubleLocation();
 
                 if (freeLocation != null) {
                     Location loc1   = freeLocation[0];
                     Location loc2   = freeLocation[1];
-
-
-
                     car2            = car2.copy(car);
 
                     setCarAt(loc1, car);
                     setCarAt(loc2, car2);
-
                 } else {
-
                     sectionQueue.addCar(car);
                 }
             }
-
-
         }
     }
 
-        public void carsLeaving () {
-            // Let cars leave.
-            int exitSpeed = SettingHandler.exitSpeed;
-            int i = 0;
-            while (exitCarQueue.carsInQueue() > 0 && i < exitSpeed) {
-                   exitCarQueue.removeCar();
+    public void carsLeaving () {
+        // Let cars leave.
+        int exitSpeed   = SettingHandler.exitSpeed;
+        int i           = 0;
 
-                i++;
-            }
+        while (exitCarQueue.carsInQueue() > 0 && i < exitSpeed) {
+            exitCarQueue.removeCar();
+            i++;
         }
-        //todo  reimplement
+    }
 
+    //todo  reimplement
     private void carsBackEntering(){
         int i=0;
+
         // Remove car from the front of the queue and assign to a parking space.
         while (sectionQueue.carsInQueue()>0 && freeSpots>0 && i<SettingHandler.enterSpeed) {
-
             Car car = sectionQueue.removeCar();
 
             if (!car.isParkedDouble()){
@@ -352,7 +359,8 @@ public class GarageSection extends Garage{
 
     protected int carsPassingBy(){
         int carsPassed=0;
-        if(freeSpots!=0){
+
+        if (freeSpots!=0) {
             while (sectionQueue.carsInQueue()>SettingHandler.maxQueueSize){
                 sectionQueue.removeCar();
                 carsPassed++;
@@ -362,9 +370,8 @@ public class GarageSection extends Garage{
                 sectionQueue.removeCar();
                 carsPassed++;
             }
-
-
         }
+
         return carsPassed;
     }
 
@@ -395,5 +402,4 @@ public class GarageSection extends Garage{
     public int getPlaces() {
         return places;
     }
-
 }

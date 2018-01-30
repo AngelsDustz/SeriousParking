@@ -5,19 +5,21 @@ import java.util.Random;
 public class ReservationCar extends Car {
     private boolean active;
     private int leadTime;
+
     ReservationCar() {
          super();
-         active=false;
-         leadTime =  new Random().nextInt(15);
+         active     = false;
+         leadTime   = new Random().nextInt(15);
     }
 
     @Override
     protected Car copy(Car car) {
-        car.ParkedDouble                 = this.ParkedDouble;
-        car.allTransactionsComplete      = this.allTransactionsComplete;
-        car.timeStayed                   =  this.timeStayed;
-        car.minutesLeft                  = this.minutesLeft;
-        car.primary=false;
+        car.ParkedDouble            = this.ParkedDouble;
+        car.allTransactionsComplete = this.allTransactionsComplete;
+        car.parkingTime             = this.parkingTime;
+        car.minutesLeft             = this.minutesLeft;
+        car.primary                 = false;
+
         return car;
     }
 
@@ -25,10 +27,12 @@ public class ReservationCar extends Car {
         if (leadTime>0){
             leadTime--;
         }
+
         if (leadTime==0){
             if(new Random().nextInt(100)<SettingHandler.getReservationShowchance()){
                 active=true;
             }
+
             leadTime--;
         }
     }
@@ -36,7 +40,7 @@ public class ReservationCar extends Car {
     @Override
     public double PaymentMethod(double reservationCost, double pricePerHour) {
         double payment;
-        payment = (super.timeStayed *(pricePerHour/60))+reservationCost;
+        payment = (super.parkingTime *(pricePerHour/60))+reservationCost;
 
         setAllTransactionsComplete(true);
         return payment;

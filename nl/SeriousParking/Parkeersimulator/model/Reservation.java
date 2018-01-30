@@ -3,7 +3,7 @@ package nl.SeriousParking.Parkeersimulator.model;
 import javafx.beans.property.SimpleStringProperty;
 
 
-public class Reservation extends Model{
+public class Reservation extends Model {
 
     public final SimpleStringProperty StartTime;
     public final SimpleStringProperty Name;
@@ -11,9 +11,9 @@ public class Reservation extends Model{
 
 
     public Reservation(String sTime, String lName, String EndTime) {
-        this.StartTime = new SimpleStringProperty(sTime);
-        this.Name = new SimpleStringProperty(lName);
-        this.EndTime = new SimpleStringProperty(EndTime);
+        this.StartTime  = new SimpleStringProperty(sTime);
+        this.Name       = new SimpleStringProperty(lName);
+        this.EndTime    = new SimpleStringProperty(EndTime);
     }
 
 

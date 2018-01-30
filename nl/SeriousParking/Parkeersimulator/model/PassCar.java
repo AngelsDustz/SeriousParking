@@ -10,7 +10,7 @@ public class PassCar extends Car {
     protected Car copy(Car car) {
         car.ParkedDouble                 = this.ParkedDouble;
         car.allTransactionsComplete      = this.allTransactionsComplete;
-        car.timeStayed                   =  this.timeStayed;
+        car.parkingTime =  this.parkingTime;
         car.minutesLeft                  = this.minutesLeft;
         car.primary=false;
 

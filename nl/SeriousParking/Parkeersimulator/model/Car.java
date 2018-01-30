@@ -9,7 +9,7 @@ public abstract class Car extends Model {
     boolean         primary;
     boolean         allTransactionsComplete;
     int             minutesLeft;
-    int             timeStayed;
+    int             parkingTime;
     boolean         ParkedDouble;
 
 
@@ -17,14 +17,14 @@ public abstract class Car extends Model {
      * Constructor for objects of class Car
      */
     public  Car() {
+        Random random           = new Random();
+        int stayMinutes         = (int) (15 + random.nextFloat() * 3 * 60);
 
-        primary             = true;
-        ParkedDouble        = false;
-        allTransactionsComplete=false;
-        Random random       = new Random();
-        int stayMinutes     = (int) (15 + random.nextFloat() * 3 * 60);
-        minutesLeft         = stayMinutes;
-        timeStayed = stayMinutes;
+        primary                 = true;
+        ParkedDouble            = false;
+        allTransactionsComplete = false;
+        minutesLeft             = stayMinutes;
+        parkingTime             = stayMinutes;
     }
 
     protected abstract Car copy(Car car);

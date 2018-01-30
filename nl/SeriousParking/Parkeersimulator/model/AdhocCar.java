@@ -7,11 +7,11 @@ public class AdhocCar extends Car {
 
     @Override
     protected Car copy(Car car) {
-        car.ParkedDouble                 = this.ParkedDouble;
-        car.allTransactionsComplete      = this.allTransactionsComplete;
-        car.timeStayed                   =  this.timeStayed;
-        car.minutesLeft                  = this.minutesLeft;
-        car.primary=false;
+        car.ParkedDouble            = this.ParkedDouble;
+        car.allTransactionsComplete = this.allTransactionsComplete;
+        car.parkingTime = this.parkingTime;
+        car.minutesLeft             = this.minutesLeft;
+        car.primary                 = false;
 
         return car;
     }
@@ -19,9 +19,8 @@ public class AdhocCar extends Car {
 
     @Override
     public double PaymentMethod(double reservationCost, double pricePerHour) {
-
         double payment;
-        payment = super.timeStayed *(pricePerHour/60);
+        payment = super.parkingTime *(pricePerHour/60);
 
         setAllTransactionsComplete(true);
         return payment;

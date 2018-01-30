@@ -32,18 +32,13 @@ public class RootView {
         Scene scene                 = new Scene(splitPanebottom,1500,900);
 
         splitPanebottom.setOrientation(Orientation.VERTICAL);
-        splitPanebottom.prefWidthProperty().bind(scene.widthProperty());
-        splitPanebottom.prefHeightProperty().bind(scene.heightProperty());
-
         splitPanetop.setOrientation(Orientation.HORIZONTAL);
-        splitPanetop.prefWidthProperty().bind(scene.widthProperty());
-        splitPanetop.prefHeightProperty().bind(scene.heightProperty());
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////ADD VIEWS MODELS AND CONTROLLERS/////////////////////////////////
         Simulator model                 = new Simulator();
         SimulatorController controller  = new SimulatorController(model);
-        GarageView view                    = new GarageView(controller, model);
+        GarageView view                 = new GarageView(controller, model);
 
         SettingHandler handler          = new SettingHandler();
         SettingsController settingsc    = new SettingsController(handler);
@@ -73,9 +68,6 @@ public class RootView {
         TabPane pie             = new TabPane();
 
         ScrollPane scrollPane   = new ScrollPane(simsettings);
-        ScrollPane scrollPane2  = new ScrollPane(view);
-        scrollPane2.setStyle("-fx-background-color: rgb(185, 195, 205);");
-
         /////////////////BUTTONS//////////////////////////////////////////////////////
         Button start            = new Button("Start/Stop");
         Button reset            = new Button("Reset");
@@ -87,7 +79,6 @@ public class RootView {
         ToolBar toolBar         = new ToolBar();
 
         scrollPane.setFitToHeight(true);
-        scrollPane2.setFitToHeight(true);
 
         start.setOnAction(e -> {
 
@@ -109,6 +100,7 @@ public class RootView {
 
 
         toolBar.getItems().addAll(start,reset,tick,tick100, runtimeView);
+
 //////////////////////////TABS////////////////////////////////////////////////////////////////
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
         pie.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
@@ -145,8 +137,11 @@ public class RootView {
 //////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////PUT THE STUFF IN THE SCENE////////////////////////////////////////
-        borderPane.setCenter(scrollPane2);
+        borderPane.setCenter(view);
         borderPane.setBottom(toolBar);
+
+        pie.maxWidthProperty().bind(splitPanetop.widthProperty().multiply(0.3));
+        tabPane.maxHeightProperty().bind(splitPanebottom.heightProperty().multiply(0.35));
 
         splitPanetop.getItems().addAll(borderPane,pie);
         splitPanebottom.getItems().addAll(splitPanetop,tabPane);

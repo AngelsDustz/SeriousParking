@@ -17,7 +17,6 @@ public class SimSettings extends View<SettingsController, SettingHandler> {
     private TextField[] input;
     private GridPane container;
 
-
     private Label   tickspeedLbl;
     private Label   entranceSpeedLbl;
     private Label   exitSpeedLbl;
@@ -33,7 +32,7 @@ public class SimSettings extends View<SettingsController, SettingHandler> {
     private Button  saveButton;
     private Button  defaultButton;
     private CheckBox checkbox;
-    private final int     numberOfElements =16;
+    private final int numberOfElements =16;
 
     public SimSettings(SettingsController settingscontroller, SettingHandler model) {
         super(settingscontroller, model);

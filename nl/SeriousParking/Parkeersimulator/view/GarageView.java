@@ -84,19 +84,19 @@ public class GarageView extends View<SimulatorController,Simulator> {
 
         for (int floor = 0; floor < floors; floor++) {
             HBox floorContainer = new HBox();
-            floorContainer.setSpacing(5);
+            floorContainer.setSpacing(4);
             root.getChildren().add(floorContainer);
 
             for (int row = 0; row < rows; row++) {
                 VBox rowContainer = new VBox();
-                rowContainer.setSpacing(10);
+                rowContainer.setSpacing(6);
                 floorContainer.getChildren().add(rowContainer);
 
                 for (int place = 0; place < places; place++) {
                     table[floor][row][place] = new Rectangle();
-                    table[floor][row][place].setWidth(18);
+                    table[floor][row][place].setWidth(20);
                     table[floor][row][place].setStrokeWidth(2);
-                    table[floor][row][place].setHeight(8);
+                    table[floor][row][place].setHeight(10);
                     table[floor][row][place].setArcWidth(2);
                     table[floor][row][place].setArcHeight(2);
                     table[floor][row][place].setFill(rgb(105, 110, 120));

@@ -30,7 +30,7 @@ public class Garage {
         return carsPassed;
     }
 
-    protected static void reset() {
+    protected void reset() {
         arrivingCars.reset();
         entrancePassReservationQueue.reset();
         entranceAdhocQueue.reset();

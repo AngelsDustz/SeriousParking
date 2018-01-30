@@ -216,19 +216,15 @@ public class Simulator extends Model implements Runnable {
 
 
     public void ResetSim() {
-
-
+        run = false;
         Date_time.resetTimer();
         adhocReservationSection.clear();
         passSection.clear();
-
-
-        run     = false;
         adhocReservationsPassed=0;
         passPassed=0;
         ticketMachine.reset();
+        garage.reset();
         notifyViews();
-
     }
 
 

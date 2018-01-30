@@ -88,8 +88,9 @@ public class Simulator extends Model implements Runnable {
                 passSection.Tick();
 
                 handleExit();
-                notifyViews();
+
                 handleEntrance();
+                notifyViews();
             }
         });
 
@@ -120,6 +121,7 @@ public class Simulator extends Model implements Runnable {
 
     private void handleExit(){
         ticketMachine.handlePayment();
+        garage.carsDrivingToExit();
         adhocReservationSection.carsReadyToLeave();
         adhocReservationSection.carsLeaving();
         passSection.carsReadyToLeave();
@@ -205,10 +207,12 @@ public class Simulator extends Model implements Runnable {
             }
 
 
+
             if (!(car instanceof ReservationCar)) {
                 if (randomGenerator.nextInt(100)<SettingHandler.chanseToParkDouble) {
-                    // car.setParkedDouble(true);
+                    car.setParkedDouble(true);
                 }
+
             }
 
             Garage.arrivingCars.addCar(car);

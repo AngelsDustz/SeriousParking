@@ -19,7 +19,6 @@ public abstract class Car extends Model {
     public  Car() {
         Random random           = new Random();
         int stayMinutes         = (int) (15 + random.nextFloat() * 3 * 60);
-
         primary                 = true;
         ParkedDouble            = false;
         allTransactionsComplete = false;

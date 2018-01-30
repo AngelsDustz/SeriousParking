@@ -127,12 +127,13 @@ public class GarageView extends View<SimulatorController,Simulator> {
 
                 for (int place = 0; place < places; place++) {
                     table[floor][row][place] = new Rectangle();
-                    table[floor][row][place].setWidth(20);
+                    table[floor][row][place].setWidth(18);
                     table[floor][row][place].setStrokeWidth(2);
-                    table[floor][row][place].setHeight(10);
+                    table[floor][row][place].setHeight(8);
                     table[floor][row][place].setArcWidth(2);
                     table[floor][row][place].setArcHeight(2);
                     table[floor][row][place].setFill(rgb(105, 110, 120));
+                    table[floor][row][place].setStroke(rgb(105, 110, 120));
                     rowContainer.getChildren().add(table[floor][row][place]);
                 }
             }
@@ -156,18 +157,24 @@ public class GarageView extends View<SimulatorController,Simulator> {
 
                     if (car instanceof AdhocCar) {
                         AdhocReservationSpots[floor][row][place].setFill(rgb(91, 142, 125));
+                        AdhocReservationSpots[floor][row][place].setStroke(rgb(91, 142, 125));
                     }
 
                     if (car instanceof ReservationCar) {
                         if (((ReservationCar) car).isActive()) {
                             AdhocReservationSpots[floor][row][place].setFill(rgb(244, 162, 89));
+                            AdhocReservationSpots[floor][row][place].setStroke(rgb(244, 162, 89));
+
                         } else {
                             AdhocReservationSpots[floor][row][place].setFill(rgb(244, 226, 133));
+                            AdhocReservationSpots[floor][row][place].setStroke(rgb(244, 226, 133));
+
                         }
                     }
 
                     if (car == null) {
                         AdhocReservationSpots[floor][row][place].setFill(rgb(181, 226, 140));
+                        AdhocReservationSpots[floor][row][place].setStroke(rgb(181, 226, 140));
                     }
                 }
             }
@@ -184,9 +191,11 @@ public class GarageView extends View<SimulatorController,Simulator> {
 
                     if (car instanceof PassCar) {
                         PassSpots[floor][row][place].setFill(rgb(0, 100, 148));
+                        PassSpots[floor][row][place].setStroke(rgb(0, 100, 148));
                     }
                     if (car == null) {
                         PassSpots[floor][row][place].setFill(rgb(13, 208, 226));
+                        PassSpots[floor][row][place].setStroke(rgb(13, 208, 226));
                     }
 
                 }

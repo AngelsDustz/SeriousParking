@@ -313,11 +313,12 @@ public class GarageSection extends Garage{
 
                 if (car instanceof AdhocCar){
                     car2= new AdhocCar();
+
                 } else {
                     car2= new PassCar();
                 }
 
-                car2 = car2.copy(car);
+                car2= car.copy(car);
                 Location[] freeLocation = getFirstFreeDoubleLocation();
 
                 if (freeLocation != null) {

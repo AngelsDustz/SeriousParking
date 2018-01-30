@@ -2,7 +2,7 @@ package nl.SeriousParking.Parkeersimulator.model;
 
 public class PassCar extends Car {
 
-     PassCar() {
+    protected PassCar() {
         super();
     }
 
@@ -10,7 +10,7 @@ public class PassCar extends Car {
     protected Car copy(Car car) {
         car.ParkedDouble                 = this.ParkedDouble;
         car.allTransactionsComplete      = this.allTransactionsComplete;
-        car.parkingTime =  this.parkingTime;
+        car.parkingTime                  =  this.parkingTime;
         car.minutesLeft                  = this.minutesLeft;
         car.primary=false;
 

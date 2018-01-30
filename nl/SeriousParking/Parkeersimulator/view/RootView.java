@@ -17,49 +17,47 @@ import nl.SeriousParking.Parkeersimulator.model.Simulator;
 
 
 public class RootView {
-
-
-
     public void RootView(Stage primaryStage) {
         primaryStage.getIcons().add(new Image(RootView.class.getResourceAsStream("ico.png")));;
         primaryStage.setTitle("SeriousParking Parkeersimulator");
-////////////////////////WINDOW INDELING////////////////////////////////////////////
+        //Window indeling.
         SplitPane splitPanebottom   = new SplitPane();
         SplitPane splitPanetop      = new SplitPane();
         Scene scene                 = new Scene(splitPanebottom,1500,900);
 
         splitPanebottom.setOrientation(Orientation.VERTICAL);
         splitPanetop.setOrientation(Orientation.HORIZONTAL);
-/////////////////////////////////////////////////////////////////////////////////////////////
 
-////////////////////////////ADD VIEWS MODELS AND CONTROLLERS/////////////////////////////////
-        Simulator model                 = new Simulator();
-        SimulatorController controller  = new SimulatorController(model);
-        GarageView view                 = new GarageView(controller, model);
+        //Model, View, Controller intitializing.
 
-        SettingHandler handler          = new SettingHandler();
-        SettingsController settingsc    = new SettingsController(handler);
-        SimSettings simsettings         = new SimSettings(settingsc, handler);
+        //Simulator.
+        Simulator model                     = new Simulator();
+        SimulatorController controller      = new SimulatorController(model);
 
-        ProfitView profitView           = new ProfitView(controller, model);
+        //GarageView
+        GarageView view                     = new GarageView(controller, model);
 
+        //Settings
+        SettingHandler handler              = new SettingHandler();
+        SettingsController settingsc        = new SettingsController(handler);
+        SimSettings simsettings             = new SimSettings(settingsc, handler);
+
+        //Profit
+        ProfitView profitView               = new ProfitView(controller, model);
+
+        //Runtime
         Runtime runtime                     = new Runtime();
         RuntimeController runtimeController = new RuntimeController(runtime);
         RuntimeView runtimeView             = new RuntimeView(runtimeController, runtime);
-///////////////////////////////////////////////////////////////////////////////////////////
 
-///////////////////////////VIEW PANES//////////////////////////////////////////////////////
-
+        //View panes?
         PieChartView piechart   = new PieChartView(controller, model);
         PieChartView2 piechart2 = new PieChartView2(controller, model);
         TextView textview       = new TextView(controller, model);
         BorderPane borderPane   = new BorderPane();
-
         TabPane tabPane         = new TabPane();
         TabPane pie             = new TabPane();
-
         ScrollPane scrollPane   = new ScrollPane(simsettings);
-        /////////////////BUTTONS//////////////////////////////////////////////////////
         Button start            = new Button("Start/Stop");
         Button reset            = new Button("Reset");
         Button tick             = new Button("single tick");
@@ -71,6 +69,7 @@ public class RootView {
 
         scrollPane.setFitToHeight(true);
 
+        //Button action handles.
         start.setOnAction(e -> {
 
             controller.startSimulator();
@@ -92,42 +91,47 @@ public class RootView {
 
         toolBar.getItems().addAll(start,reset,tick,tick100, runtimeView);
 
-//////////////////////////TABS////////////////////////////////////////////////////////////////
+        //Tabs
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
         pie.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
 
+        //Text view
         Tab TextViewTab = new Tab();
         TextViewTab.setText("Text View");
         TextViewTab.setContent(textview);
         tabPane.getTabs().add(TextViewTab);
 
+        //Events
         Tab Events = new Tab();
         Events.setText("Events");
         //Events.setContent();
         tabPane.getTabs().add(Events);
 
+        //Inkomsten
         Tab ProfitTab   = new Tab();
         ProfitTab.setText("Inkomsten");
         ProfitTab.setContent(profitView);
         tabPane.getTabs().add(ProfitTab);
 
+        //Settings
         Tab SimSettings = new Tab();
         SimSettings.setText("Settings");
         SimSettings.setContent(scrollPane);
         tabPane.getTabs().add(SimSettings);
 
+        //Bezetting
         Tab PieChart1 = new Tab();
         PieChart1.setText("Bezetting");
         PieChart1.setContent(piechart);
         pie.getTabs().add(PieChart1);
 
+        //Adhoc/pass
         Tab PieChart2 = new Tab();
         PieChart2.setText("AdHoc/pass");
         PieChart2.setContent(piechart2);
         pie.getTabs().add(PieChart2);
-//////////////////////////////////////////////////////////////////////////////////
 
-////////////////////////////PUT THE STUFF IN THE SCENE////////////////////////////////////////
+        //Add to scene
         borderPane.setCenter(view);
         borderPane.setBottom(toolBar);
 

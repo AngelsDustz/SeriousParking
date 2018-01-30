@@ -8,8 +8,6 @@ import nl.SeriousParking.Parkeersimulator.model.Simulator;
 
 
 public class PieChartView extends View<SimulatorController, Simulator> implements Runnable {
-
-    //PieChart.Data dubbelpSlice;
     PieChart.Data parkedAdhocReservationSlice;
     PieChart.Data parkedPassSlice;
     PieChart.Data parkedReservationSlice;
@@ -22,24 +20,19 @@ public class PieChartView extends View<SimulatorController, Simulator> implement
     public PieChartView(SimulatorController controller, Simulator model) {
         super(controller, model);
 
-        PieChart pieChart   = new PieChart();
-        size     = 500;
-       // carSlice            = new PieChart.Data("Auto's Geparkeerd", 30);
+        PieChart pieChart           = new PieChart();
+        size                        = 500;
         parkedAdhocReservationSlice = new PieChart.Data("geparkeerde ad-hoc en gereserveerde plekken",100);
-        parkedPassSlice   = new PieChart.Data("geparkeerde pashouder Plekken", 100);
-
-        //dubbelpSlice        = new PieChart.Data("Dubbelparkeerder", 10);
-        freeAdhocReservationSlice = new PieChart.Data("Vrije ad-hoc en reserveerbare plekken",100);
-        freePassSlice   = new PieChart.Data("Vrije pashouder Plekken", 100);
-
-
+        parkedPassSlice             = new PieChart.Data("geparkeerde pashouder Plekken", 100);
+        freeAdhocReservationSlice   = new PieChart.Data("Vrije ad-hoc en reserveerbare plekken",100);
+        freePassSlice               = new PieChart.Data("Vrije pashouder Plekken", 100);
 
         pieChart.getData().add(parkedAdhocReservationSlice);
         pieChart.getData().add(freeAdhocReservationSlice);
         pieChart.getData().add(parkedPassSlice);
         pieChart.getData().add(freePassSlice);
 
-pieChart.setLabelsVisible(false);
+        pieChart.setLabelsVisible(false);
         pieChart.setLegendVisible(true);
         pieChart.setClockwise(true);
         pieChart.setStartAngle(90);
@@ -59,25 +52,18 @@ pieChart.setLabelsVisible(false);
     @Override
     public void run() {
         while (run) {
-            double adhocReservationCars            = (model.getAdhocReservationSection().getFilledspots()/size*100);
-            double passCars             = (model.getPassSection().getFilledspots()/size*100);
-
-
-            double freeAdhocReservationSpots = (model.getAdhocReservationSection().getFreeSpots()/size*100);
-            double freePassSpots = (model.getPassSection().getFreeSpots()/size*100);
-
+            double adhocReservationCars         = (model.getAdhocReservationSection().getFilledspots()/size*100);
+            double passCars                     = (model.getPassSection().getFilledspots()/size*100);
+            double freeAdhocReservationSpots    = (model.getAdhocReservationSection().getFreeSpots()/size*100);
+            double freePassSpots                = (model.getPassSection().getFreeSpots()/size*100);
 
             Platform.runLater(new Runnable() {
                 @Override
                 public void run() {
-
-
                     parkedAdhocReservationSlice.setPieValue(adhocReservationCars);
                     freeAdhocReservationSlice.setPieValue(freeAdhocReservationSpots);
-
-                    parkedPassSlice.setPieValue((passCars));
+                    parkedPassSlice.setPieValue(passCars);
                     freePassSlice.setPieValue(freePassSpots);
-
                 }
             });
 

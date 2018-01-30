@@ -11,25 +11,19 @@ public class PieChartView2 extends View<SimulatorController, Simulator> implemen
     PieChart.Data abbonementSlice;
     PieChart.Data adhocReservationSlice;
     PieChart.Data reservationSlice;
-    final  double SIZE =100;
-    boolean run = false;
+    final double SIZE   = 100;
+    boolean run         = false;
 
 
     public PieChartView2(SimulatorController controller, Simulator model) {
         super(controller, model);
 
-        PieChart pieChart = new PieChart();
-
-
-        abbonementSlice = new PieChart.Data("Abbonoment", (33/SIZE*100));
-        adhocReservationSlice = new PieChart.Data("AdHoc", (33/SIZE*100));
-
-
+        PieChart pieChart       = new PieChart();
+        abbonementSlice         = new PieChart.Data("Abbonoment", (33/SIZE*100));
+        adhocReservationSlice   = new PieChart.Data("AdHoc", (33/SIZE*100));
 
         pieChart.getData().add(abbonementSlice);
-
         pieChart.getData().add(adhocReservationSlice);
-
         pieChart.setLegendVisible(false);
         pieChart.setClockwise(true);
         pieChart.setStartAngle(90);
@@ -40,7 +34,6 @@ public class PieChartView2 extends View<SimulatorController, Simulator> implemen
 
         new Thread(this, "PieChartView2").start();
         run = true;
-
     }
 
     @Override
@@ -50,19 +43,14 @@ public class PieChartView2 extends View<SimulatorController, Simulator> implemen
     @Override
     public void run() {
         while (run) {
-            Double adhocRes    = model.getAdhocReservationSection().getFilledspots()/SIZE*100;
+            Double adhocRes = model.getAdhocReservationSection().getFilledspots()/SIZE*100;
             Double abbo     = model.getPassSection().getFilledspots()/SIZE*100;
-
-
-
 
             Platform.runLater(new Runnable() {
                 @Override
                 public void run() {
                     abbonementSlice.setPieValue(abbo);
                     adhocReservationSlice.setPieValue(adhocRes);
-                    //TODO FIX NUMBERS NOW PART OF OTHER SECTION
-
                 }
             });
 
@@ -73,6 +61,4 @@ public class PieChartView2 extends View<SimulatorController, Simulator> implemen
             }
         }
     }
-
-
 }

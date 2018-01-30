@@ -54,9 +54,6 @@ public class ProfitView extends View<SimulatorController, Simulator> implements 
     @Override
     public void run() {
         while(run) {
-            //Get profit
-            //Get hours
-            //Calculate and add to linegraph.
             Platform.runLater(new Runnable() {
                 @Override
                 public void run() {
@@ -67,7 +64,7 @@ public class ProfitView extends View<SimulatorController, Simulator> implements 
                     lProfitVal.setText(" " + profit);
                     profit = profit / hours;
                     lProfitHourVal.setText(" " + profit);
-                   // lDoubleLostVal.setText(" "+ model.getTotalCarsPassed());
+
                     if (hours != last_hour) {
                         lineChart.addData(hours-1, profit);
                         last_hour = hours;

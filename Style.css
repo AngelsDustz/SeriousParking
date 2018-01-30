@@ -1,7 +1,12 @@
-.data0.chart-pie {-fx-pie-color:rgb(0,255,0);}
-.data1.chart-pie {-fx-pie-color:rgb(53,144,255);}
-.data2.chart-pie {-fx-pie-color:rgb(150,255,170);}
-.data3.chart-pie {-fx-pie-color: rgb(135,255,255);}
+/*parked adhocreserv*/
+.data0.chart-pie {-fx-pie-color:#5b8e7d;}
+/*parked pass*/
+.data1.chart-pie {-fx-pie-color:#006494;}
+/*free adhoc reserv*/
+.data2.chart-pie {-fx-pie-color:#0dd0e2;}
+/*free pass*/
+.data3.chart-pie {-fx-pie-color:#b5e28c;}
+
 
 #set_lbl{
     -fx-font: 20px ariel;

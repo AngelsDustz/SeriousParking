@@ -106,6 +106,7 @@ public class GarageSection extends Garage{
                 }
             }
         }
+
         return null;
     }
 

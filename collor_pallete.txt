@@ -1,0 +1,20 @@
+//Abbo
+//unparked
+#0dd0e2 rgb(13, 208, 226)
+//parked
+#006494 rgb(0, 100, 148)
+
+//adhoc
+//unparked
+#b5e28c rgb(181, 226, 140)
+//parked
+#5b8e7d rgb(91, 142, 125)
+
+//reserv
+//unparked
+#f4e285 rgb(244, 226, 133)
+//parked
+#f4a259 rgb(255, 153, 63)
+
+//dubbel
+#bc4b51 rgb(163, 62, 67)

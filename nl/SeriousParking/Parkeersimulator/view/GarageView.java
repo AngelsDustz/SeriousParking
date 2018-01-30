@@ -42,15 +42,13 @@ public class GarageView extends View<SimulatorController,Simulator> {
         PassSpots               = createTable(SettingHandler.getPassFloors(),SettingHandler.getPassRows(),SettingHandler.getPassplaces(),container);
 
         abbores.setProgress(0);
-        abbores.setStyle("-fx-control-inner-background: rgb(135,255,255); " +
-                "-fx-accent: rgb(53,144,255); " +
-                "-fx-text-box-border:rgb(53,144,255);");
+        abbores.setStyle("-fx-control-inner-background:#0dd0e2; " +
+                "-fx-accent:#006494;");
         abbores.setPrefSize(200, 30);
 
         adhoc.setProgress(0);
-        adhoc.setStyle("-fx-control-inner-background: rgb(150,255,170); " +
-                "-fx-accent: rgb(0,255,0); " +
-                "-fx-text-box-border: rgb(0,255,0);");
+        adhoc.setStyle("-fx-control-inner-background:#b5e28c; " +
+                "-fx-accent:#5b8e7d; ");
 
         adhoc.setPrefSize(200, 30);
 
@@ -153,23 +151,23 @@ public class GarageView extends View<SimulatorController,Simulator> {
                     Car car = model.getAdhocReservationSection().getCarAt(new Location(floor, row, place));
 
                     if (car!=null&& car.isParkedDouble()){
-                        AdhocReservationSpots[floor][row][place].setStroke(rgb(140,0,0));
+                        AdhocReservationSpots[floor][row][place].setStroke(rgb(163, 62, 67));
                     }
 
                     if (car instanceof AdhocCar) {
-                        AdhocReservationSpots[floor][row][place].setFill(rgb(0, 255, 0));
+                        AdhocReservationSpots[floor][row][place].setFill(rgb(91, 142, 125));
                     }
 
                     if (car instanceof ReservationCar) {
                         if (((ReservationCar) car).isActive()) {
-                            AdhocReservationSpots[floor][row][place].setFill(rgb(255, 110, 0));
+                            AdhocReservationSpots[floor][row][place].setFill(rgb(244, 162, 89));
                         } else {
-                            AdhocReservationSpots[floor][row][place].setFill(rgb(255, 204, 170));
+                            AdhocReservationSpots[floor][row][place].setFill(rgb(244, 226, 133));
                         }
                     }
 
                     if (car == null) {
-                        AdhocReservationSpots[floor][row][place].setFill(rgb(150, 255, 170));
+                        AdhocReservationSpots[floor][row][place].setFill(rgb(181, 226, 140));
                     }
                 }
             }
@@ -185,10 +183,10 @@ public class GarageView extends View<SimulatorController,Simulator> {
                     Car car = model.getPassSection().getCarAt(new Location(floor, row, place));
 
                     if (car instanceof PassCar) {
-                        PassSpots[floor][row][place].setFill(rgb(53, 144, 255));
+                        PassSpots[floor][row][place].setFill(rgb(0, 100, 148));
                     }
                     if (car == null) {
-                        PassSpots[floor][row][place].setFill(rgb(135, 255, 255));
+                        PassSpots[floor][row][place].setFill(rgb(13, 208, 226));
                     }
 
                 }

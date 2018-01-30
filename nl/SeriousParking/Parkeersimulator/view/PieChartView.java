@@ -28,9 +28,9 @@ public class PieChartView extends View<SimulatorController, Simulator> implement
         freePassSlice               = new PieChart.Data("Vrije pashouder Plekken", 100);
 
         pieChart.getData().add(parkedAdhocReservationSlice);
-        pieChart.getData().add(freeAdhocReservationSlice);
         pieChart.getData().add(parkedPassSlice);
         pieChart.getData().add(freePassSlice);
+        pieChart.getData().add(freeAdhocReservationSlice);
 
         pieChart.setLabelsVisible(false);
         pieChart.setLegendVisible(true);

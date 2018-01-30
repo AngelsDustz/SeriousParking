@@ -312,6 +312,7 @@ public class GarageSection extends Garage{
 
                 if (car instanceof AdhocCar){
                     car2= new AdhocCar();
+
                 } else {
                     car2= new PassCar();
                 }

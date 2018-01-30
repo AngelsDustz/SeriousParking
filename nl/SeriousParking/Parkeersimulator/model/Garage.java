@@ -53,9 +53,11 @@ public class Garage {
                 entrancePassReservationQueue.addCar(car);
             }
         }
-
+    }
+    protected void carsDrivingToExit() {
+        int i=0;
         while (drivingToExit.carsInQueue() > 0 && i < SettingHandler.getDriveTroughSpeed()) {
-            car = Garage.drivingToExit.removeCar();
+          Car  car = Garage.drivingToExit.removeCar();
 
             if (car.areAllTransactionsComplete()) {
                 Garage.exitCarQueue.addCar(car);
@@ -66,8 +68,6 @@ public class Garage {
             i++;
         }
     }
-
-
     public static int getNumberCarsInAdhocQueue() {
         return entranceAdhocQueue.carsInQueue();
     }

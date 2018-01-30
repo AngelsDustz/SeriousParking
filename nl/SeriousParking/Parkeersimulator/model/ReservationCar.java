@@ -6,7 +6,7 @@ public class ReservationCar extends Car {
     private boolean active;
     private int leadTime;
 
-    ReservationCar() {
+    protected ReservationCar() {
          super();
          active     = false;
          leadTime   = new Random().nextInt(15);

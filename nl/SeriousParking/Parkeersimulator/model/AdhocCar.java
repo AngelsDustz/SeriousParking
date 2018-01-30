@@ -1,7 +1,7 @@
 package nl.SeriousParking.Parkeersimulator.model;
 
 public class AdhocCar extends Car {
-     AdhocCar() {
+    protected AdhocCar() {
         super();
     }
 

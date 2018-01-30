@@ -251,14 +251,17 @@ public class GarageSection extends Garage{
     protected void carsReadyToLeave(){
         // Add leaving cars to the payment queue.
         Car car = getFirstLeavingCar();
-        int i   = 0;
-
-        while (car!=null&& i<SettingHandler.driveTroughSpeed &&drivingToExit.carsInQueue()<15) {
+        //int i   = 0;
+        //TODO overleggen of dit een asset is.
+       /* while (car!=null&& i<SettingHandler.driveTroughSpeed) {
             carLeavesSpot(car);
             drivingToExit.addCar(car);
             car = getFirstLeavingCar();
-            i++;
-        }
+            if(car.primary){
+                i++;
+            }
+
+        }*/
     }
 
     private Car getFirstLeavingCar() {
@@ -269,17 +272,23 @@ public class GarageSection extends Garage{
                 for (int place = 0; place < places; place++) {
                     Location location = new Location(floor, row, place);
                     Car car = getCarAt(location);
-
-                    if (car != null && car.getMinutesLeft() <= 0) {
-                        return car;
+                    if (car != null) {
+                        if (car.getMinutesLeft() <= 0) {
+                            System.out.println(car.primary);
+                            System.out.println("This car wants to leave: " + car);
+                        }
                     }
+
+                    //if (car != null && car.getMinutesLeft() <= 0) {
+                    //    return car;
+                    //}
                 }
             }
         }
 
         return null;
     }
-    protected void Tick(){
+    protected void tick(){
         for (int floor = 0; floor < floors; floor++) {
 
             for (int row = 0; row < rows; row++) {

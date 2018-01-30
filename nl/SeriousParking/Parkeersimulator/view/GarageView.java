@@ -151,20 +151,20 @@ public class GarageView extends View<SimulatorController,Simulator> {
                 for (int place = 0; place < model.getAdhocReservationSection().getPlaces(); place++) {
                     Car car = model.getAdhocReservationSection().getCarAt(new Location(floor, row, place));
 
-                    if (car!=null&& car.isParkedDouble()){
-                        AdhocReservationSpots[floor][row][place].setStroke(rgb(163, 62, 67));
-                    }
-
                     if (car instanceof AdhocCar) {
-                        AdhocReservationSpots[floor][row][place].setFill(rgb(91, 142, 125));
-                        AdhocReservationSpots[floor][row][place].setStroke(rgb(91, 142, 125));
+                        if (car.isParkedDouble()){
+                            AdhocReservationSpots[floor][row][place].setStroke(rgb(163, 62, 67));
+                            AdhocReservationSpots[floor][row][place].setFill(rgb(91, 142, 125));
+                        } else {
+                            AdhocReservationSpots[floor][row][place].setFill(rgb(91, 142, 125));
+                            AdhocReservationSpots[floor][row][place].setStroke(rgb(91, 142, 125));
+                        }
                     }
 
                     if (car instanceof ReservationCar) {
                         if (((ReservationCar) car).isActive()) {
                             AdhocReservationSpots[floor][row][place].setFill(rgb(244, 162, 89));
                             AdhocReservationSpots[floor][row][place].setStroke(rgb(244, 162, 89));
-
                         } else {
                             AdhocReservationSpots[floor][row][place].setFill(rgb(244, 226, 133));
                             AdhocReservationSpots[floor][row][place].setStroke(rgb(244, 226, 133));
@@ -190,8 +190,13 @@ public class GarageView extends View<SimulatorController,Simulator> {
                     Car car = model.getPassSection().getCarAt(new Location(floor, row, place));
 
                     if (car instanceof PassCar) {
-                        PassSpots[floor][row][place].setFill(rgb(0, 100, 148));
-                        PassSpots[floor][row][place].setStroke(rgb(0, 100, 148));
+                        if (car.isParkedDouble()){
+                            PassSpots[floor][row][place].setStroke(rgb(163, 62, 67));
+                            PassSpots[floor][row][place].setFill(rgb(0, 100, 148));
+                        } else {
+                            PassSpots[floor][row][place].setFill(rgb(0, 100, 148));
+                            PassSpots[floor][row][place].setStroke(rgb(0, 100, 148));
+                        }
                     }
                     if (car == null) {
                         PassSpots[floor][row][place].setFill(rgb(13, 208, 226));

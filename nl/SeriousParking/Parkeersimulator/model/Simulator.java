@@ -84,11 +84,10 @@ public class Simulator extends Model implements Runnable {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                adhocReservationSection.Tick();
-                passSection.Tick();
+                adhocReservationSection.tick();
+                passSection.tick();
 
                 handleExit();
-
                 handleEntrance();
                 notifyViews();
             }
@@ -210,7 +209,9 @@ public class Simulator extends Model implements Runnable {
 
             if (!(car instanceof ReservationCar)) {
                 if (randomGenerator.nextInt(100)<SettingHandler.chanseToParkDouble) {
-                    car.setParkedDouble(true);
+                    if (!(car instanceof ReservationCar)){
+                        car.setParkedDouble(true);
+                    }
                 }
 
             }

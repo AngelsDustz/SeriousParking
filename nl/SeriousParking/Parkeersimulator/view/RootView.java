@@ -91,10 +91,6 @@ public class RootView {
         PieChart2.setContent(piechart2);
         pie.getTabs().add(PieChart2);
 
-        //Add to scene
-        //borderPane.setCenter(view);
-        //borderPane.setBottom(toolBar);
-
         pie.maxWidthProperty().bind(splitPanetop.widthProperty().multiply(0.3));
         tabPane.maxHeightProperty().bind(splitPanebottom.heightProperty().multiply(0.35));
 

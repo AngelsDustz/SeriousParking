@@ -10,49 +10,81 @@ import javafx.scene.layout.RowConstraints;
 import nl.SeriousParking.Parkeersimulator.controller.SettingsController;
 import nl.SeriousParking.Parkeersimulator.model.SettingHandler;
 
-import java.util.HashMap;
-
 
 public class SettingsView extends View<SettingsController, SettingHandler> {
-
     private GridPane container;
 
-    private Label       lbl_speed = new Label();
-    private Label       lbl_tick = new Label();
-    private TextField   fld_tick = new TextField();
-    private Label       lbl_in = new Label();
-    private TextField   fld_in = new TextField();
-    private Label       lbl_out = new Label();
-    private TextField   fld_out = new TextField();
-    private Label       lbl_pay = new Label();
-    private TextField   fld_pay = new TextField();
-    private Label       lbl_wee = new Label();
-    private Label       lbl_wopasswee = new Label();
-    private TextField   fld_wopasswee = new TextField();
-    private Label       lbl_wipasswee = new Label();
-    private TextField   fld_wipasswee = new TextField();
-    private Label       lbl_reswee = new Label();
-    private TextField   fld_reswee = new TextField();
-    private Label       lbl_wed = new Label();
-    private Label       lbl_wopasswed = new Label();
-    private TextField   fld_wopasswed = new TextField();
-    private Label       lbl_wipasswed = new Label();
-    private TextField   fld_wipasswed = new TextField();
-    private Label       lbl_reswed   = new Label();
-    private TextField   fld_reswed = new TextField();
+    //Header speed.
+    private Label       lblSpeed    = new Label();
+
+    //Tick speed.
+    private Label       lblTick = new Label();
+    private TextField   fldTick = new TextField();
+
+    //Car entrance speed.
+    private Label       lblCarEntranceSpeed = new Label();
+    private TextField   fldCarEntranceSpeed = new TextField();
+
+    //Car exit speed.
+    private Label       lblCarExitSpeed = new Label();
+    private TextField   fldCarExitSpeed = new TextField();
+
+    //Car payment speed.
+    private Label       lblCarPaySpeed = new Label();
+    private TextField   fldCarPaySpeed = new TextField();
+
+    //Weekday header.
+    private Label       lblWeekday  = new Label();
+
+    //Weekday Ad-hoc cars.
+    private Label       lblWeekdayAdhocAmount   = new Label();
+    private TextField   fldWeekdayAdhocAmount   = new TextField();
+
+    //Weekday Pass cars.
+    private Label       lblWeekdayPassAmount    = new Label();
+    private TextField   fldWeekdayPassAmount    = new TextField();
+
+    //Weekday reservation cars.
+    private Label       lblWeekdayReservationAmount = new Label();
+    private TextField   fldWeekdayReservationAmount = new TextField();
+
+    //Weekend header.
+    private Label       lblWeekend  = new Label();
+
+    //Weekend Ad-hoc cars.
+    private Label       lblWeekendAdhocAmount   = new Label();
+    private TextField   fldWeekendAdhocAmount   = new TextField();
+
+    //Weekend Pass cars.
+    private Label       lblWeekendPassAmount    = new Label();
+    private TextField   fldWeekendPassAmount    = new TextField();
+
+    //Weekend reservation cars.
+    private Label       lblWeekendReservationAmount = new Label();
+    private TextField   fldWeekendReservationAmount = new TextField();
+
+    //Garage header.
     private Label       lbl_gar = new Label();
-    private Label       lbl_queue = new Label();
-    private TextField   fld_queue = new TextField();
-    private Label       lbl_troug = new Label();
-    private TextField   fld_troug = new TextField();
+
+    //Garage queue size.
+    private Label       lblQueueSize    = new Label();
+    private TextField   fldQueueSize    = new TextField();
+
+    //Queue go through speed.
+    private Label       lblQueueThroughSpeed = new Label();
+    private TextField   fldQueueThroughSpeed = new TextField();
+
+    //Queue exit speed.
     private Label       lbl_dtexit = new Label();
     private TextField   fld_dtexit = new TextField();
     private Label       lbl_opp  = new Label();
+
+    //Opposite entrances.
     private CheckBox    oppbox = new CheckBox();
 
 
-    private Button  saveButton = new Button();
-    private Button  defaultButton = new Button();
+    private Button  saveButton      = new Button();
+    private Button  defaultButton   = new Button();
 
 
     public SettingsView(SettingsController settingscontroller, SettingHandler model) {
@@ -65,89 +97,122 @@ public class SettingsView extends View<SettingsController, SettingHandler> {
         container.setHgap(10);
         container.setVgap(2);
 
-        lbl_speed.setText("Speed");
-        lbl_speed.setId("set_lbl");
-        lbl_tick.setText("tick speed");
-        lbl_in.setText("entrance speed");
-        lbl_out.setText("exit speed");
-        lbl_pay.setText("paymentspeed");
+        lblSpeed.setText("Speed");
+        lblSpeed.setId("set_lbl");
+        lblTick.setText("tick speed");
+        lblCarEntranceSpeed.setText("entrance speed");
+        lblCarExitSpeed.setText("exit speed");
+        lblCarPaySpeed.setText("paymentspeed");
 
-        lbl_wee.setText("Weekday");
-        lbl_wee.setId("set_lbl");
-        lbl_wopasswee.setText("Without pass");
-        lbl_wipasswee.setText("With pass");
-        lbl_reswee.setText("Reserveringen");
+        lblWeekday.setText("Weekday");
+        lblWeekday.setId("set_lbl");
+        lblWeekdayAdhocAmount.setText("Without pass");
+        lblWeekdayPassAmount.setText("With pass");
+        lblWeekdayReservationAmount.setText("Reserveringen");
 
-        lbl_wed.setText("Weekend");
-        lbl_wed.setId("set_lbl");
-        lbl_wopasswed.setText("Without pass");
-        lbl_wipasswed.setText("With pass");
-        lbl_reswed.setText("Reserveringen");
+        lblWeekend.setText("Weekend");
+        lblWeekend.setId("set_lbl");
+        lblWeekendAdhocAmount.setText("Without pass");
+        lblWeekendPassAmount.setText("With pass");
+        lblWeekendReservationAmount.setText("Reserveringen");
 
         lbl_gar.setText("Garage");
         lbl_gar.setId("set_lbl");
-        lbl_queue.setText("Queue size");
-        lbl_troug.setText("drive trough");
+        lblQueueSize.setText("Queue size");
+        lblQueueThroughSpeed.setText("drive trough");
         lbl_dtexit.setText("drive exit");
         lbl_opp.setText("opposite entrances");
 
         saveButton.setText("save");
         defaultButton.setText("default");
 
-        container.add(lbl_speed,1,0);
-        container.add(lbl_tick,1,1);
-        container.add(lbl_in,1,2);
-        container.add(lbl_out,1,3);
-        container.add(lbl_pay,1,4);
+        container.add(lblSpeed,1,0);
+        container.add(lblTick,1,1);
+        container.add(lblCarEntranceSpeed,1,2);
+        container.add(lblCarExitSpeed,1,3);
+        container.add(lblCarPaySpeed,1,4);
 
-        container.add(fld_tick,2,1);
-        container.add(fld_in,2,2);
-        container.add(fld_out,2,3);
-        container.add(fld_pay,2,4);
+        container.add(fldTick,2,1);
+        container.add(fldCarEntranceSpeed,2,2);
+        container.add(fldCarExitSpeed,2,3);
+        container.add(fldCarPaySpeed,2,4);
 
-        container.add(lbl_wee,4,0);
-        container.add(lbl_wopasswee,4,1);
-        container.add(lbl_wipasswee,4,2);
-        container.add(lbl_reswee,4,3);
+        container.add(lblWeekday,4,0);
+        container.add(lblWeekdayAdhocAmount,4,1);
+        container.add(lblWeekdayPassAmount,4,2);
+        container.add(lblWeekdayReservationAmount,4,3);
 
-        container.add(fld_wopasswee,5,1);
-        container.add(fld_wipasswee,5,2);
-        container.add(fld_reswee,5,3);
+        container.add(fldWeekdayAdhocAmount,5,1);
+        container.add(fldWeekdayPassAmount,5,2);
+        container.add(fldWeekdayReservationAmount,5,3);
 
-        container.add(lbl_wed,7,0);
-        container.add(lbl_wopasswed,7,1);
-        container.add(lbl_wipasswed,7,2);
-        container.add(lbl_reswed,7,3);
+        container.add(lblWeekend,7,0);
+        container.add(lblWeekendAdhocAmount,7,1);
+        container.add(lblWeekendPassAmount,7,2);
+        container.add(lblWeekendReservationAmount,7,3);
 
-        container.add(fld_wopasswed,8,1);
-        container.add(fld_wipasswed,8,2);
-        container.add(fld_reswed,8,3);
+        container.add(fldWeekendAdhocAmount,8,1);
+        container.add(fldWeekendPassAmount,8,2);
+        container.add(fldWeekendReservationAmount,8,3);
 
         container.add(lbl_gar,10,0);
-        container.add(lbl_queue,10,1);
-        container.add(lbl_troug,10,2);
+        container.add(lblQueueSize,10,1);
+        container.add(lblQueueThroughSpeed,10,2);
         container.add(lbl_dtexit,10,3);
         container.add(lbl_opp,10,4);
 
-        container.add(fld_queue,11,1);
-        container.add(fld_troug,11,2);
+        container.add(fldQueueSize,11,1);
+        container.add(fldQueueThroughSpeed,11,2);
         container.add(fld_dtexit,11,3);
         container.add(oppbox,11,4);
 
         container.add(saveButton,1,6);
         container.add(defaultButton,2,6);
 
+
+        saveButton.setOnAction(e -> {
+            updateSettings(settingscontroller);
+        });
+
+        defaultButton.setOnAction(e -> {
+            settingscontroller.defaultValues();
+        });
+
+        update();
+
         this.getChildren().add(container);
+        model.addView(this);
     }
 
     @Override
     public void update() {
-        updateValues();
+        fldTick.setText("" + model.getTickPause());
+        fldCarEntranceSpeed.setText("" + model.getEnterSpeed());
+        fldCarExitSpeed.setText("" + model.getExitSpeed());
+        fldCarPaySpeed.setText("" + model.getPaymentSpeed());
+        fldWeekdayAdhocAmount.setText("" + model.getWeekDayArrivals());
+        fldWeekdayPassAmount.setText("" + model.getWeekDayPassArrivals());
+        fldWeekdayReservationAmount.setText("" + model.getWeekDayReservations());
+        fldWeekendAdhocAmount.setText("" + model.getWeekendArrivals());
+        fldWeekendPassAmount.setText("" + model.getWeekendPassArrivals());
+        fldWeekendReservationAmount.setText("" + model.getweekendReservations());
+        fldQueueSize.setText("" + model.getMaxQueueSize());
+        fldQueueThroughSpeed.setText("" + model.getDriveTroughSpeed());
     }
 
-       private void updateValues(){
-//...
+    private void updateSettings(SettingsController settingscontroller) {
+        settingscontroller.updateDoubleEntrance(oppbox.isSelected());
+        settingscontroller.updateTickPause(Integer.parseInt(fldTick.getText()));
+        settingscontroller.updateEnterSpeed(Integer.parseInt(fldCarEntranceSpeed.getText()));
+        settingscontroller.updateExitSpeed(Integer.parseInt(fldCarExitSpeed.getText()));
+        settingscontroller.updatePaymentSpeed(Integer.parseInt(fldCarPaySpeed.getText()));
+        settingscontroller.updateWeekdayAdhocCars(Integer.parseInt(fldWeekdayAdhocAmount.getText()));
+        settingscontroller.updateWeekdayPassCars(Integer.parseInt(fldWeekdayPassAmount.getText()));
+        settingscontroller.updateWeekdayReservationCars(Integer.parseInt(fldWeekdayReservationAmount.getText()));
+        settingscontroller.updateWeekendAdhocCars(Integer.parseInt(fldWeekendAdhocAmount.getText()));
+        settingscontroller.updateWeekendPassCars(Integer.parseInt(fldWeekendPassAmount.getText()));
+        settingscontroller.updateWeekendReservationCars(Integer.parseInt(fldWeekendReservationAmount.getText()));
+        settingscontroller.updateGarageQueue(Integer.parseInt(fldQueueSize.getText()));
+        settingscontroller.updateGarageThroughSpeed(Integer.parseInt(fldQueueThroughSpeed.getText()));
     }
-
-
 }

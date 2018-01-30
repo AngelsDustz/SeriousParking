@@ -66,9 +66,7 @@ public class RootView {
 
         PieChartView piechart   = new PieChartView(controller, model);
         PieChartView2 piechart2 = new PieChartView2(controller, model);
-        SimData legend          = new SimData(controller, model);
         TextView textview       = new TextView(controller, model);
-        BorderPane pies         = new BorderPane();
         BorderPane borderPane   = new BorderPane();
 
         TabPane tabPane         = new TabPane();
@@ -111,7 +109,6 @@ public class RootView {
 
 
         toolBar.getItems().addAll(start,reset,tick,tick100, runtimeView);
-        legend.setAlignment(Pos.CENTER);
 //////////////////////////TABS////////////////////////////////////////////////////////////////
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
         pie.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
@@ -145,15 +142,13 @@ public class RootView {
         PieChart2.setText("AdHoc/pass");
         PieChart2.setContent(piechart2);
         pie.getTabs().add(PieChart2);
-        pies.setCenter(pie);
-        pies.setBottom(legend);
 //////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////PUT THE STUFF IN THE SCENE////////////////////////////////////////
         borderPane.setCenter(scrollPane2);
         borderPane.setBottom(toolBar);
 
-        splitPanetop.getItems().addAll(borderPane,pies);
+        splitPanetop.getItems().addAll(borderPane,pie);
         splitPanebottom.getItems().addAll(splitPanetop,tabPane);
 
         primaryStage.setScene(scene);

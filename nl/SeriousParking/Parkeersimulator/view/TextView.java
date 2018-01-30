@@ -12,9 +12,6 @@ import nl.SeriousParking.Parkeersimulator.model.Garage;
 import nl.SeriousParking.Parkeersimulator.model.Simulator;
 
 public class TextView extends View<SimulatorController, Simulator>  {
-    //Label for current time.
-    private Label lblTime = new Label();
-
     //Amount of ad-hoc cars.
     private Label lblTotalAdhoc = new Label("aantal ad-hoc auto's");
     private Label lblAdhoc      = new Label();
@@ -36,19 +33,15 @@ public class TextView extends View<SimulatorController, Simulator>  {
     private Label lblPassQueueAmount    = new Label();
 
     //Amount of bad parked cars.
-    private Label lblDoubleParked   = new Label("lblDoubleParked geparkeerde auto's");
+    private Label lblDoubleParked   = new Label("Dubbel geparkeerde auto's");
     private Label lblDoubles        = new Label();
 
-    //Amount of reserved spots.
-    private Label lblReservedSpots  = new Label("gereserveerde plekken");
-    private Label lblReservedAmount = new Label();
-
-    //Amount of lblFreeSpots spots for ad-hoc cars.
+    //Amount of free spots for ad-hoc cars.
     private Label lblFreeSpots  = new Label("vrij ad-hoc plekken");
     private Label lblFreeAmount = new Label();
 
     //Amount of ad-hoc cars lost due to queue.
-    private Label lblAdhocMiss          = new Label("ad-hoc misgelopen.");
+    private Label lblAdhocMiss          = new Label("ad-hoc misgelopen");
     private Label lblAdhocMissAmount    = new Label();
 
     //Amount of profit made.
@@ -63,8 +56,6 @@ public class TextView extends View<SimulatorController, Simulator>  {
         grid.getColumnConstraints().add(new ColumnConstraints(250));
         grid.getRowConstraints().add(new RowConstraints(50));
 
-        grid.add(lblTime,2,2);
-
         grid.add(lblTotalAdhoc,1,5);
         grid.add(lblAdhoc,2,5);
 
@@ -76,9 +67,6 @@ public class TextView extends View<SimulatorController, Simulator>  {
 
         grid.add(lblDoubleParked,1,8);
         grid.add(lblDoubles,2,8);
-
-        grid.add(lblReservedSpots,1,9);
-        grid.add(lblReservedAmount,2,9);
 
         grid.add(lblFreeSpots,1,10);
         grid.add(lblFreeAmount,2,10);
@@ -106,23 +94,43 @@ public class TextView extends View<SimulatorController, Simulator>  {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                lblTime.setText("Year :  "+ Date_time.getYears()+"  week :  "+Date_time.getWeeks()+"  day :  "+Date_time.getDays()+"  time :  "+Date_time.getHours()+" : "+Date_time.getMinutes()+" : 00");
-                lblAdhoc.setText(""+(+model.getAdhocReservationSection().getFilledspots()));
-                lblSubs.setText(""+model.getPassSection().getFilledspots());
+                //Set adhoc label text.
+                lblAdhoc.setText(
+                        ""+model.getAdhocReservationSection().getFilledspots()
+                );
 
-                //TODO fix NUMBERS NOW PART OF SAME SECTION
-                // lblReservations.setText(""+model.getReservationSection().getFilledspots());
-                //lblDoubles.setText(""+model.getNumberOfCarsParkedDouble());
-                //TODO FIX NUMBERS NOW PART OF SAME SECTION
-               // lblReservedAmount.setText(""+model.getReservationSection().getFreeSpots());
-                //TODO uitsplitsen per section aanroepen als model.get....Section.getFreeSpots()
-                lblFreeAmount.setText(""+model.getAdhocReservationSection().getFreeSpots());
-                lblProfitValue.setText("" + model.getNumberOfAdhocPassing());
+                //Set subscription text.
+                lblSubs.setText(
+                        ""+model.getPassSection().getFilledspots()
+                );
 
+                lblReservations.setText(
+                        ""+model.getAdhocReservationSection().getReservedCars()
+                );
 
-                lblAdhocQueueAmount.setText(""+ Garage.getNumberCarsInAdhocQueue());
-                lblPassQueueAmount.setText(""+ (Garage.getNumberCarsInPassQueue()));
-                lblAdhocMissAmount.setText("€ " + model.getProfit());
+                lblFreeAmount.setText(
+                        ""+model.getAdhocReservationSection().getFreeSpots()
+                );
+
+                lblProfitValue.setText(
+                        "" + model.getNumberOfAdhocPassing()
+                );
+
+                lblAdhocQueueAmount.setText(
+                        ""+ Garage.getNumberCarsInAdhocQueue()
+                );
+
+                lblPassQueueAmount.setText(
+                        ""+ Garage.getNumberCarsInPassQueue()
+                );
+
+                lblAdhocMissAmount.setText(
+                        "€ " + model.getProfit()
+                );
+
+                lblDoubles.setText(
+                        "" + model.getAdhocReservationSection().getDoubleParked()
+                );
             }
         });
 

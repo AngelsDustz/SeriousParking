@@ -7,11 +7,11 @@ public class GarageSection extends Garage{
     private int floors;
     private int rows;
     private int places;
-
-
     private int freeSpots;
     private int totalspots;
+    private int reservedCars;
     private int carsParked;
+    private int doubleParked;
     private  Queue sectionQueue;
     Car[][][] section;
 
@@ -24,10 +24,9 @@ public class GarageSection extends Garage{
         totalspots      = this.floors*this.rows*this.places;
         freeSpots       = totalspots;
         carsParked      = 0;
+        reservedCars    = 0;
+        doubleParked    = 0;
     }
-
-
-
 
     public void clear(){
         for (int floor = 0; floor < floors;floor++) {
@@ -69,7 +68,9 @@ public class GarageSection extends Garage{
         return true;
     }
 
-
+    public int getDoubleParked() {
+        return doubleParked;
+    }
 
     private Location getFirstFreeLocation() {
         for (int floor = 0; floor < floors; floor++) {
@@ -115,6 +116,10 @@ public class GarageSection extends Garage{
         return section[location.getFloor()][location.getRow()][location.getPlace()];
     }
 
+    public int getReservedCars() {
+        return reservedCars;
+    }
+
 
     private boolean setCarAt(Location location, Car car) {
         Car oldCar = getCarAt(location);
@@ -128,8 +133,14 @@ public class GarageSection extends Garage{
             car.setLocation(location);
             freeSpots--;
 
+            if (car instanceof ReservationCar) {
+                reservedCars++;
+            }
+
             if (car.primary) {
                 carsParked++;
+            } else {
+                doubleParked++;
             }
 
             return true;
@@ -143,6 +154,12 @@ public class GarageSection extends Garage{
 
         if (car.primary) {
             carsParked--;
+        } else {
+            doubleParked--;
+        }
+
+        if (car instanceof ReservationCar) {
+            reservedCars--;
         }
 
         exitCarQueue.addCar(car);

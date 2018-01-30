@@ -32,18 +32,13 @@ public class RootView {
         Scene scene                 = new Scene(splitPanebottom,1500,900);
 
         splitPanebottom.setOrientation(Orientation.VERTICAL);
-        splitPanebottom.prefWidthProperty().bind(scene.widthProperty());
-        splitPanebottom.prefHeightProperty().bind(scene.heightProperty());
-
         splitPanetop.setOrientation(Orientation.HORIZONTAL);
-        splitPanetop.prefWidthProperty().bind(scene.widthProperty());
-        splitPanetop.prefHeightProperty().bind(scene.heightProperty());
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////ADD VIEWS MODELS AND CONTROLLERS/////////////////////////////////
         Simulator model                 = new Simulator();
         SimulatorController controller  = new SimulatorController(model);
-        GarageView view                    = new GarageView(controller, model);
+        GarageView view                 = new GarageView(controller, model);
 
         SettingHandler handler          = new SettingHandler();
         SettingsController settingsc    = new SettingsController(handler);
@@ -66,18 +61,13 @@ public class RootView {
 
         PieChartView piechart   = new PieChartView(controller, model);
         PieChartView2 piechart2 = new PieChartView2(controller, model);
-        SimData legend          = new SimData(controller, model);
         TextView textview       = new TextView(controller, model);
-        BorderPane pies         = new BorderPane();
         BorderPane borderPane   = new BorderPane();
 
         TabPane tabPane         = new TabPane();
         TabPane pie             = new TabPane();
 
         ScrollPane scrollPane   = new ScrollPane(simsettings);
-        ScrollPane scrollPane2  = new ScrollPane(view);
-        scrollPane2.setStyle("-fx-background-color: rgb(185, 195, 205);");
-
         /////////////////BUTTONS//////////////////////////////////////////////////////
         Button start            = new Button("Start/Stop");
         Button reset            = new Button("Reset");
@@ -89,7 +79,6 @@ public class RootView {
         ToolBar toolBar         = new ToolBar();
 
         scrollPane.setFitToHeight(true);
-        scrollPane2.setFitToHeight(true);
 
         start.setOnAction(e -> {
 
@@ -111,7 +100,7 @@ public class RootView {
 
 
         toolBar.getItems().addAll(start,reset,tick,tick100, runtimeView);
-        legend.setAlignment(Pos.CENTER);
+
 //////////////////////////TABS////////////////////////////////////////////////////////////////
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
         pie.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
@@ -145,15 +134,16 @@ public class RootView {
         PieChart2.setText("AdHoc/pass");
         PieChart2.setContent(piechart2);
         pie.getTabs().add(PieChart2);
-        pies.setCenter(pie);
-        pies.setBottom(legend);
 //////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////PUT THE STUFF IN THE SCENE////////////////////////////////////////
-        borderPane.setCenter(scrollPane2);
+        borderPane.setCenter(view);
         borderPane.setBottom(toolBar);
 
-        splitPanetop.getItems().addAll(borderPane,pies);
+        pie.maxWidthProperty().bind(splitPanetop.widthProperty().multiply(0.3));
+        tabPane.maxHeightProperty().bind(splitPanebottom.heightProperty().multiply(0.35));
+
+        splitPanetop.getItems().addAll(borderPane,pie);
         splitPanebottom.getItems().addAll(splitPanetop,tabPane);
 
         primaryStage.setScene(scene);

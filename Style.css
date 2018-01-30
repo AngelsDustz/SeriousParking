@@ -31,3 +31,8 @@
 
 }
 
+#set_lbl{
+    -fx-font: 20px ariel;
+    -fx-text-fill: BLACK;
+}
+

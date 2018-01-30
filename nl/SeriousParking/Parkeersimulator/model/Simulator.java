@@ -242,4 +242,9 @@ public class Simulator extends Model implements Runnable {
     public GarageSection getPassSection(){
         return passSection;
     }
+
+
+    public TicketMachine getTicketMachine() {
+        return ticketMachine;
+    }
 }

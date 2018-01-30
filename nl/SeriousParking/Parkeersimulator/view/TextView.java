@@ -9,6 +9,7 @@ import javafx.scene.layout.RowConstraints;
 import nl.SeriousParking.Parkeersimulator.controller.SimulatorController;
 import nl.SeriousParking.Parkeersimulator.model.Date_time;
 import nl.SeriousParking.Parkeersimulator.model.Garage;
+import nl.SeriousParking.Parkeersimulator.model.SettingHandler;
 import nl.SeriousParking.Parkeersimulator.model.Simulator;
 
 public class TextView extends View<SimulatorController, Simulator>  {
@@ -27,10 +28,12 @@ public class TextView extends View<SimulatorController, Simulator>  {
     //Amount of cars in ad-hoc queue.
     private Label lblAdhocQueue         = new Label("Auto's Ad-hoc rij");
     private Label lblAdhocQueueAmount   = new Label();
+    private Label lblAdhocLimit         = new Label();
 
     //Amount of cars in pass queue.
     private Label lblPassQueue          = new Label("Auto's in pashouder-gereserveerde rij");
     private Label lblPassQueueAmount    = new Label();
+    private Label lblPassLimit          = new Label();
 
     //Amount of bad parked cars.
     private Label lblDoubleParked   = new Label("Dubbel geparkeerde auto's");
@@ -43,6 +46,10 @@ public class TextView extends View<SimulatorController, Simulator>  {
     //Amount of ad-hoc cars lost due to queue.
     private Label lblAdhocMiss          = new Label("ad-hoc misgelopen");
     private Label lblAdhocMissAmount    = new Label();
+
+    //Amount of pass cars lost due to queue.
+    private Label lblPassMiss          = new Label("pass misgelopen");
+    private Label lblPassMissAmount    = new Label();
 
     //Amount of profit made.
     private Label lblProfit         = new Label("Winst");
@@ -73,15 +80,20 @@ public class TextView extends View<SimulatorController, Simulator>  {
 
         grid.add(lblAdhocQueue,1,11);
         grid.add(lblAdhocQueueAmount,2,11);
+        grid.add(lblAdhocLimit, 4, 11);
 
         grid.add(lblPassQueue,1,12);
         grid.add(lblPassQueueAmount,2,12);
+        grid.add(lblPassLimit, 4, 12);
 
-        grid.add(lblAdhocMiss, 1, 14);
+        grid.add(lblAdhocMiss, 1, 13);
         grid.add(lblAdhocMissAmount,2,13);
 
-        grid.add(lblProfit,1,13);
-        grid.add(lblProfitValue, 2, 14);
+        grid.add(lblPassMiss, 1, 14);
+        grid.add(lblPassMissAmount,2,14);
+
+        grid.add(lblProfit,1,15);
+        grid.add(lblProfitValue, 2, 15);
 
         HBox container = new HBox(grid);
         this.getChildren().add(container);
@@ -94,7 +106,6 @@ public class TextView extends View<SimulatorController, Simulator>  {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-
                 //Set adhoc label text.
                 lblAdhoc.setText(
                         ""+model.getAdhocReservationSection().getFilledspots()
@@ -114,7 +125,7 @@ public class TextView extends View<SimulatorController, Simulator>  {
                 );
 
                 lblProfitValue.setText(
-                        "" + model.getTicketMachine().getProfit()
+                        "€ " + model.getTicketMachine().getProfit()
                 );
 
                 lblAdhocQueueAmount.setText(
@@ -126,16 +137,30 @@ public class TextView extends View<SimulatorController, Simulator>  {
                 );
 
                 lblAdhocMissAmount.setText(
-                        "€ " + model.getProfit()
+                        "" + model.getAdhocReservationsPassed()
+                );
+
+                lblPassMissAmount.setText(
+                        "" + model.getPassPassed()
                 );
 
                 lblDoubles.setText(
                         "" + model.getAdhocReservationSection().getDoubleParked()
                 );
 
+                if (Garage.getNumberCarsInAdhocQueue() >= SettingHandler.getMaxQueueSize()) {
+                    lblAdhocLimit.setText("AD-HOC QUEUE ZIT VOL!");
+                } else {
+                    lblAdhocLimit.setText("");
+                }
+
+
+                if (Garage.getNumberCarsInPassQueue() >= SettingHandler.getMaxQueueSize()) {
+                    lblPassLimit.setText("PASSHOUDER QUEUE ZIT VOL!");
+                } else {
+                    lblPassLimit.setText("");
+                }
             }
         });
-
-
     }
 }

@@ -44,6 +44,10 @@ public class TextView extends View<SimulatorController, Simulator>  {
     private Label lblAdhocMiss          = new Label("ad-hoc misgelopen");
     private Label lblAdhocMissAmount    = new Label();
 
+    //Amount of pass cars lost due to queue.
+    private Label lblPassMiss          = new Label("pass misgelopen");
+    private Label lblPassMissAmount    = new Label();
+
     //Amount of profit made.
     private Label lblProfit         = new Label("Winst");
     private Label lblProfitValue    = new Label();
@@ -77,11 +81,14 @@ public class TextView extends View<SimulatorController, Simulator>  {
         grid.add(lblPassQueue,1,12);
         grid.add(lblPassQueueAmount,2,12);
 
-        grid.add(lblAdhocMiss, 1, 14);
+        grid.add(lblAdhocMiss, 1, 13);
         grid.add(lblAdhocMissAmount,2,13);
 
-        grid.add(lblProfit,1,13);
-        grid.add(lblProfitValue, 2, 14);
+        grid.add(lblPassMiss, 1, 14);
+        grid.add(lblPassMissAmount,2,14);
+
+        grid.add(lblProfit,1,15);
+        grid.add(lblProfitValue, 2, 15);
 
         HBox container = new HBox(grid);
         this.getChildren().add(container);
@@ -94,7 +101,6 @@ public class TextView extends View<SimulatorController, Simulator>  {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-
                 //Set adhoc label text.
                 lblAdhoc.setText(
                         ""+model.getAdhocReservationSection().getFilledspots()
@@ -114,7 +120,7 @@ public class TextView extends View<SimulatorController, Simulator>  {
                 );
 
                 lblProfitValue.setText(
-                        "" + model.getTicketMachine().getProfit()
+                        "€ " + model.getTicketMachine().getProfit()
                 );
 
                 lblAdhocQueueAmount.setText(
@@ -126,16 +132,17 @@ public class TextView extends View<SimulatorController, Simulator>  {
                 );
 
                 lblAdhocMissAmount.setText(
-                        "€ " + model.getProfit()
+                        "" + model.getAdhocReservationsPassed()
+                );
+
+                lblPassMissAmount.setText(
+                        "" + model.getPassPassed()
                 );
 
                 lblDoubles.setText(
                         "" + model.getAdhocReservationSection().getDoubleParked()
                 );
-
             }
         });
-
-
     }
 }

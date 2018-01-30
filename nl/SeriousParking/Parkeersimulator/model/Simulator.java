@@ -30,6 +30,14 @@ public class Simulator extends Model implements Runnable {
         randomGenerator         = new Random();
     }
 
+    public int getAdhocReservationsPassed() {
+        return adhocReservationsPassed;
+    }
+
+    public int getPassPassed() {
+        return passPassed;
+    }
+
     /**
      * @name startSimulator
      *

@@ -40,7 +40,7 @@ public class RootView {
         //Settings
         SettingHandler handler              = new SettingHandler();
         SettingsController settingsc        = new SettingsController(handler);
-        SimSettings simsettings             = new SimSettings(settingsc, handler);
+        SettingsView simsettings             = new SettingsView(settingsc, handler);
 
         //Profit
         ProfitView profitView               = new ProfitView(controller, model);

@@ -39,8 +39,10 @@ public class GarageSection extends Garage{
             }
         }
 
-        freeSpots   = totalspots;
-        carsParked  = 0;
+        freeSpots       = totalspots;
+        carsParked      = 0;
+        reservedCars    = 0;
+        doubleParked    = 0;
     }
 
 

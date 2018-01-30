@@ -6,7 +6,7 @@ import java.util.*;
 
 public class Simulator extends Model implements Runnable {
     //@todo Make this a setting.
-    private static final double CARPRICE = 12.50;
+
     private final int ADHOC =1;
     private final int PASS  =2;
     private final int RES  =3;
@@ -14,14 +14,21 @@ public class Simulator extends Model implements Runnable {
     private boolean GarageIsSet;
     private boolean doubleEntrance;
 
+    private int adhocReservationsPassed;
+    private int passPassed;
+
     private Garage garage;
     private GarageSection adhocReservationSection;
     private GarageSection passSection;
-
     private TicketMachine ticketMachine;
     private Random randomGenerator;
 
     public Simulator() {
+
+       adhocReservationsPassed=0;
+       passPassed=0;
+
+
         GarageIsSet =true;
         garage = new Garage();
         adhocReservationSection = new GarageSection(SettingHandler.adhocReservationFloors,SettingHandler.adhocReservationRows,SettingHandler.adhocReservationplaces);
@@ -29,15 +36,6 @@ public class Simulator extends Model implements Runnable {
         ticketMachine = new TicketMachine();
         randomGenerator    = new Random();
     }
-
-
-
-
-
-
-
-
-
 
     /**
      * @name startSimulator
@@ -112,6 +110,10 @@ public class Simulator extends Model implements Runnable {
     private void handleEntrance(){
         carsArriving();
         Garage.CarsArrivingInQueue();
+
+        adhocReservationsPassed += garage.carsPassingBy(adhocReservationSection, Garage.entranceAdhocQueue);
+        passPassed              += garage.carsPassingBy(passSection,Garage.entrancePassReservationQueue);
+
         EnteringGarage(Garage.entranceAdhocQueue);
         EnteringGarage(Garage.entrancePassReservationQueue);
 
@@ -222,7 +224,8 @@ public class Simulator extends Model implements Runnable {
 
 
         run     = false;
-
+        adhocReservationsPassed=0;
+        passPassed=0;
         ticketMachine.reset();
         notifyViews();
 

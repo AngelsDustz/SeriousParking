@@ -17,12 +17,12 @@ public class Garage {
 
         if (section.getFreeSpots()!=0) {
             while (queue.carsInQueue()>SettingHandler.maxQueueSize){
-                section.getSectionQueue().removeCar();
+                queue.removeCar();
                 carsPassed++;
             }
         } else {
             while(queue.carsInQueue()>0){
-                section.getSectionQueue().removeCar();
+                queue.removeCar();
                 carsPassed++;
             }
         }

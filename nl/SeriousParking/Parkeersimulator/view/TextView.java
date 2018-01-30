@@ -117,7 +117,7 @@ public class TextView extends View<SimulatorController, Simulator>  {
                // lblReservedAmount.setText(""+model.getReservationSection().getFreeSpots());
                 //TODO uitsplitsen per section aanroepen als model.get....Section.getFreeSpots()
                 lblFreeAmount.setText(""+model.getAdhocReservationSection().getFreeSpots());
-                lblProfitValue.setText("" + model.getNumberOfAdhocPassing());
+               // lblProfitValue.setText("" + model.getNumberOfAdhocPassing());
 
 
                 lblAdhocQueueAmount.setText(""+ Garage.getNumberCarsInAdhocQueue());

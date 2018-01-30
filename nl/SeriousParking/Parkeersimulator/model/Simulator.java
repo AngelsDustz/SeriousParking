@@ -11,48 +11,22 @@ public class Simulator extends Model implements Runnable {
     private final int PASS  =2;
     private final int RES  =3;
     private boolean run;
-    private boolean firstRun;
     private boolean GarageIsSet;
     private boolean doubleEntrance;
-    private int numberOfAdhocPassing;
-    private double numberOfReservations;
-    private Random randomGenerator;
-    private int tickPause   = SettingHandler.tickPause;
-    private int chance      = SettingHandler.chance;
-    private int weekDayArrivals; // average number of arriving cars per hour
-    private int weekendArrivals;// average number of arriving cars per hour
-    private int weekDayPassArrivals;// average number of arriving cars per hour
-    private int weekendPassArrivals;// average number of arriving cars per hour
-    private int weekDayReservations;
-    private int WeekendReservations;
-    private int enterSpeed; // number of cars that can enter per minute
-    private int paymentSpeed; // number of cars that can pay per minute
-    private int exitSpeed; // number of cars that can leave per minute
+
+    private Garage garage;
     private GarageSection adhocReservationSection;
     private GarageSection passSection;
 
     private TicketMachine ticketMachine;
+    private Random randomGenerator;
 
     public Simulator() {
-
+        GarageIsSet =true;
+        garage = new Garage();
         adhocReservationSection = new GarageSection(SettingHandler.adhocReservationFloors,SettingHandler.adhocReservationRows,SettingHandler.adhocReservationplaces);
         passSection = new GarageSection(SettingHandler.passFloors,SettingHandler.passRows,SettingHandler.passplaces);
-
         ticketMachine = new TicketMachine();
-
-        numberOfAdhocPassing       =0;
-
-
-
-
-        GarageIsSet =  true;
-
-        numberOfAdhocPassing        = 0;
-
-
-
-
-        firstRun           = true;
         randomGenerator    = new Random();
     }
 
@@ -60,24 +34,10 @@ public class Simulator extends Model implements Runnable {
 
 
 
-    private void setSettings(){
-        tickPause   = SettingHandler.tickPause;
-        chance      = SettingHandler.chance;
-        weekDayReservations = SettingHandler.weekDayReservations;
-        WeekendReservations = SettingHandler.weekendReservations;
-        weekDayArrivals     = SettingHandler.weekDayArrivals;
-        weekendArrivals     = SettingHandler.weekendArrivals;
-        weekDayPassArrivals = SettingHandler.weekDayPassArrivals;
-        weekendPassArrivals = SettingHandler.weekendPassArrivals;
-
-        enterSpeed      = SettingHandler.enterSpeed;
-        paymentSpeed    = SettingHandler.paymentSpeed;
-        exitSpeed       = SettingHandler.exitSpeed;
-        doubleEntrance  = SettingHandler.doubleEntrance;
 
 
 
-    }
+
 
     /**
      * @name startSimulator
@@ -135,22 +95,19 @@ public class Simulator extends Model implements Runnable {
         });
 
 
-        setSettings();
 
 
 
 
         // Pause.
         try {
-            Thread.sleep(tickPause);
+            Thread.sleep(SettingHandler.tickPause);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
 
-    public int getNumberOfAdhocPassing() {
-        return numberOfAdhocPassing;
-    }
+
 
     private void handleEntrance(){
         carsArriving();
@@ -175,13 +132,13 @@ public class Simulator extends Model implements Runnable {
     }
 
     private void carsArriving(){
-        int numberOfCars = getNumberOfCars(weekDayArrivals, weekendArrivals);
+        int numberOfCars = getNumberOfCars(SettingHandler.weekDayArrivals, SettingHandler.weekendArrivals);
         addArrivingCars(numberOfCars, ADHOC);
-        numberOfCars = getNumberOfCars(weekDayPassArrivals, weekendPassArrivals);
+        numberOfCars = getNumberOfCars(SettingHandler.weekDayPassArrivals, SettingHandler.weekendPassArrivals);
         addArrivingCars(numberOfCars, PASS);
 
 
-        numberOfCars = getNumberOfCars(weekDayReservations, WeekendReservations);
+        numberOfCars = getNumberOfCars(SettingHandler.weekDayReservations, SettingHandler.weekendReservations);
         addArrivingCars(numberOfCars, RES);
     }
 
@@ -272,11 +229,7 @@ public class Simulator extends Model implements Runnable {
     }
 
 
-
-    public boolean isGarageIsSet() {
-        return GarageIsSet;
-    }
-
+    public boolean isGarageIsSet(){return GarageIsSet;}
 
 
     public GarageSection getAdhocReservationSection(){

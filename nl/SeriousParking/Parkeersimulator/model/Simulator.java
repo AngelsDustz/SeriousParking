@@ -5,18 +5,14 @@ import javafx.application.Platform;
 import java.util.*;
 
 public class Simulator extends Model implements Runnable {
-    //@todo Make this a setting.
-
-    private final int ADHOC =1;
-    private final int PASS  =2;
-    private final int RES  =3;
+    private final int ADHOC = 1;
+    private final int PASS  = 2;
+    private final int RES   = 3;
     private boolean run;
     private boolean GarageIsSet;
     private boolean doubleEntrance;
-
     private int adhocReservationsPassed;
     private int passPassed;
-
     private Garage garage;
     private GarageSection adhocReservationSection;
     private GarageSection passSection;
@@ -24,17 +20,14 @@ public class Simulator extends Model implements Runnable {
     private Random randomGenerator;
 
     public Simulator() {
-
-       adhocReservationsPassed=0;
-       passPassed=0;
-
-
-        GarageIsSet =true;
-        garage = new Garage();
+        adhocReservationsPassed = 0;
+        passPassed              = 0;
+        GarageIsSet             = true;
+        garage                  = new Garage();
         adhocReservationSection = new GarageSection(SettingHandler.adhocReservationFloors,SettingHandler.adhocReservationRows,SettingHandler.adhocReservationplaces);
-        passSection = new GarageSection(SettingHandler.passFloors,SettingHandler.passRows,SettingHandler.passplaces);
-        ticketMachine = new TicketMachine();
-        randomGenerator    = new Random();
+        passSection             = new GarageSection(SettingHandler.passFloors,SettingHandler.passRows,SettingHandler.passplaces);
+        ticketMachine           = new TicketMachine();
+        randomGenerator         = new Random();
     }
 
     /**
@@ -48,7 +41,7 @@ public class Simulator extends Model implements Runnable {
 
 
     public void startStop(){
-        if (!run){
+        if (!run) {
             run=true;
             startSimulator();
         } else {
@@ -92,11 +85,6 @@ public class Simulator extends Model implements Runnable {
             }
         });
 
-
-
-
-
-
         // Pause.
         try {
             Thread.sleep(SettingHandler.tickPause);
@@ -119,8 +107,6 @@ public class Simulator extends Model implements Runnable {
 
         adhocReservationSection.carsEntering();
         passSection.carsEntering();
-
-
     }
 
 
@@ -134,29 +120,37 @@ public class Simulator extends Model implements Runnable {
     }
 
     private void carsArriving(){
-        int numberOfCars = getNumberOfCars(SettingHandler.weekDayArrivals, SettingHandler.weekendArrivals);
+        int numberOfCars;
+
+        //Ad-hoc cars.
+        numberOfCars = getNumberOfCars(SettingHandler.weekDayArrivals, SettingHandler.weekendArrivals);
         addArrivingCars(numberOfCars, ADHOC);
+
+        //Subscriber cars.
         numberOfCars = getNumberOfCars(SettingHandler.weekDayPassArrivals, SettingHandler.weekendPassArrivals);
         addArrivingCars(numberOfCars, PASS);
 
-
+        //Reservation cars.
         numberOfCars = getNumberOfCars(SettingHandler.weekDayReservations, SettingHandler.weekendReservations);
         addArrivingCars(numberOfCars, RES);
     }
 
-    public  void EnteringGarage(Queue queue){
+    public void EnteringGarage(Queue queue){
         int i=0;
+
         while (i<SettingHandler.enterSpeed){
             Car car= queue.removeCar();
+
             if (car instanceof AdhocCar || car instanceof ReservationCar){
                 adhocReservationSection.getSectionQueue().addCar(car);
             }
+
             if(car instanceof PassCar){
                 passSection.getSectionQueue().addCar(car);
             }
+
             i++;
         }
-
     }
 
     public double getProfit() {
@@ -203,8 +197,8 @@ public class Simulator extends Model implements Runnable {
             }
 
 
-            if(!(car instanceof ReservationCar)){
-                if(randomGenerator.nextInt(100)<SettingHandler.chanseToParkDouble) {
+            if (!(car instanceof ReservationCar)) {
+                if (randomGenerator.nextInt(100)<SettingHandler.chanseToParkDouble) {
                     // car.setParkedDouble(true);
                 }
             }

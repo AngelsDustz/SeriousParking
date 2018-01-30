@@ -210,7 +210,7 @@ public class Simulator extends Model implements Runnable {
 
             if (!(car instanceof ReservationCar)) {
                 if (randomGenerator.nextInt(100)<SettingHandler.chanseToParkDouble) {
-                    // car.setParkedDouble(true);
+                    car.setParkedDouble(true);
                 }
 
             }

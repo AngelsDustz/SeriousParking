@@ -4,7 +4,7 @@ public class SettingHandler extends Model{
     protected static int tickPause;
     protected static int chance;
     protected static int reservationShowchance;
-    protected static Boolean doubleEntrance;
+    protected static boolean doubleEntrance;
     protected static int chanseToParkDouble=80;
     protected static int weekDayArrivals; // average number of arriving cars per hour
     protected static int weekendArrivals; // average number of arriving cars per hour
@@ -12,58 +12,41 @@ public class SettingHandler extends Model{
     protected static int weekendPassArrivals; // average number of arriving cars per hour
     protected static int weekDayReservations;
     protected static int weekendReservations;
-
-
     protected static int enterSpeed; // number of cars that can enter per minute
     protected static int paymentSpeed; // number of cars that can pay per minute
     protected static int maxQueueSize;
     protected static int exitSpeed; // number of cars that can leave per minute
-
     protected static int driveTroughSpeed= 10;
-
     protected static int adhocReservationFloors = 2;
     protected static int adhocReservationRows =6;
     protected static int adhocReservationplaces =30;
-
-    protected static int  passFloors = 1;
+    protected static int passFloors = 1;
     protected static int passRows =6;
-    protected static int  passplaces =30;
+    protected static int passplaces =30;
 
 
 
 
     public SettingHandler() {
-    defaultValue();
+        defaultValue();
     }
 
     public void defaultValue() {
-        weekDayArrivals =40; // average number of arriving cars per hour
-        weekendArrivals =100; // average number of arriving cars per hour
-        weekDayPassArrivals= 50; // average number of arriving cars per hour
-        weekendPassArrivals =5; // average number of arriving cars per hour
-        weekDayReservations =30;
-        weekendReservations =10;
-        chanseToParkDouble =80;
-
-
-        maxQueueSize = 10;
-        tickPause = 150;
-        chance = 1;
-        reservationShowchance = 80;
-        doubleEntrance = false;
-        enterSpeed = 2;
-        exitSpeed =4;
-        paymentSpeed = 6;
-
-        adhocReservationFloors = 1;
-        adhocReservationRows = 6;
-        adhocReservationplaces = 30;
-
-        passFloors = 1;
-        passRows = 6;
-        passplaces = 30;
-
-
+        weekDayArrivals         = 40; // average number of arriving cars per hour
+        weekendArrivals         = 100; // average number of arriving cars per hour
+        weekDayPassArrivals     = 50; // average number of arriving cars per hour
+        weekendPassArrivals     = 5; // average number of arriving cars per hour
+        weekDayReservations     = 30;
+        weekendReservations     = 10;
+        chanseToParkDouble      = 80;
+        maxQueueSize            = 10;
+        tickPause               = 150;
+        chance                  = 1;
+        reservationShowchance   = 80;
+        doubleEntrance          = false;
+        enterSpeed              = 2;
+        exitSpeed               = 4;
+        paymentSpeed            = 6;
     }
 
 
@@ -99,18 +82,15 @@ public class SettingHandler extends Model{
         weekendReservations = weekendReservations;
     }
 
-
-
     public static int getTickPause() {
         return tickPause;
     }
 
     public static void setTickPause(int tickPause) {
-        if(tickPause>0) {
+        if (tickPause>0) {
             SettingHandler.tickPause = tickPause;
-        }
-        else {
-            SettingHandler.tickPause=5;
+        } else {
+            SettingHandler.tickPause = 5;
         }
 
     }
@@ -235,9 +215,7 @@ public class SettingHandler extends Model{
         SettingHandler.passplaces = passplaces;
     }
 
-
-
-   public static int getDriveTroughSpeed() {
+    public static int getDriveTroughSpeed() {
         return driveTroughSpeed;
     }
 }

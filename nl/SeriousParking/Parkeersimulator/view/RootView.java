@@ -2,16 +2,13 @@ package nl.SeriousParking.Parkeersimulator.view;
 
 
 import javafx.geometry.Orientation;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import nl.SeriousParking.Parkeersimulator.controller.ReservationController;
 import nl.SeriousParking.Parkeersimulator.controller.SettingsController;
 import nl.SeriousParking.Parkeersimulator.controller.SimulatorController;
-import nl.SeriousParking.Parkeersimulator.model.*;
 import nl.SeriousParking.Parkeersimulator.controller.RuntimeController;
 import nl.SeriousParking.Parkeersimulator.model.Runtime;
 import nl.SeriousParking.Parkeersimulator.model.SettingHandler;
@@ -46,15 +43,9 @@ public class RootView {
 
         ProfitView profitView           = new ProfitView(controller, model);
 
-        ReservationContainer Rmodel        = new ReservationContainer();
-        ReservationController controllerR  = new ReservationController(Rmodel);
-        ReservationView reservationView    = new ReservationView(controllerR, Rmodel);
-
         Runtime runtime                     = new Runtime();
         RuntimeController runtimeController = new RuntimeController(runtime);
         RuntimeView runtimeView             = new RuntimeView(runtimeController, runtime);
-
-        Rmodel.addEventListner(model);
 ///////////////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////VIEW PANES//////////////////////////////////////////////////////
@@ -112,7 +103,7 @@ public class RootView {
 
         Tab Events = new Tab();
         Events.setText("Events");
-        Events.setContent(reservationView);
+        //Events.setContent();
         tabPane.getTabs().add(Events);
 
         Tab ProfitTab   = new Tab();

@@ -12,6 +12,15 @@ public class Garage {
     Garage() {
     }
 
+    protected static void reset() {
+        arrivingCars.reset();
+        entrancePassReservationQueue.reset();
+        entranceAdhocQueue.reset();
+        drivingToExit.reset();
+        paymentCarQueue.reset();
+        exitCarQueue.reset();
+    }
+
     protected static void CarsArrivingInQueue() {
         Car car;
         int i = 0;

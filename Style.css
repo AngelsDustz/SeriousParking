@@ -1,38 +1,15 @@
-.data0.chart-pie {-fx-pie-color: darkolivegreen;}
-.data1.chart-pie {-fx-pie-color: DARKBLUE;}
-.data2.chart-pie {-fx-pie-color: RED;}
-.data3.chart-pie {-fx-pie-color: orange;}
-.data4.chart-pie {-fx-pie-color: ANTIQUEWHITE;}
-
-
-#abbo {
-    -fx-font: 20px Tahoma;
-    -fx-text-fill: DARKOLIVEGREEN;
-}
-#vrij{
-    -fx-font: 20px Tahoma;
-    -fx-text-fill: ANTIQUEWHITE;
-
-}
-#reserv{
-    -fx-font: 20px Tahoma;
-    -fx-text-fill: ORANGE;
-
-}
-#adhoc {
-    -fx-font: 20px Tahoma;
-    -fx-text-fill: BLUE;
-
-
-}
-#dubbel{
-    -fx-font: 20px Tahoma;
-    -fx-text-fill: RED;
-
-}
+.data0.chart-pie {-fx-pie-color:rgb(0,255,0);}
+.data1.chart-pie {-fx-pie-color:rgb(53,144,255);}
+.data2.chart-pie {-fx-pie-color:rgb(150,255,170);}
+.data3.chart-pie {-fx-pie-color: rgb(135,255,255);}
 
 #set_lbl{
     -fx-font: 20px ariel;
     -fx-text-fill: BLACK;
+}
+
+#garage_container{
+
+
 }
 

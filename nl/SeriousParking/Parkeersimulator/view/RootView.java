@@ -5,12 +5,9 @@ import javafx.geometry.Orientation;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
-import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import nl.SeriousParking.Parkeersimulator.controller.SettingsController;
 import nl.SeriousParking.Parkeersimulator.controller.SimulatorController;
-import nl.SeriousParking.Parkeersimulator.controller.RuntimeController;
-import nl.SeriousParking.Parkeersimulator.model.Runtime;
 import nl.SeriousParking.Parkeersimulator.model.SettingHandler;
 import nl.SeriousParking.Parkeersimulator.model.Simulator;
 
@@ -45,51 +42,14 @@ public class RootView {
         //Profit
         ProfitView profitView               = new ProfitView(controller, model);
 
-        //Runtime
-        Runtime runtime                     = new Runtime();
-        RuntimeController runtimeController = new RuntimeController(runtime);
-        RuntimeView runtimeView             = new RuntimeView(runtimeController, runtime);
 
         //View panes?
         PieChartView piechart   = new PieChartView(controller, model);
         PieChartView2 piechart2 = new PieChartView2(controller, model);
         TextView textview       = new TextView(controller, model);
-        BorderPane borderPane   = new BorderPane();
         TabPane tabPane         = new TabPane();
         TabPane pie             = new TabPane();
-        ScrollPane scrollPane   = new ScrollPane(simsettings);
-        Button start            = new Button("Start/Stop");
-        Button reset            = new Button("Reset");
-        Button tick             = new Button("single tick");
-        Button tick100          = new Button("tick +100");
-        start.setDefaultButton(true);
-        reset.setCancelButton(true);
 
-        ToolBar toolBar         = new ToolBar();
-
-        scrollPane.setFitToHeight(true);
-
-        //Button action handles.
-        start.setOnAction(e -> {
-
-            controller.startSimulator();
-        });
-
-        reset.setOnAction(e -> {
-            controller.resetSimulator();
-        });
-
-        tick.setOnAction(e -> {
-            controller.tick();
-        });
-
-
-        tick100.setOnAction(e -> {
-            controller.tickMany(100);
-        });
-
-
-        toolBar.getItems().addAll(start,reset,tick,tick100, runtimeView);
 
         //Tabs
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
@@ -116,7 +76,7 @@ public class RootView {
         //Settings
         Tab SimSettings = new Tab();
         SimSettings.setText("Settings");
-        SimSettings.setContent(scrollPane);
+        SimSettings.setContent(simsettings);
         tabPane.getTabs().add(SimSettings);
 
         //Bezetting
@@ -132,13 +92,13 @@ public class RootView {
         pie.getTabs().add(PieChart2);
 
         //Add to scene
-        borderPane.setCenter(view);
-        borderPane.setBottom(toolBar);
+        //borderPane.setCenter(view);
+        //borderPane.setBottom(toolBar);
 
         pie.maxWidthProperty().bind(splitPanetop.widthProperty().multiply(0.3));
         tabPane.maxHeightProperty().bind(splitPanebottom.heightProperty().multiply(0.35));
 
-        splitPanetop.getItems().addAll(borderPane,pie);
+        splitPanetop.getItems().addAll(view,pie);
         splitPanebottom.getItems().addAll(splitPanetop,tabPane);
 
         primaryStage.setScene(scene);

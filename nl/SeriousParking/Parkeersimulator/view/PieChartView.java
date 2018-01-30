@@ -25,11 +25,8 @@ public class PieChartView extends View<SimulatorController, Simulator> implement
         PieChart pieChart   = new PieChart();
         size     = 500;
        // carSlice            = new PieChart.Data("Auto's Geparkeerd", 30);
-
         parkedAdhocReservationSlice = new PieChart.Data("geparkeerde ad-hoc en gereserveerde plekken",100);
         parkedPassSlice   = new PieChart.Data("geparkeerde pashouder Plekken", 100);
-
-
 
         //dubbelpSlice        = new PieChart.Data("Dubbelparkeerder", 10);
         freeAdhocReservationSlice = new PieChart.Data("Vrije ad-hoc en reserveerbare plekken",100);
@@ -42,8 +39,8 @@ public class PieChartView extends View<SimulatorController, Simulator> implement
         pieChart.getData().add(parkedPassSlice);
         pieChart.getData().add(freePassSlice);
 
-
-        pieChart.setLegendVisible(false);
+pieChart.setLabelsVisible(false);
+        pieChart.setLegendVisible(true);
         pieChart.setClockwise(true);
         pieChart.setStartAngle(90);
 

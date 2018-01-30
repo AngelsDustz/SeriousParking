@@ -3,16 +3,19 @@ package nl.SeriousParking.Parkeersimulator.view;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 
+import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.ToolBar;
+import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
+import nl.SeriousParking.Parkeersimulator.controller.RuntimeController;
 import nl.SeriousParking.Parkeersimulator.controller.SimulatorController;
 import nl.SeriousParking.Parkeersimulator.model.*;
+import nl.SeriousParking.Parkeersimulator.model.Runtime;
+
+import static javafx.scene.paint.Color.RED;
 import static javafx.scene.paint.Color.rgb;
 
 
@@ -24,7 +27,7 @@ public class GarageView extends View<SimulatorController,Simulator> {
 
     GarageView(SimulatorController controller, Simulator model) {
         super(controller, model);
-
+        BorderPane sections = new BorderPane();
         HBox container  = new HBox();
         VBox root       = new VBox();
         FlowPane barrs  = new FlowPane();
@@ -33,6 +36,7 @@ public class GarageView extends View<SimulatorController,Simulator> {
 
         container.setPadding(new Insets(15, 12, 15, 12));
         container.setSpacing(40);
+        root.setId("garage_container");
 
         AdhocReservationSpots   = createTable(SettingHandler.getAdhocReservationFloors(),SettingHandler.getAdhocReservationRows(),SettingHandler.getAdhocReservationplaces(),container);
         PassSpots               = createTable(SettingHandler.getPassFloors(),SettingHandler.getPassRows(),SettingHandler.getPassplaces(),container);
@@ -47,13 +51,51 @@ public class GarageView extends View<SimulatorController,Simulator> {
         adhoc.setStyle("-fx-control-inner-background: rgb(150,255,170); " +
                 "-fx-accent: rgb(0,255,0); " +
                 "-fx-text-box-border: rgb(0,255,0);");
+
         adhoc.setPrefSize(200, 30);
+
+        Runtime runtime                     = new Runtime();
+        RuntimeController runtimeController = new RuntimeController(runtime);
+        RuntimeView runtimeView             = new RuntimeView(runtimeController, runtime);
+
+
+        Button start            = new Button("Start/Stop");
+        Button reset            = new Button("Reset");
+        Button tick             = new Button("single tick");
+        Button tick100          = new Button("tick +100");
+        start.setDefaultButton(true);
+        reset.setCancelButton(true);
+        ToolBar toolBar         = new ToolBar();
+
+
+        //Button action handles.
+        start.setOnAction(e -> {
+
+            controller.startSimulator();
+        });
+
+        reset.setOnAction(e -> {
+            controller.resetSimulator();
+        });
+
+        tick.setOnAction(e -> {
+            controller.tick();
+        });
+
+
+        tick100.setOnAction(e -> {
+            controller.tickMany(100);
+        });
+
+
+        toolBar.getItems().addAll(start,reset,tick,tick100, runtimeView);
 
         barrs.getChildren().addAll(adhoc,abbores);
         barrs.setHgap(100);
         root.getChildren().addAll(container,barrs);
-
-        this.getChildren().addAll(root);
+        sections.setBottom(toolBar);
+        sections.setCenter(root);
+        this.getChildren().addAll(sections);
         model.addView(this);
     }
 

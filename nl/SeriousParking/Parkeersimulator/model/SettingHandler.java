@@ -31,6 +31,10 @@ public class SettingHandler extends Model{
         defaultValue();
     }
 
+    public void setDriveTroughSpeed(int speed) {
+        driveTroughSpeed = speed;
+    }
+
     public void defaultValue() {
         weekDayArrivals         = 40; // average number of arriving cars per hour
         weekendArrivals         = 100; // average number of arriving cars per hour
@@ -47,6 +51,8 @@ public class SettingHandler extends Model{
         enterSpeed              = 2;
         exitSpeed               = 4;
         paymentSpeed            = 6;
+
+        notifyViews();
     }
 
 

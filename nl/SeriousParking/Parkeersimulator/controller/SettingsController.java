@@ -11,33 +11,60 @@ public class SettingsController extends Controller<SettingHandler> {
     public SettingsController(SettingHandler model) {
         super(model);
     }
-    public void setDefault(){
+
+    public void updateDoubleEntrance(boolean status) {
+        model.setDoubleEntrance(status);
+    }
+
+    public void updateTickPause(int tickrate) {
+        model.setTickPause(tickrate);
+    }
+
+    public void updateEnterSpeed(int speed) {
+        model.setEnterSpeed(speed);
+    }
+
+    public void updateExitSpeed(int speed) {
+        model.setEnterSpeed(speed);
+    }
+
+    public void updatePaymentSpeed(int speed) {
+        model.setPaymentSpeed(speed);
+    }
+
+    public void updateWeekdayAdhocCars(int cars) {
+        model.setWeekDayArrivals(cars);
+    }
+
+    public void updateWeekdayPassCars(int cars) {
+        model.setWeekDayPassArrivals(cars);
+    }
+
+    public void updateWeekdayReservationCars(int cars) {
+        model.setweekDayReservations(cars);
+    }
+
+    public void updateWeekendAdhocCars(int cars) {
+        model.setWeekendArrivals(cars);
+    }
+
+    public void updateWeekendPassCars(int cars) {
+        model.setWeekendPassArrivals(cars);
+    }
+
+    public void updateWeekendReservationCars(int cars) {
+        model.setweekendReservations(cars);
+    }
+
+    public void updateGarageQueue(int queuesize) {
+        model.setMaxQueueSize(queuesize);
+    }
+
+    public void updateGarageThroughSpeed(int speed) {
+        model.setDriveTroughSpeed(speed);
+    }
+
+    public void defaultValues() {
         model.defaultValue();
-    }
-
-    public void doubleEntrance(boolean bool){
-        model.setDoubleEntrance(bool);
-
-    }
-
-    public void Save(String[] array){
-        try {
-            model.setTickPause(parseInt(array[0]));
-            model.setEnterSpeed(parseInt(array[1]));
-            model.setExitSpeed(parseInt(array[2]));
-            model.setPaymentSpeed(parseInt(array[3]));
-            model.setWeekDayArrivals(parseInt(array[4]));
-            model.setWeekendArrivals(parseInt(array[5]));
-            model.setWeekDayPassArrivals(parseInt(array[6]));
-            model.setWeekendPassArrivals(parseInt(array[7]));
-            model.setChance(parseInt(array[8]));
-
-
-            model.notifyViews();
-        }
-
-        catch (NumberFormatException e){
-            model.notifyViews();
-        }
     }
 }

@@ -39,8 +39,10 @@ public class GarageSection extends Garage{
             }
         }
 
-        freeSpots   = totalspots;
-        carsParked  = 0;
+        freeSpots       = totalspots;
+        carsParked      = 0;
+        reservedCars    = 0;
+        doubleParked    = 0;
     }
 
 
@@ -374,23 +376,7 @@ public class GarageSection extends Garage{
         }
    }
 
-    protected int carsPassingBy(){
-        int carsPassed=0;
 
-        if (freeSpots!=0) {
-            while (sectionQueue.carsInQueue()>SettingHandler.maxQueueSize){
-                sectionQueue.removeCar();
-                carsPassed++;
-            }
-        } else {
-            while(sectionQueue.carsInQueue()>0){
-                sectionQueue.removeCar();
-                carsPassed++;
-            }
-        }
-
-        return carsPassed;
-    }
 
     public double getFreeSpots() {
         return freeSpots;

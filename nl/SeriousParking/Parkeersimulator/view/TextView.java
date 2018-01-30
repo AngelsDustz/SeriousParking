@@ -94,6 +94,7 @@ public class TextView extends View<SimulatorController, Simulator>  {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
+
                 //Set adhoc label text.
                 lblAdhoc.setText(
                         ""+model.getAdhocReservationSection().getFilledspots()
@@ -113,7 +114,7 @@ public class TextView extends View<SimulatorController, Simulator>  {
                 );
 
                 lblProfitValue.setText(
-                        "" + model.getNumberOfAdhocPassing()
+                        "" + model.getTicketMachine().getProfit()
                 );
 
                 lblAdhocQueueAmount.setText(
@@ -131,6 +132,7 @@ public class TextView extends View<SimulatorController, Simulator>  {
                 lblDoubles.setText(
                         "" + model.getAdhocReservationSection().getDoubleParked()
                 );
+
             }
         });
 

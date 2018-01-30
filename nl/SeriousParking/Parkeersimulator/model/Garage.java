@@ -12,6 +12,24 @@ public class Garage {
     Garage() {
     }
 
+    protected int carsPassingBy(GarageSection section, Queue queue){
+        int carsPassed=0;
+
+        if (section.getFreeSpots()!=0) {
+            while (queue.carsInQueue()>SettingHandler.maxQueueSize){
+                queue.removeCar();
+                carsPassed++;
+            }
+        } else {
+            while(queue.carsInQueue()>0){
+                queue.removeCar();
+                carsPassed++;
+            }
+        }
+
+        return carsPassed;
+    }
+
     protected static void reset() {
         arrivingCars.reset();
         entrancePassReservationQueue.reset();

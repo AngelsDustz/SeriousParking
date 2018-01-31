@@ -126,9 +126,13 @@ public class Simulator extends Model implements Runnable {
 
         EnteringGarage(Garage.entranceAdhocQueue);
         EnteringGarage(Garage.entrancePassReservationQueue);
-
+        //here the cars go to the designated area
         adhocReservationSection.carsEntering();
-        passSection.carsEntering();
+        if(SettingHandler.doubleEntrance){
+            passSection.carsBackEntering();
+        } else {
+            passSection.carsEntering();
+        }
     }
 
 

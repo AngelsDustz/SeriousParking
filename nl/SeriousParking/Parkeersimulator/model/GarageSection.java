@@ -318,7 +318,7 @@ public class GarageSection extends Garage {
                     //Store car for later then add back after the while loop.
                     addMe.add(car);
                 } else {
-                    //Double parked shitters.
+                    //Double parked cars.
                     Car nextCar;
 
 
@@ -350,36 +350,44 @@ public class GarageSection extends Garage {
     }
 
     //todo  reimplement
-    private void carsBackEntering(){
+    protected void carsBackEntering(){
         int i=0;
 
         // Remove car from the front of the queue and assign to a parking space.
-        while (sectionQueue.carsInQueue()>0 && freeSpots>0 && i<SettingHandler.enterSpeed) {
+        ArrayList<Car> addMe = new ArrayList<>();
+
+        while (sectionQueue.carsInQueue() > 0 && freeSpots > 0) {
             Car car = sectionQueue.removeCar();
 
-            if (!car.isParkedDouble()){
-                Location freeLocation = getLastFreeLocation();
-                setCarAt(freeLocation, car);
+            if (!car.isParkedDouble()) {
+                Location freeSpot   = getLastFreeLocation();
+                setCarAt(freeSpot, car);
+            } else {
 
-                //Todo reimplement parkedDouble
-            }/* else {
-                Location[] freeLocation = getLastFreeDoubleLocation();
+                if (car instanceof ReservationCar) {
+                    //Store car for later then add back after the while loop.
+                    addMe.add(car);
+                } else {
+                    //Double parked cars.
+                    Car nextCar;
 
 
-                if (freeLocation != null) {
-                    Location loc1   = freeLocation[0];
-                    Location loc2   = freeLocation[1];
-                    Car car2        = new Car();
-                    car2            = car2.copy(car);
+                    Location[] freeSpots    = getLastFreeDoubleLocation();
 
-                    setCarAt(loc1, car);
-                    setCarAt(loc2, car2);
-
+                    if (freeSpots != null) {
+                        nextCar =car.copy(car);
+                        setCarAt(freeSpots[0], car);
+                        setCarAt(freeSpots[1], nextCar);
+                    }
                 }
-            }*/
-            i++;
+            }
         }
-   }
+
+        for (Car c : addMe) {
+            sectionQueue.addCar(c);
+        }
+
+    }
 
 
 

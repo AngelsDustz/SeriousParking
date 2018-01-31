@@ -8,13 +8,13 @@ public class PassCar extends Car {
 
     @Override
     protected Car copy(Car car) {
-        car.ParkedDouble                 = this.ParkedDouble;
-        car.allTransactionsComplete      = this.allTransactionsComplete;
-        car.parkingTime                  =  this.parkingTime;
-        car.minutesLeft                  = this.minutesLeft;
-        car.primary=false;
-
-        return car;
+        Car  CopyCar =new PassCar();
+        CopyCar.setParkedDouble(car.isParkedDouble());
+        CopyCar.setAllTransactionsComplete(car.areAllTransactionsComplete());
+        CopyCar.setParkingTime(car.getParkingTime());
+        CopyCar.setMinutesLeft(car.getMinutesLeft());
+        CopyCar.setPrimary(false);
+        return CopyCar;
     }
      @Override
     public double PaymentMethod(double reservationCost, double pricePerHour) {

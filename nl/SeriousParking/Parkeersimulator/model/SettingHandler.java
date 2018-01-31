@@ -5,7 +5,7 @@ public class SettingHandler extends Model{
     protected static int chance;
     protected static int reservationShowchance;
     protected static boolean doubleEntrance;
-    protected static int chanseToParkDouble=80;
+    protected static int chanseToParkDouble;
     protected static int weekDayArrivals; // average number of arriving cars per hour
     protected static int weekendArrivals; // average number of arriving cars per hour
     protected static int weekDayPassArrivals; // average number of arriving cars per hour
@@ -42,7 +42,7 @@ public class SettingHandler extends Model{
         weekendPassArrivals     = 5; // average number of arriving cars per hour
         weekDayReservations     = 30;
         weekendReservations     = 10;
-        chanseToParkDouble      = 80;
+        chanseToParkDouble      = 2;
         maxQueueSize            = 10;
         tickPause               = 150;
         chance                  = 1;

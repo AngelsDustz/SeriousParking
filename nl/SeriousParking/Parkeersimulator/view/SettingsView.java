@@ -1,9 +1,7 @@
 package nl.SeriousParking.Parkeersimulator.view;
 
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.Node;
+import javafx.scene.control.*;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
@@ -201,6 +199,7 @@ public class SettingsView extends View<SettingsController, SettingHandler> {
     }
 
     private void updateSettings(SettingsController settingscontroller) {
+        try{
         settingscontroller.updateDoubleEntrance(oppbox.isSelected());
         settingscontroller.updateTickPause(Integer.parseInt(fldTick.getText()));
         settingscontroller.updateEnterSpeed(Integer.parseInt(fldCarEntranceSpeed.getText()));
@@ -214,5 +213,16 @@ public class SettingsView extends View<SettingsController, SettingHandler> {
         settingscontroller.updateWeekendReservationCars(Integer.parseInt(fldWeekendReservationAmount.getText()));
         settingscontroller.updateGarageQueue(Integer.parseInt(fldQueueSize.getText()));
         settingscontroller.updateGarageThroughSpeed(Integer.parseInt(fldQueueThroughSpeed.getText()));
+        }
+        catch (Exception e){
+            Dialog dialog = new Dialog();
+            dialog.setHeaderText("ERROR");
+            dialog.setContentText("something went Wrong \n"+e);
+            dialog.getDialogPane().getButtonTypes().add(ButtonType.CLOSE);
+            Node closeButton = dialog.getDialogPane().lookupButton(ButtonType.CLOSE);
+            closeButton.managedProperty().bind(closeButton.visibleProperty());
+            closeButton.setVisible(true);
+            dialog.showAndWait();
+        }
     }
 }

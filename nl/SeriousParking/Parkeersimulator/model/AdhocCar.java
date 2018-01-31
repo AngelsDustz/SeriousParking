@@ -5,15 +5,16 @@ public class AdhocCar extends Car {
         super();
     }
 
+
     @Override
     protected Car copy(Car car) {
-        car.ParkedDouble            = this.ParkedDouble;
-        car.allTransactionsComplete = this.allTransactionsComplete;
-        car.parkingTime = this.parkingTime;
-        car.minutesLeft             = this.minutesLeft;
-        car.primary                 = false;
-
-        return car;
+        Car  CopyCar =new AdhocCar();
+        CopyCar.setParkedDouble(car.isParkedDouble());
+        CopyCar.setAllTransactionsComplete(car.areAllTransactionsComplete());
+        CopyCar.setParkingTime(car.getParkingTime());
+        CopyCar.setMinutesLeft(car.getMinutesLeft());
+        CopyCar.setPrimary(false);
+        return CopyCar;
     }
 
 

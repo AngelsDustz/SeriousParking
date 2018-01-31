@@ -67,5 +67,25 @@ public abstract class Car extends Model {
     public void setParkedDouble(boolean parkedDouble) {
         ParkedDouble = parkedDouble;
     }
+
+    public boolean isPrimary() {
+        return primary;
+    }
+
+    public void setPrimary(boolean primary) {
+        this.primary = primary;
+    }
+
+    public boolean isAllTransactionsComplete() {
+        return allTransactionsComplete;
+    }
+
+    public int getParkingTime() {
+        return parkingTime;
+    }
+
+    public void setParkingTime(int parkingTime) {
+        this.parkingTime = parkingTime;
+    }
 }
 

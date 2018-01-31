@@ -259,7 +259,7 @@ public class GarageSection extends Garage {
             carLeavesSpot(car);
             drivingToExit.addCar(car);
             car = getFirstLeavingCar();
-            i++;
+            if (car!=null && car.primary ){i++;}
         }
     }
 
@@ -302,6 +302,7 @@ public class GarageSection extends Garage {
         }
     }
 
+
     protected void carsEntering() {
         // Remove car from the front of the queue and assign to a parking space.
         ArrayList<Car> addMe = new ArrayList<>();
@@ -320,16 +321,11 @@ public class GarageSection extends Garage {
                     //Double parked shitters.
                     Car nextCar;
 
-                    if (car instanceof AdhocCar) {
-                        nextCar = new AdhocCar();
-                    } else {
-                        nextCar = new PassCar();
-                    }
 
                     Location[] freeSpots    = getFirstFreeDoubleLocation();
 
                     if (freeSpots != null) {
-                        nextCar.copy(car);
+                        nextCar =car.copy(car);
                         setCarAt(freeSpots[0], car);
                         setCarAt(freeSpots[1], nextCar);
                     }

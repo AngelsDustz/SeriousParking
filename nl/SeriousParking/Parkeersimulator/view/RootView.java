@@ -89,7 +89,6 @@ public class RootView {
                 if((Integer.parseInt(adhocfloor.getText())+Integer.parseInt(passreserfloor.getText()))<=6){
                     startcontroller.setPassRows(Integer.parseInt(rows.getText()));
                     startcontroller.setAdhocRows(Integer.parseInt(rows.getText()));
-                    startcontroller.setAdhocRows(Integer.parseInt(rows.getText()));
                     startcontroller.setAdhocFloors(Integer.parseInt(adhocfloor.getText()));
                     startcontroller.setPassFloors(Integer.parseInt(passreserfloor.getText()));
                     startcontroller.setPassPlaces(Integer.parseInt(places.getText()));

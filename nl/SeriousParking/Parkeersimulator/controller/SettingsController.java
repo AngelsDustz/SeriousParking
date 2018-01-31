@@ -68,9 +68,9 @@ public class SettingsController extends Controller<SettingHandler> {
 
     public void setAdhocRows(int adhocReservationRows){model.setAdhocReservationRows(adhocReservationRows);}
 
-    public void setAdhocFloors(int floorsadhoc){model.setPassFloors(floorsadhoc);}
+    public void setAdhocFloors(int floorsadhoc){model.setAdhocReservationFloors(floorsadhoc);}
 
-    public void setPassFloors(int floorspass){model.setAdhocReservationFloors(floorspass);}
+    public void setPassFloors(int floorspass){model.setPassFloors(floorspass);}
 
     public void setPassPlaces(int passpl){model.setPassplaces(passpl);}
 

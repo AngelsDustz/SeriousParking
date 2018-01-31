@@ -3,19 +3,17 @@ package nl.SeriousParking.Parkeersimulator.view;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.transform.Rotate;
-import javafx.scene.transform.Translate;
 import nl.SeriousParking.Parkeersimulator.controller.RuntimeController;
 import nl.SeriousParking.Parkeersimulator.controller.SimulatorController;
 import nl.SeriousParking.Parkeersimulator.model.*;
 import nl.SeriousParking.Parkeersimulator.model.Runtime;
-
-import static javafx.scene.paint.Color.RED;
 import static javafx.scene.paint.Color.rgb;
 
 
@@ -25,14 +23,58 @@ public class GarageView extends View<SimulatorController,Simulator> {
     private ProgressBar     abbores;
     private ProgressBar     adhoc;
 
+
     GarageView(SimulatorController controller, Simulator model) {
         super(controller, model);
         BorderPane sections = new BorderPane();
-        HBox container  = new HBox();
-        VBox root       = new VBox();
-        FlowPane barrs  = new FlowPane();
-        abbores         = new ProgressBar();
-        adhoc           = new ProgressBar();
+        HBox container      = new HBox();
+        VBox root           = new VBox();
+        GridPane legenda        = new GridPane();
+        FlowPane barrs      = new FlowPane();
+        FlowPane labels     = new FlowPane();
+        abbores             = new ProgressBar();
+        adhoc               = new ProgressBar();
+        Label brlbladhoc    = new Label("adhoc queue");
+        Label brlblabbor    = new Label("reservations/pass queue");
+
+        Label lbladhocP   = new Label("adHoc geparkeerd");
+        Label lbladhocNP  = new Label("adHoc Leeg");
+        Label lblpassP    = new Label("Pashouder Geparkeerd");
+        Label lblpassNP   = new Label("Pashouder Niet geparkeerd");
+        Label lblreseP    = new Label("Reservaties Geparkeerd");
+        Label lblreseNP   = new Label("Reservaties Niet Geparkeerd");
+        Label lbldubbel   = new Label("Dubbelgeparkeerd");
+
+        Rectangle adhocP  = new Rectangle(20,10,rgb(91, 142, 125));
+        Rectangle adhocNP = new Rectangle(20,10,rgb(181, 226, 140));
+        Rectangle passP   = new Rectangle(20,10,rgb(0, 100, 148));
+        Rectangle passNP  = new Rectangle(20,10,rgb(13, 208, 226));
+        Rectangle reseP   = new Rectangle(20,10,rgb(244, 162, 89));
+        Rectangle reseNP  = new Rectangle(20,10,rgb(244, 226, 133));
+        Rectangle dubbel  = new Rectangle(19,9,rgb(255,255,255));
+        dubbel.setStroke(rgb(163, 62, 67));
+
+        legenda.setHgap(5);
+        legenda.setAlignment(Pos.CENTER_RIGHT);
+
+        legenda.add(lbladhocP,1,1);
+        legenda.add(lbladhocNP,1,2);
+        legenda.add(lblpassP,1,3);
+        legenda.add(lblpassNP,1,4);
+        legenda.add(lblreseP,1,5);
+        legenda.add(lblreseNP,1,6);
+        legenda.add(lbldubbel,1,7);
+
+        legenda.add(adhocP,0,1);
+        legenda.add(adhocNP,0,2);
+        legenda.add(passP,0,3);
+        legenda.add(passNP,0,4);
+        legenda.add(reseP,0,5);
+        legenda.add(reseNP,0,6);
+        legenda.add(dubbel,0,7);
+
+
+
 
         container.setPadding(new Insets(15, 12, 15, 12));
         container.setSpacing(40);
@@ -87,11 +129,13 @@ public class GarageView extends View<SimulatorController,Simulator> {
 
 
         toolBar.getItems().addAll(start,reset,tick,tick100, runtimeView);
-
+        labels.getChildren().addAll(brlblabbor,brlbladhoc);
         barrs.getChildren().addAll(adhoc,abbores);
         barrs.setHgap(100);
-        root.getChildren().addAll(container,barrs);
+        labels.setHgap(170);
+        root.getChildren().addAll(container,barrs,labels);
         sections.setBottom(toolBar);
+        sections.setRight(legenda);
         sections.setCenter(root);
         this.getChildren().addAll(sections);
         model.addView(this);

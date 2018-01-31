@@ -23,6 +23,10 @@ public class AdhocCar extends Car {
         double payment;
         payment = super.parkingTime *(pricePerHour/60);
 
+        if (this.ParkedDouble) {
+            payment += 30;
+        }
+
         setAllTransactionsComplete(true);
         return payment;
     }

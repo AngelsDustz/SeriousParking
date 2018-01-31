@@ -56,13 +56,13 @@ public class SettingsController extends Controller<SettingHandler> {
         model.setweekendReservations(cars);
     }
 
-    public void updateGarageQueue(int queuesize) {
-        model.setMaxQueueSize(queuesize);
-    }
+    public void updateReservationShowChance(int cars) { model.setReservationShowchance(cars);}
 
-    public void updateGarageThroughSpeed(int speed) {
-        model.setDriveTroughSpeed(speed);
-    }
+    public void updateDoubleParkingChance(int cars) {model.setChanseToParkDouble(cars);}
+
+    public void updateGarageQueue(int queuesize) { model.setMaxQueueSize(queuesize); }
+
+    public void updateGarageThroughSpeed(int speed) { model.setDriveTroughSpeed(speed); }
 
     public void defaultValues() {
         model.defaultValue();

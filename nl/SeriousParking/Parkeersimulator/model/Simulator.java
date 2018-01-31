@@ -18,8 +18,10 @@ public class Simulator extends Model implements Runnable {
     private GarageSection passSection;
     private TicketMachine ticketMachine;
     private Random randomGenerator;
+    private ArrayList<SimEvent> events;
 
     public Simulator() {
+        events                  = new ArrayList<>();
         adhocReservationsPassed = 0;
         passPassed              = 0;
         GarageIsSet             = true;
@@ -32,6 +34,18 @@ public class Simulator extends Model implements Runnable {
 
     public int getAdhocReservationsPassed() {
         return adhocReservationsPassed;
+    }
+
+    public void addEvent(SimEvent event) {
+        events.add(event);
+    }
+
+    public void removeEvent(SimEvent event) {
+        events.remove(event);
+    }
+
+    public ArrayList<SimEvent> getEvents() {
+        return events;
     }
 
     public int getPassPassed() {
@@ -88,7 +102,6 @@ public class Simulator extends Model implements Runnable {
                 passSection.tick();
 
                 handleExit();
-                notifyViews();
                 handleEntrance();
                 notifyViews();
             }
@@ -104,7 +117,7 @@ public class Simulator extends Model implements Runnable {
 
 
 
-    private void handleEntrance(){
+    public void handleEntrance(){
         carsArriving();
         Garage.CarsArrivingInQueue();
 
@@ -244,7 +257,6 @@ public class Simulator extends Model implements Runnable {
     public GarageSection getPassSection(){
         return passSection;
     }
-
 
     public TicketMachine getTicketMachine() {
         return ticketMachine;

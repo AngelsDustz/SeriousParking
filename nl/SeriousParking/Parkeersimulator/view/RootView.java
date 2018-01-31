@@ -6,9 +6,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import nl.SeriousParking.Parkeersimulator.controller.EventController;
 import nl.SeriousParking.Parkeersimulator.controller.SettingsController;
 import nl.SeriousParking.Parkeersimulator.controller.SimulatorController;
 import nl.SeriousParking.Parkeersimulator.model.SettingHandler;
+import nl.SeriousParking.Parkeersimulator.model.SimEvent;
 import nl.SeriousParking.Parkeersimulator.model.Simulator;
 
 
@@ -37,10 +39,26 @@ public class RootView {
         //Settings
         SettingHandler handler              = new SettingHandler();
         SettingsController settingsc        = new SettingsController(handler);
-        SettingsView simsettings             = new SettingsView(settingsc, handler);
+        SettingsView simsettings            = new SettingsView(settingsc, handler);
 
         //Profit
         ProfitView profitView               = new ProfitView(controller, model);
+
+        //Events
+        EventController eventController     = new EventController(model);
+        EventView eventView                 = new EventView(eventController, model);
+
+        //Create and add events.
+        SimEvent seChristmas    = new SimEvent();
+        seChristmas.setTitle("Christmas");
+        seChristmas.setWeek(2);
+
+        SimEvent seHoliday      = new SimEvent();
+        seHoliday.setTitle("Random Holiday");
+        seHoliday.setWeek(1);
+
+        eventController.addEvent(seChristmas);
+        eventController.addEvent(seHoliday);
 
 
         //View panes?
@@ -64,7 +82,7 @@ public class RootView {
         //Events
         Tab Events = new Tab();
         Events.setText("Events");
-        //Events.setContent();
+        Events.setContent(eventView);
         tabPane.getTabs().add(Events);
 
         //Inkomsten

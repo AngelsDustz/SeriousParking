@@ -1,11 +1,14 @@
 package nl.SeriousParking.Parkeersimulator.view;
 
 
+import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import nl.SeriousParking.Parkeersimulator.controller.EventController;
 import nl.SeriousParking.Parkeersimulator.controller.SettingsController;
 import nl.SeriousParking.Parkeersimulator.controller.SimulatorController;
@@ -13,10 +16,103 @@ import nl.SeriousParking.Parkeersimulator.model.SettingHandler;
 import nl.SeriousParking.Parkeersimulator.model.SimEvent;
 import nl.SeriousParking.Parkeersimulator.model.Simulator;
 
+import java.util.Optional;
+
+import static javafx.scene.paint.Color.RED;
 
 
 public class RootView {
+
+    private TextField adhocfloor;
+    private TextField passreserfloor;
+    private TextField places;
+    private TextField rows;
+
     public void RootView(Stage primaryStage) {
+        // Create the custom dialog.
+        Dialog<TextField> dialog = new Dialog<>();
+        dialog.setTitle("Garage variabelen");
+        dialog.setHeaderText("Set Garage variabelen");
+
+        // Set the button types.
+        ButtonType createButtonType = new ButtonType("Create", ButtonBar.ButtonData.APPLY);
+        dialog.getDialogPane().getButtonTypes().addAll(createButtonType, ButtonType.CANCEL);
+
+        // Create the labels and fields.
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));
+
+        SettingHandler startmodel = new SettingHandler();
+        SettingsController startcontroller = new SettingsController(startmodel);
+
+        adhocfloor = new TextField("2");
+        adhocfloor.setPromptText("adhoc verdiepingen");
+        passreserfloor = new TextField("1");
+        passreserfloor.setPromptText("passhouders verdiepingen");
+        places = new TextField("30");
+        places.setPromptText("places");
+        rows = new TextField("6");
+        rows.setPromptText("rows");
+
+        Label rowsmax = new Label("max 10");
+        rowsmax.setTextFill(RED);
+        Label floormax = new Label("max 6");
+        floormax.setTextFill(RED);
+        Label floormax2 = new Label("max 6");
+        floormax2.setTextFill(RED);
+        Label placesmax = new Label("max 10");
+        placesmax.setTextFill(RED);
+
+        grid.add(new Label("adhoc verdiepingen:"), 0, 0);
+        grid.add(adhocfloor, 1, 0);
+        grid.add(floormax,2,0);
+        grid.add(new Label("passhouders verdiepingen:"), 0, 1);
+        grid.add(passreserfloor, 1, 1);
+        grid.add(floormax2,2,1);
+        grid.add(new Label("places:"), 0, 2);
+        grid.add(places, 1, 2);
+        grid.add(placesmax,2,2);
+        grid.add(new Label("rows:"), 0, 3);
+        grid.add(rows, 1, 3);
+        grid.add(rowsmax,2,3);
+        grid.add(new Label("if you exceed the limit values will be reset to default"),1,4);
+
+        dialog.initStyle(StageStyle.UTILITY);
+        dialog.getDialogPane().setContent(grid);
+
+        Optional<TextField> result = dialog.showAndWait();
+
+        if(Integer.parseInt(rows.getText())<=10){
+            if(Integer.parseInt(places.getText())<=50){
+                if((Integer.parseInt(adhocfloor.getText())+Integer.parseInt(passreserfloor.getText()))<=6){
+                    startcontroller.setPassRows(Integer.parseInt(rows.getText()));
+                    startcontroller.setAdhocRows(Integer.parseInt(rows.getText()));
+                    startcontroller.setAdhocRows(Integer.parseInt(rows.getText()));
+                    startcontroller.setAdhocFloors(Integer.parseInt(adhocfloor.getText()));
+                    startcontroller.setPassFloors(Integer.parseInt(passreserfloor.getText()));
+                    startcontroller.setPassPlaces(Integer.parseInt(places.getText()));
+                    startcontroller.setadhocplaces(Integer.parseInt(places.getText()));
+
+                    createview(primaryStage);
+                }}}
+
+        else{
+
+            startcontroller.setPassRows(6);
+            startcontroller.setAdhocRows(6);
+            startcontroller.setAdhocFloors(2);
+            startcontroller.setPassFloors(1);
+            startcontroller.setPassPlaces(30);
+            startcontroller.setadhocplaces(30);
+
+            createview(primaryStage);
+        }
+    }
+
+
+    public void createview(Stage primaryStage){
         primaryStage.getIcons().add(new Image(RootView.class.getResourceAsStream("ico.png")));;
         primaryStage.setTitle("SeriousParking Parkeersimulator");
         //Window indeling.

@@ -5,7 +5,6 @@ import nl.SeriousParking.Parkeersimulator.model.Model;
 
 /**
  * @param <M> Any kind of model.
- * @version 1.0.0
  */
 abstract public class Controller<M extends Model> {
     protected M model;

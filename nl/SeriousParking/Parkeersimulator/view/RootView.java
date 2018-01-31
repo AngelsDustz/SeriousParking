@@ -53,7 +53,12 @@ public class RootView {
         seChristmas.setTitle("Christmas");
         seChristmas.setWeek(2);
 
+        SimEvent seHoliday      = new SimEvent();
+        seHoliday.setTitle("Random Holiday");
+        seHoliday.setWeek(1);
+
         eventController.addEvent(seChristmas);
+        eventController.addEvent(seHoliday);
 
 
         //View panes?

@@ -74,14 +74,17 @@ public class SettingsView extends View<SettingsController, SettingHandler> {
     private Label       lblQueueThroughSpeed = new Label();
     private TextField   fldQueueThroughSpeed = new TextField();
 
-    //Queue exit speed.
-    private Label       lbl_dtexit = new Label();
-    private TextField   fld_dtexit = new TextField();
-    private Label       lbl_opp  = new Label();
-
     //Opposite entrances.
+    private Label       lbl_opp  = new Label();
     private CheckBox    oppbox = new CheckBox();
 
+    //Doubleparkig chance
+    private Label lbldouble = new Label();
+    private TextField flddouble = new TextField();
+
+    //ReservationShow Chance
+    private Label lblreserch = new Label();
+    private TextField fldreserch = new TextField();
 
     private Button  saveButton      = new Button();
     private Button  defaultButton   = new Button();
@@ -120,7 +123,8 @@ public class SettingsView extends View<SettingsController, SettingHandler> {
         lbl_gar.setId("set_lbl");
         lblQueueSize.setText("Queue size");
         lblQueueThroughSpeed.setText("drive trough");
-        lbl_dtexit.setText("drive exit");
+        lbldouble.setText("Doubleparking chance");
+        lblreserch.setText("Reservation show chance");
         lbl_opp.setText("opposite entrances");
 
         saveButton.setText("save");
@@ -158,13 +162,15 @@ public class SettingsView extends View<SettingsController, SettingHandler> {
         container.add(lbl_gar,10,0);
         container.add(lblQueueSize,10,1);
         container.add(lblQueueThroughSpeed,10,2);
-        container.add(lbl_dtexit,10,3);
-        container.add(lbl_opp,10,4);
+        container.add(lbl_opp,10,5);
+        container.add(lbldouble,10,3);
+        container.add(lblreserch,10,4);
 
         container.add(fldQueueSize,11,1);
         container.add(fldQueueThroughSpeed,11,2);
-        container.add(fld_dtexit,11,3);
-        container.add(oppbox,11,4);
+        container.add(oppbox,11,5);
+        container.add(flddouble,11,3);
+        container.add(fldreserch,11,4);
 
         container.add(saveButton,1,6);
         container.add(defaultButton,2,6);
@@ -198,6 +204,10 @@ public class SettingsView extends View<SettingsController, SettingHandler> {
         fldWeekendReservationAmount.setText("" + model.getweekendReservations());
         fldQueueSize.setText("" + model.getMaxQueueSize());
         fldQueueThroughSpeed.setText("" + model.getDriveTroughSpeed());
+        flddouble.setText(""+model.getChance());
+        fldreserch.setText(""+model.getReservationShowchance());
+        oppbox.setSelected(model.getDoubleEntrance());
+
     }
 
     private void updateSettings(SettingsController settingscontroller) {
@@ -214,5 +224,7 @@ public class SettingsView extends View<SettingsController, SettingHandler> {
         settingscontroller.updateWeekendReservationCars(Integer.parseInt(fldWeekendReservationAmount.getText()));
         settingscontroller.updateGarageQueue(Integer.parseInt(fldQueueSize.getText()));
         settingscontroller.updateGarageThroughSpeed(Integer.parseInt(fldQueueThroughSpeed.getText()));
+        settingscontroller.updateDoubleParkingChance(Integer.parseInt(flddouble.getText()));
+        settingscontroller.updateReservationShowChance(Integer.parseInt(fldreserch.getText()));
     }
 }

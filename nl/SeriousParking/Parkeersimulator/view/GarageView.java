@@ -153,8 +153,8 @@ public class GarageView extends View<SimulatorController,Simulator> {
 
                     if (car instanceof AdhocCar) {
                         if (car.isParkedDouble()){
-                            AdhocReservationSpots[floor][row][place].setStroke(rgb(163, 62, 67));
                             AdhocReservationSpots[floor][row][place].setFill(rgb(91, 142, 125));
+                            AdhocReservationSpots[floor][row][place].setStroke(rgb(163, 62, 67));
                         } else {
                             AdhocReservationSpots[floor][row][place].setFill(rgb(91, 142, 125));
                             AdhocReservationSpots[floor][row][place].setStroke(rgb(91, 142, 125));
@@ -191,8 +191,8 @@ public class GarageView extends View<SimulatorController,Simulator> {
 
                     if (car instanceof PassCar) {
                         if (car.isParkedDouble()){
-                            PassSpots[floor][row][place].setStroke(rgb(163, 62, 67));
                             PassSpots[floor][row][place].setFill(rgb(0, 100, 148));
+                            PassSpots[floor][row][place].setStroke(rgb(163, 62, 67));
                         } else {
                             PassSpots[floor][row][place].setFill(rgb(0, 100, 148));
                             PassSpots[floor][row][place].setStroke(rgb(0, 100, 148));

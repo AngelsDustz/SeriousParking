@@ -60,9 +60,9 @@ public class SettingHandler extends Model{
         return reservationShowchance;
     }
 
-    public static void setReservationShowchance(int reservationShowchance) {
-        SettingHandler.reservationShowchance = reservationShowchance;
-    }
+    public static void setReservationShowchance(int reservationShowchance) { SettingHandler.reservationShowchance = reservationShowchance; }
+
+    public static void setChanseToParkDouble(int chanseToParkDouble){ SettingHandler.chanseToParkDouble = chanseToParkDouble; }
 
     public static int getMaxQueueSize() {
         return maxQueueSize;
@@ -76,9 +76,7 @@ public class SettingHandler extends Model{
         return weekDayReservations;
     }
 
-    public static void setweekDayReservations(int weekDayReservations) {
-        SettingHandler.weekDayReservations = weekDayReservations;
-    }
+    public static void setweekDayReservations(int weekDayReservations) { SettingHandler.weekDayReservations = weekDayReservations; }
 
     public static int getweekendReservations() {
         return weekendReservations;
@@ -169,7 +167,7 @@ public class SettingHandler extends Model{
         SettingHandler.doubleEntrance = doubleEntrance;
     }
 
-    public static Boolean getDoubleEntrance() {
+    public static boolean getDoubleEntrance() {
         return doubleEntrance;
     }
 

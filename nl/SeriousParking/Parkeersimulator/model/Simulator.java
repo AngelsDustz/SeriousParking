@@ -245,7 +245,6 @@ public class Simulator extends Model implements Runnable {
         return passSection;
     }
 
-
     public TicketMachine getTicketMachine() {
         return ticketMachine;
     }

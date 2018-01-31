@@ -64,7 +64,20 @@ public class SettingsController extends Controller<SettingHandler> {
 
     public void updateGarageThroughSpeed(int speed) { model.setDriveTroughSpeed(speed); }
 
+    public void setPassRows(int passRows){model.setPassRows(passRows);}
+
+    public void setAdhocRows(int adhocReservationRows){model.setAdhocReservationRows(adhocReservationRows);}
+
+    public void setAdhocFloors(int floorsadhoc){model.setPassFloors(floorsadhoc);}
+
+    public void setPassFloors(int floorspass){model.setAdhocReservationFloors(floorspass);}
+
+    public void setPassPlaces(int passpl){model.setPassplaces(passpl);}
+
+    public void setadhocplaces(int adhocpl){model.setAdhocReservationplaces(adhocpl);}
+
     public void defaultValues() {
         model.defaultValue();
     }
+
 }

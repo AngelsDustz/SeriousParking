@@ -1,6 +1,5 @@
 package nl.SeriousParking.Parkeersimulator.view;
 
-import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import nl.SeriousParking.Parkeersimulator.controller.EventController;
 import nl.SeriousParking.Parkeersimulator.model.SimEvent;

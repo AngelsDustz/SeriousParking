@@ -4,6 +4,7 @@ package nl.SeriousParking.Parkeersimulator.view;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -87,21 +88,33 @@ public class RootView {
         Optional<ButtonType> result = dialog.showAndWait();
 
         if (result.get() == createButtonType) {
-            if (Integer.parseInt(rows.getText()) <= 10) {
-                if (Integer.parseInt(places.getText()) <= 50) {
-                    if ((Integer.parseInt(adhocfloor.getText()) + Integer.parseInt(passreserfloor.getText())) <= 6) {
-                        startcontroller.setPassRows(Integer.parseInt(rows.getText()));
-                        startcontroller.setAdhocRows(Integer.parseInt(rows.getText()));
-                        startcontroller.setAdhocFloors(Integer.parseInt(adhocfloor.getText()));
-                        startcontroller.setPassFloors(Integer.parseInt(passreserfloor.getText()));
-                        startcontroller.setPassPlaces(Integer.parseInt(places.getText()));
-                        startcontroller.setadhocplaces(Integer.parseInt(places.getText()));
+            try {
+                if (Integer.parseInt(rows.getText()) <= 10) {
+                    if (Integer.parseInt(places.getText()) <= 50) {
+                        if ((Integer.parseInt(adhocfloor.getText()) + Integer.parseInt(passreserfloor.getText())) <= 6) {
+                            startcontroller.setPassRows(Integer.parseInt(rows.getText()));
+                            startcontroller.setAdhocRows(Integer.parseInt(rows.getText()));
+                            startcontroller.setAdhocFloors(Integer.parseInt(adhocfloor.getText()));
+                            startcontroller.setPassFloors(Integer.parseInt(passreserfloor.getText()));
+                            startcontroller.setPassPlaces(Integer.parseInt(places.getText()));
+                            startcontroller.setadhocplaces(Integer.parseInt(places.getText()));
 
-                        createview(primaryStage);
+                            createview(primaryStage);
+                        }
                     }
                 }
+            } catch(NumberFormatException e){
+                Dialog dialog2 = new Dialog();
+                dialog2.setHeaderText("ERROR");
+                dialog2.setContentText("something went Wrong \n" + e +" please restart the program");
+                dialog2.getDialogPane().getButtonTypes().add(ButtonType.CLOSE);
+                Node closeButton = dialog2.getDialogPane().lookupButton(ButtonType.CLOSE);
+                closeButton.managedProperty().bind(closeButton.visibleProperty());
+                closeButton.setVisible(true);
+                dialog2.showAndWait();
             }
-            } else if (result.get() == defaultButtonType) {
+        }
+            else if (result.get() == defaultButtonType) {
 
                 startcontroller.setPassRows(6);
                 startcontroller.setAdhocRows(6);

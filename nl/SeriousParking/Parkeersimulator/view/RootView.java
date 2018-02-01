@@ -1,6 +1,7 @@
 package nl.SeriousParking.Parkeersimulator.view;
 
 
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.scene.Scene;
@@ -30,13 +31,14 @@ public class RootView {
 
     public void RootView(Stage primaryStage) {
         // Create the custom dialog.
-        Dialog<TextField> dialog = new Dialog<>();
+        Dialog dialog = new Dialog();
         dialog.setTitle("Garage variabelen");
         dialog.setHeaderText("Set Garage variabelen");
 
         // Set the button types.
         ButtonType createButtonType = new ButtonType("Create", ButtonBar.ButtonData.APPLY);
-        dialog.getDialogPane().getButtonTypes().addAll(createButtonType, ButtonType.CANCEL);
+        ButtonType defaultButtonType = new ButtonType("Default", ButtonBar.ButtonData.FINISH);
+        dialog.getDialogPane().getButtonTypes().addAll(createButtonType,defaultButtonType, ButtonType.CANCEL);
 
         // Create the labels and fields.
         GridPane grid = new GridPane();
@@ -67,46 +69,52 @@ public class RootView {
 
         grid.add(new Label("adhoc verdiepingen:"), 0, 0);
         grid.add(adhocfloor, 1, 0);
-        grid.add(floormax,2,0);
+        grid.add(floormax, 2, 0);
         grid.add(new Label("passhouders verdiepingen:"), 0, 1);
         grid.add(passreserfloor, 1, 1);
-        grid.add(floormax2,2,1);
+        grid.add(floormax2, 2, 1);
         grid.add(new Label("places:"), 0, 2);
         grid.add(places, 1, 2);
-        grid.add(placesmax,2,2);
+        grid.add(placesmax, 2, 2);
         grid.add(new Label("rows:"), 0, 3);
         grid.add(rows, 1, 3);
-        grid.add(rowsmax,2,3);
-        grid.add(new Label("if you exceed the limit values will be reset to default"),1,4);
+        grid.add(rowsmax, 2, 3);
+        grid.add(new Label("if you exceed the limit values will be reset to default"), 1, 4);
 
         dialog.initStyle(StageStyle.UTILITY);
         dialog.getDialogPane().setContent(grid);
 
-        Optional<TextField> result = dialog.showAndWait();
+        Optional<ButtonType> result = dialog.showAndWait();
 
-        if(Integer.parseInt(rows.getText())<=10){
-            if(Integer.parseInt(places.getText())<=50){
-                if((Integer.parseInt(adhocfloor.getText())+Integer.parseInt(passreserfloor.getText()))<=6){
-                    startcontroller.setPassRows(Integer.parseInt(rows.getText()));
-                    startcontroller.setAdhocRows(Integer.parseInt(rows.getText()));
-                    startcontroller.setAdhocFloors(Integer.parseInt(adhocfloor.getText()));
-                    startcontroller.setPassFloors(Integer.parseInt(passreserfloor.getText()));
-                    startcontroller.setPassPlaces(Integer.parseInt(places.getText()));
-                    startcontroller.setadhocplaces(Integer.parseInt(places.getText()));
+        if (result.get() == createButtonType) {
+            if (Integer.parseInt(rows.getText()) <= 10) {
+                if (Integer.parseInt(places.getText()) <= 50) {
+                    if ((Integer.parseInt(adhocfloor.getText()) + Integer.parseInt(passreserfloor.getText())) <= 6) {
+                        startcontroller.setPassRows(Integer.parseInt(rows.getText()));
+                        startcontroller.setAdhocRows(Integer.parseInt(rows.getText()));
+                        startcontroller.setAdhocFloors(Integer.parseInt(adhocfloor.getText()));
+                        startcontroller.setPassFloors(Integer.parseInt(passreserfloor.getText()));
+                        startcontroller.setPassPlaces(Integer.parseInt(places.getText()));
+                        startcontroller.setadhocplaces(Integer.parseInt(places.getText()));
 
-                    createview(primaryStage);
-                }}}
+                        createview(primaryStage);
+                    }
+                }
+            }
+            } else if (result.get() == defaultButtonType) {
 
-        else{
+                startcontroller.setPassRows(6);
+                startcontroller.setAdhocRows(6);
+                startcontroller.setAdhocFloors(2);
+                startcontroller.setPassFloors(1);
+                startcontroller.setPassPlaces(30);
+                startcontroller.setadhocplaces(30);
 
-            startcontroller.setPassRows(6);
-            startcontroller.setAdhocRows(6);
-            startcontroller.setAdhocFloors(2);
-            startcontroller.setPassFloors(1);
-            startcontroller.setPassPlaces(30);
-            startcontroller.setadhocplaces(30);
-
-            createview(primaryStage);
+                createview(primaryStage);
+            }
+        else if (result.get() == ButtonType.CANCEL) {
+            Platform.exit();
+            System.exit(0);
         }
     }
 

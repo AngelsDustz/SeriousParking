@@ -4,8 +4,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import nl.SeriousParking.Parkeersimulator.controller.EventController;
 import nl.SeriousParking.Parkeersimulator.model.SimEvent;
 import nl.SeriousParking.Parkeersimulator.model.Simulator;
@@ -16,7 +16,7 @@ import static javafx.scene.paint.Color.RED;
 
 public class EventView extends View<EventController, Simulator> {
     ListView listView     = new ListView();
-    HBox     container    = new HBox();
+    FlowPane container    = new FlowPane();
     Button   addButton   = new Button("add new event");
     TextField fldname        = new TextField();
     TextField fldday         = new TextField();
@@ -71,6 +71,9 @@ public class EventView extends View<EventController, Simulator> {
                 }
             }
         });
+
+        container.setHgap(10);
+        container.setVgap(10);
         
         container.getChildren().addAll(listView,addButton);
         this.getChildren().add(container);

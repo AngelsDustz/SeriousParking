@@ -37,10 +37,17 @@ public class SimEvent {
      * @return Weither the event is active or not.
      */
     public boolean isActive() {
-        if (Date_time.getWeeks() != week) {
+        if (Date_time.getWeeks() == week && Date_time.getDays() == day) {
+            return true;
+        }
+        else if(Date_time.getDays() == day && week == 0){
+            return true;
+        }
+        else if(Date_time.getWeeks() == week && day == 0){
+            return true;
+        }
+        else {
             return false;
         }
-
-        return true;
     }
 }

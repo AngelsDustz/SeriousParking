@@ -36,10 +36,20 @@ public class Simulator extends Model implements Runnable {
         return adhocReservationsPassed;
     }
 
+    /**
+     * Adds an event.
+     *
+     * @param event The event to add.
+     */
     public void addEvent(SimEvent event) {
         events.add(event);
     }
 
+    /**
+     * Removes an event.
+     *
+     * @param event The event to remove.
+     */
     public void removeEvent(SimEvent event) {
         events.remove(event);
     }
@@ -53,8 +63,6 @@ public class Simulator extends Model implements Runnable {
     }
 
     /**
-     * @name startSimulator
-     *
      * This calls the thread to run the ticks.
      */
     private void startSimulator() {
@@ -62,6 +70,9 @@ public class Simulator extends Model implements Runnable {
     }
 
 
+    /**
+     * Start/Stops the simulator.
+     */
     public void startStop(){
         if (!run) {
             run=true;
@@ -77,6 +88,11 @@ public class Simulator extends Model implements Runnable {
         }
     }
 
+    /**
+     * Does multiple ticks.
+     *
+     * @param times The amount of ticks to run.
+     */
     public void tickMany(int times) {
         new Thread(() -> {
             for (int i=0;i<times;i++) {
@@ -86,10 +102,16 @@ public class Simulator extends Model implements Runnable {
     }
 
 
+    /**
+     * Runs a single tick.
+     */
     public void singleTick(){
         new Thread(() -> {tick();}).start();
     }
 
+    /**
+     * Does a tick.
+     */
     private void tick() {
         Date_time.advanceTime();
 
@@ -115,8 +137,9 @@ public class Simulator extends Model implements Runnable {
         }
     }
 
-
-
+    /**
+     * Handles the entrance.
+     */
     public void handleEntrance(){
         carsArriving();
         Garage.CarsArrivingInQueue();
@@ -136,6 +159,9 @@ public class Simulator extends Model implements Runnable {
     }
 
 
+    /**
+     * Handles the exit.
+     */
     private void handleExit(){
         ticketMachine.handlePayment();
         garage.carsDrivingToExit();
@@ -146,6 +172,9 @@ public class Simulator extends Model implements Runnable {
 
     }
 
+    /**
+     * Handles the cars arriving.
+     */
     private void carsArriving(){
         int numberOfCars;
 
@@ -162,6 +191,11 @@ public class Simulator extends Model implements Runnable {
         addArrivingCars(numberOfCars, RES);
     }
 
+    /**
+     * Makes a queue enter the garage.
+     *
+     * @param queue The queue to make enter.
+     */
     public void EnteringGarage(Queue queue){
         int i=0;
 
@@ -200,6 +234,12 @@ public class Simulator extends Model implements Runnable {
         return (int)Math.round(numberOfCarsPerHour / 60);
     }
 
+    /**
+     * Spawns an amount of cars.
+     *
+     * @param numberOfCars The amount of cars to make.
+     * @param type The type of cars to make.
+     */
     private void addArrivingCars(int numberOfCars, int type) {
         // Add the cars to the back of the queue.
         for (int i = 0; i < numberOfCars; i++) {
@@ -236,8 +276,9 @@ public class Simulator extends Model implements Runnable {
         }
     }
 
-
-
+    /**
+     * Resets the simulation.
+     */
     public void ResetSim() {
         run = false;
         Date_time.resetTimer();

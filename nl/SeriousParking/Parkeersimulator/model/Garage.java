@@ -1,5 +1,8 @@
 package nl.SeriousParking.Parkeersimulator.model;
 
+/**
+ * The garage class handles all garage logistics.
+ */
 public class Garage {
     protected static Queue arrivingCars                 = new Queue();
     protected static Queue entrancePassReservationQueue = new Queue();
@@ -9,9 +12,13 @@ public class Garage {
     protected static Queue paymentCarQueue  = new Queue();
     protected static Queue exitCarQueue     = new Queue();
 
-    Garage() {
-    }
-
+    /**
+     * Calculates the amount of cars that left because of a full queue.
+     *
+     * @param section The section to watch.
+     * @param queue The queue to watch.
+     * @return The amount of cars that left.
+     */
     protected int carsPassingBy(GarageSection section, Queue queue){
         int carsPassed=0;
 
@@ -30,6 +37,9 @@ public class Garage {
         return carsPassed;
     }
 
+    /**
+     * Resets the garage.
+     */
     protected void reset() {
         arrivingCars.reset();
         entrancePassReservationQueue.reset();
@@ -39,6 +49,9 @@ public class Garage {
         exitCarQueue.reset();
     }
 
+    /**
+     * Handles cars arriving into the queue.
+     */
     protected static void CarsArrivingInQueue() {
         Car car;
         int i = 0;
@@ -54,6 +67,10 @@ public class Garage {
             }
         }
     }
+
+    /**
+     * Handles cars driving to the exit.
+     */
     protected void carsDrivingToExit() {
         int i=0;
         while (drivingToExit.carsInQueue() > 0 && i < SettingHandler.getDriveTroughSpeed()) {
@@ -68,10 +85,21 @@ public class Garage {
             i++;
         }
     }
+
+    /**
+     * Returns the amount of cars in the adhoc queue.
+     *
+     * @return The amount of cars in the adhoc queue.
+     */
     public static int getNumberCarsInAdhocQueue() {
         return entranceAdhocQueue.carsInQueue();
     }
 
+    /**
+     * Returns the amount of cars in the pass queue.
+     *
+     * @return The amount of cars in the pass queue.
+     */
     public static int getNumberCarsInPassQueue() {
         return entrancePassReservationQueue.carsInQueue();
     }

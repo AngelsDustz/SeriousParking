@@ -4,6 +4,9 @@ package nl.SeriousParking.Parkeersimulator.model;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * A section of the garage.
+ */
 public class GarageSection extends Garage {
     private int floors;
     private int rows;
@@ -29,6 +32,9 @@ public class GarageSection extends Garage {
         doubleParked    = 0;
     }
 
+    /**
+     * Clears the garage section.
+     */
     public void clear(){
         for (int floor = 0; floor < floors;floor++) {
 
@@ -47,6 +53,12 @@ public class GarageSection extends Garage {
     }
 
 
+    /**
+     * Checks if a location is valid.
+     *
+     * @param location The location to check.
+     * @return Validation of a location.
+     */
     private boolean locationIsValid(Location location) {
         if (location == null) {
             return false;
@@ -75,6 +87,11 @@ public class GarageSection extends Garage {
         return doubleParked;
     }
 
+    /**
+     * Returns the first free location it finds.
+     *
+     * @return The first free location.
+     */
     private Location getFirstFreeLocation() {
         for (int floor = 0; floor < floors; floor++) {
 
@@ -93,6 +110,11 @@ public class GarageSection extends Garage {
     }
 
 
+    /**
+     * Returns the last free location it finds.
+     *
+     * @return The last free location.
+     */
     private Location getLastFreeLocation() {
         for (int floor = floors-1; floor >=0; floor--) {
 
@@ -112,6 +134,12 @@ public class GarageSection extends Garage {
     }
 
 
+    /**
+     * Checks if a location is being used and returns that car.
+     *
+     * @param location The location to check.
+     * @return What is in the location.
+     */
     public Car getCarAt(Location location) {
         if (!locationIsValid(location)) {
             return null;
@@ -125,6 +153,13 @@ public class GarageSection extends Garage {
     }
 
 
+    /**
+     * Sets a car in a specific location.
+     *
+     * @param location The location to place a car.
+     * @param car The car to place in a location.
+     * @return Weither it was successfull or not.
+     */
     private boolean setCarAt(Location location, Car car) {
         Car oldCar = getCarAt(location);
 
@@ -153,6 +188,11 @@ public class GarageSection extends Garage {
         return false;
     }
 
+    /**
+     * Make a car leave a spot.
+     *
+     * @param car The car to make leave a spot.
+     */
     public void carLeavesSpot(Car car){
         removeCarAt(car.getLocation());
 
@@ -169,6 +209,12 @@ public class GarageSection extends Garage {
         exitCarQueue.addCar(car);
     }
 
+    /**
+     * Forcefully remove a car at a spot.
+     *
+     * @param location The location to remove a car from.
+     * @return Whatever was removed.
+     */
     private Car removeCarAt(Location location) {
         if (!locationIsValid(location)) {
             return null;
@@ -187,7 +233,11 @@ public class GarageSection extends Garage {
         return section[location.getFloor()][location.getRow()][location.getPlace()] = null;
     }
 
-    //todo reimplement
+    /**
+     * Checks for the first double spots available.
+     *
+     * @return 2 locations that are free.
+     */
     private Location[] getFirstFreeDoubleLocation() {
         Location[] locations = new Location[2];
 
@@ -219,7 +269,11 @@ public class GarageSection extends Garage {
     }
 
 
-    //todo  reimplement
+    /**
+     * Checks for the last double spots available.
+     *
+     * @return 2 locations that are free.
+     */
     private Location[] getLastFreeDoubleLocation() {
         Location[] locations = new Location[2];
 
@@ -250,6 +304,9 @@ public class GarageSection extends Garage {
     }
 
 
+    /**
+     * Handles all cars that are ready to leave.
+     */
     protected void carsReadyToLeave(){
         // Add leaving cars to the payment queue.
         Car car = getFirstLeavingCar();
@@ -263,6 +320,11 @@ public class GarageSection extends Garage {
         }
     }
 
+    /**
+     * Finds the first leaving car.
+     *
+     * @return The first leaving car.
+     */
     private Car getFirstLeavingCar() {
         for (int floor = 0; floor < floors; floor++) {
 
@@ -282,6 +344,9 @@ public class GarageSection extends Garage {
         return null;
     }
 
+    /**
+     * Handles a minute.
+     */
     protected void tick(){
         for (int floor = 0; floor < floors; floor++) {
 
@@ -303,6 +368,9 @@ public class GarageSection extends Garage {
     }
 
 
+    /**
+     * Handles all cars entering.
+     */
     protected void carsEntering() {
         // Remove car from the front of the queue and assign to a parking space.
         ArrayList<Car> addMe = new ArrayList<>();
@@ -338,6 +406,9 @@ public class GarageSection extends Garage {
         }
     }
 
+    /**
+     * Handles cars leaving.
+     */
     public void carsLeaving () {
         // Let cars leave.
         int exitSpeed   = SettingHandler.exitSpeed;
@@ -349,7 +420,9 @@ public class GarageSection extends Garage {
         }
     }
 
-    //todo  reimplement
+    /**
+     * Handles cars entering from the back.
+     */
     protected void carsBackEntering(){
         int i=0;
 

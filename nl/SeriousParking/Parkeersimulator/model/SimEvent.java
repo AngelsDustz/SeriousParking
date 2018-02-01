@@ -31,6 +31,11 @@ public class SimEvent {
         this.week = week;
     }
 
+    /**
+     * Checks if the current event is active or not.
+     *
+     * @return Weither the event is active or not.
+     */
     public boolean isActive() {
         if (Date_time.getWeeks() != week) {
             return false;

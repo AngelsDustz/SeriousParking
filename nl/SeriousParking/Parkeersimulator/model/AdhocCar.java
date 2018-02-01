@@ -6,6 +6,12 @@ public class AdhocCar extends Car {
     }
 
 
+    /**
+     * This function makes a copy of a car.
+     *
+     * @param car A car to make a copy of.
+     * @return A copy of the given car.
+     */
     @Override
     protected Car copy(Car car) {
         Car  CopyCar =new AdhocCar();
@@ -18,6 +24,13 @@ public class AdhocCar extends Car {
     }
 
 
+    /**
+     * This function handles the payment of a car.
+     *
+     * @param reservationCost The cost for reserving a spot.
+     * @param pricePerHour The price per hour.
+     * @return The total amount to pay.
+     */
     @Override
     public double PaymentMethod(double reservationCost, double pricePerHour) {
         double payment;

@@ -12,6 +12,12 @@ public class ReservationCar extends Car {
          leadTime   = new Random().nextInt(15);
     }
 
+    /**
+     * This function makes a copy of a car.
+     *
+     * @param car A car to make a copy of.
+     * @return A copy of the given car.
+     */
     @Override
     protected Car copy(Car car) {
         Car  CopyCar =new ReservationCar();
@@ -23,6 +29,9 @@ public class ReservationCar extends Car {
         return CopyCar;
     }
 
+    /**
+     * Handles weither a car shows up in the current tick or not.
+     */
     protected void carShows(){
         if (leadTime>0){
             leadTime--;
@@ -37,6 +46,13 @@ public class ReservationCar extends Car {
         }
     }
 
+    /**
+     * This function handles the payment of a car.
+     *
+     * @param reservationCost The cost for reserving a spot.
+     * @param pricePerHour The price per hour.
+     * @return The total amount to pay.
+     */
     @Override
     public double PaymentMethod(double reservationCost, double pricePerHour) {
         double payment;

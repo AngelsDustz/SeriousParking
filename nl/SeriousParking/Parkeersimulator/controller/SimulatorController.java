@@ -30,6 +30,9 @@ public class SimulatorController extends Controller<Simulator> {
         }
     }
 
+    /**
+     * @param times The amount of times it has to tick.
+     */
     public void tickMany(int times) {
         if (model.isGarageIsSet()) {
             model.tickMany(times);
@@ -37,16 +40,3 @@ public class SimulatorController extends Controller<Simulator> {
     }
 }
 
-   /* public void SaveSettings(String[] array){
-        model.setNumberOfFloors(parseInt(array[0]));
-        model.setNumberOfRows(parseInt(array[1]));
-        model.setNumberOfPlaces(parseInt(array[2]));
-        model.setGarageIsSet(true);
-    }
-
-    public void defaultValues(){
-        model.setGarageIsSet(true);
-
-    }
-}
-*/

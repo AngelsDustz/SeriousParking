@@ -6,17 +6,27 @@ public class TicketMachine {
     private double pricePerHour     = 1.50;
 
     public TicketMachine() {
+        this.profit = 0.0;
     }
 
+    /**
+     * Handles the payment of cars.
+     */
     public void handlePayment(){
         carsPaying();
     }
 
+    /**
+     * Resets the ticketmachine.
+     */
     protected void reset(){
         this.profit = 0.0;
     }
 
 
+    /**
+     * Makes all the cars pay.
+     */
     private void carsPaying(){
         // Let cars pay.
         int i=0;

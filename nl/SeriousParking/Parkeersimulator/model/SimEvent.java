@@ -1,12 +1,14 @@
 package nl.SeriousParking.Parkeersimulator.model;
 
 public class SimEvent {
-    private String title;
-    private int week;
+    private  String title;
+    private  int week;
+    private  int day;
 
     public SimEvent() {
         title       = "No Title";
         week        = 0;
+        day         = 0;
     }
 
     public String getTitle() {
@@ -16,6 +18,10 @@ public class SimEvent {
     public void setTitle(String title) {
         this.title = title;
     }
+
+    public int getDay(){return day;}
+
+    public void setDay(int day){this.day = day;}
 
     public int getWeek() {
         return week;

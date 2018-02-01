@@ -168,13 +168,20 @@ public class RootView {
         SimEvent seChristmas    = new SimEvent();
         seChristmas.setTitle("Christmas");
         seChristmas.setWeek(2);
+        seChristmas.setDay(1);
 
-        SimEvent seHoliday      = new SimEvent();
-        seHoliday.setTitle("Random Holiday");
-        seHoliday.setWeek(1);
+        SimEvent seOpeningWeek      = new SimEvent();
+        seOpeningWeek.setTitle("Opening Week");
+        seOpeningWeek.setWeek(1);
+        seOpeningWeek.setDay(0);
 
+        SimEvent seKoop    = new SimEvent();
+        seKoop.setTitle("Koopavond");
+        seKoop.setDay(2);
+
+        eventController.addEvent(seOpeningWeek);
         eventController.addEvent(seChristmas);
-        eventController.addEvent(seHoliday);
+        eventController.addEvent(seKoop);
 
 
         //View panes?

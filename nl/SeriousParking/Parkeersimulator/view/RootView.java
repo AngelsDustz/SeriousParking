@@ -169,14 +169,9 @@ public class RootView {
                     createview(primaryStage);
                 }
             } catch (NumberFormatException e) {
-                Dialog dialog2 = new Dialog();
-                dialog2.setHeaderText("ERROR");
-                dialog2.setContentText("something went Wrong \n" + e + " please restart the program");
-                dialog2.getDialogPane().getButtonTypes().add(ButtonType.CLOSE);
-                Node closeButton = dialog2.getDialogPane().lookupButton(ButtonType.CLOSE);
-                closeButton.managedProperty().bind(closeButton.visibleProperty());
-                closeButton.setVisible(true);
-                dialog2.showAndWait();
+                // moet mooi gemaakt worden.
+                grid.add(new Label("no numerical value was given"), 1, 5);
+                dialog.showAndWait();
             }
         }
             else if (result.get() == defaultButtonType) {

@@ -129,16 +129,33 @@ public class RootView {
 
                         createview(primaryStage);
                     }
-                }
+                } else if (Integer.parseInt(places.getText()) <= 40) {
+                    if ((Integer.parseInt(adhocfloor.getText()) + Integer.parseInt(passreserfloor.getText())) <= 6) {
+                        startcontroller.setPassRows(10);
+                        startcontroller.setAdhocRows(10);
+                        startcontroller.setAdhocFloors(Integer.parseInt(adhocfloor.getText()));
+                        startcontroller.setPassFloors(Integer.parseInt(passreserfloor.getText()));
+                        startcontroller.setPassPlaces(Integer.parseInt(places.getText()));
+                        startcontroller.setadhocplaces(Integer.parseInt(places.getText()));
 
-                else if (Integer.parseInt(places.getText()) <= 40) {
-                if ((Integer.parseInt(adhocfloor.getText()) + Integer.parseInt(passreserfloor.getText())) <= 6) {
+                        createview(primaryStage);
+                    } else {
+                        startcontroller.setPassRows(10);
+                        startcontroller.setAdhocRows(10);
+                        startcontroller.setPassFloors(3);
+                        startcontroller.setAdhocFloors(3);
+                        startcontroller.setPassPlaces(Integer.parseInt(places.getText()));
+                        startcontroller.setadhocplaces(Integer.parseInt(places.getText()));
+
+                        createview(primaryStage);
+                    }
+                } else if ((Integer.parseInt(adhocfloor.getText()) + Integer.parseInt(passreserfloor.getText())) <= 6) {
                     startcontroller.setPassRows(10);
                     startcontroller.setAdhocRows(10);
                     startcontroller.setAdhocFloors(Integer.parseInt(adhocfloor.getText()));
                     startcontroller.setPassFloors(Integer.parseInt(passreserfloor.getText()));
-                    startcontroller.setPassPlaces(Integer.parseInt(places.getText()));
-                    startcontroller.setadhocplaces(Integer.parseInt(places.getText()));
+                    startcontroller.setPassPlaces(40);
+                    startcontroller.setadhocplaces(40);
 
                     createview(primaryStage);
                 } else {
@@ -146,44 +163,22 @@ public class RootView {
                     startcontroller.setAdhocRows(10);
                     startcontroller.setPassFloors(3);
                     startcontroller.setAdhocFloors(3);
-                    startcontroller.setPassPlaces(Integer.parseInt(places.getText()));
-                    startcontroller.setadhocplaces(Integer.parseInt(places.getText()));
+                    startcontroller.setPassPlaces(40);
+                    startcontroller.setadhocplaces(40);
 
                     createview(primaryStage);
                 }
-            } else if ((Integer.parseInt(adhocfloor.getText()) + Integer.parseInt(passreserfloor.getText())) <= 6) {
-                startcontroller.setPassRows(10);
-                startcontroller.setAdhocRows(10);
-                startcontroller.setAdhocFloors(Integer.parseInt(adhocfloor.getText()));
-                startcontroller.setPassFloors(Integer.parseInt(passreserfloor.getText()));
-                startcontroller.setPassPlaces(40);
-                startcontroller.setadhocplaces(40);
-
-                createview(primaryStage);
-            } else {
-                startcontroller.setPassRows(10);
-                startcontroller.setAdhocRows(10);
-                startcontroller.setPassFloors(3);
-                startcontroller.setAdhocFloors(3);
-                startcontroller.setPassPlaces(40);
-                startcontroller.setadhocplaces(40);
-
-                createview(primaryStage);
-            }
-
-
-
-            } catch(NumberFormatException e){
+            } catch (NumberFormatException e) {
                 Dialog dialog2 = new Dialog();
                 dialog2.setHeaderText("ERROR");
-                dialog2.setContentText("something went Wrong \n" + e +" please restart the program");
+                dialog2.setContentText("something went Wrong \n" + e + " please restart the program");
                 dialog2.getDialogPane().getButtonTypes().add(ButtonType.CLOSE);
                 Node closeButton = dialog2.getDialogPane().lookupButton(ButtonType.CLOSE);
                 closeButton.managedProperty().bind(closeButton.visibleProperty());
                 closeButton.setVisible(true);
                 dialog2.showAndWait();
             }
-           }
+        }
             else if (result.get() == defaultButtonType) {
 
                 startcontroller.setPassRows(6);
@@ -194,11 +189,12 @@ public class RootView {
                 startcontroller.setadhocplaces(30);
 
                 createview(primaryStage);
+            } else if (result.get() == ButtonType.CANCEL) {
+                Platform.exit();
+                System.exit(0);
+
             }
-        else if (result.get() == ButtonType.CANCEL) {
-            Platform.exit();
-            System.exit(0);
-        }
+
     }
 
 

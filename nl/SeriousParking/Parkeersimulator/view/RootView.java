@@ -170,7 +170,9 @@ public class RootView {
                 }
             } catch (NumberFormatException e) {
                 // moet mooi gemaakt worden.
-                grid.add(new Label("no numerical value was given"), 1, 5);
+                Label numerexep = new Label("no numerical value was given");
+                numerexep.setTextFill(RED);
+                grid.add(numerexep, 1, 5);
                 dialog.showAndWait();
             }
         }

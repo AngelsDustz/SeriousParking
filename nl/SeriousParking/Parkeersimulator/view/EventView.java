@@ -3,6 +3,7 @@ package nl.SeriousParking.Parkeersimulator.view;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
@@ -60,12 +61,23 @@ public class EventView extends View<EventController, Simulator> {
                 adddialog.getDialogPane().setContent(grid);
                 Optional<ButtonType> result = adddialog.showAndWait();
                 if (result.get() == addButtonType) {
+
                     SimEvent add = new SimEvent();
                     add.setTitle(fldname.getText());
+                    try{
                     add.setDay(Integer.parseInt(fldday.getText()));
                     add.setWeek(Integer.parseInt(fldweek.getText()));
                     model.addEvent(add);
-                }
+                }catch (NumberFormatException e) {
+                        Dialog dialog2 = new Dialog();
+                        dialog2.setHeaderText("ERROR");
+                        dialog2.setContentText("something went Wrong \n" + e + " please restart the program");
+                        dialog2.getDialogPane().getButtonTypes().add(ButtonType.CLOSE);
+                        Node closeButton = dialog2.getDialogPane().lookupButton(ButtonType.CLOSE);
+                        closeButton.managedProperty().bind(closeButton.visibleProperty());
+                        closeButton.setVisible(true);
+                        dialog2.showAndWait();
+                    }}
                 else if (result.get() == ButtonType.CANCEL){
 
                 }

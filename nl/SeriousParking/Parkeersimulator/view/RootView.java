@@ -80,7 +80,7 @@ public class RootView {
         grid.add(new Label("places:"), 0, 3);
         grid.add(places, 1, 3);
         grid.add(placesmax, 2, 3);
-        grid.add(new Label("if you exceed the limit values will be reset to default"), 1, 4);
+        grid.add(new Label("if you exceed the limit values will be set to highest value"), 1, 4);
 
         dialog.initStyle(StageStyle.UTILITY);
         dialog.getDialogPane().setContent(grid);
@@ -100,9 +100,79 @@ public class RootView {
                             startcontroller.setadhocplaces(Integer.parseInt(places.getText()));
 
                             createview(primaryStage);
+                        } else {
+                            startcontroller.setPassRows(Integer.parseInt(rows.getText()));
+                            startcontroller.setAdhocRows(Integer.parseInt(rows.getText()));
+                            startcontroller.setPassFloors(3);
+                            startcontroller.setAdhocFloors(3);
+                            startcontroller.setPassPlaces(Integer.parseInt(places.getText()));
+                            startcontroller.setadhocplaces(Integer.parseInt(places.getText()));
+
+                            createview(primaryStage);
                         }
+                    } else if ((Integer.parseInt(adhocfloor.getText()) + Integer.parseInt(passreserfloor.getText())) <= 6) {
+                        startcontroller.setPassRows(Integer.parseInt(rows.getText()));
+                        startcontroller.setAdhocRows(Integer.parseInt(rows.getText()));
+                        startcontroller.setAdhocFloors(Integer.parseInt(adhocfloor.getText()));
+                        startcontroller.setPassFloors(Integer.parseInt(passreserfloor.getText()));
+                        startcontroller.setPassPlaces(40);
+                        startcontroller.setadhocplaces(40);
+
+                        createview(primaryStage);
+                    } else {
+                        startcontroller.setPassRows(Integer.parseInt(rows.getText()));
+                        startcontroller.setAdhocRows(Integer.parseInt(rows.getText()));
+                        startcontroller.setPassFloors(3);
+                        startcontroller.setAdhocFloors(3);
+                        startcontroller.setPassPlaces(40);
+                        startcontroller.setadhocplaces(40);
+
+                        createview(primaryStage);
                     }
                 }
+
+                else if (Integer.parseInt(places.getText()) <= 40) {
+                if ((Integer.parseInt(adhocfloor.getText()) + Integer.parseInt(passreserfloor.getText())) <= 6) {
+                    startcontroller.setPassRows(10);
+                    startcontroller.setAdhocRows(10);
+                    startcontroller.setAdhocFloors(Integer.parseInt(adhocfloor.getText()));
+                    startcontroller.setPassFloors(Integer.parseInt(passreserfloor.getText()));
+                    startcontroller.setPassPlaces(Integer.parseInt(places.getText()));
+                    startcontroller.setadhocplaces(Integer.parseInt(places.getText()));
+
+                    createview(primaryStage);
+                } else {
+                    startcontroller.setPassRows(10);
+                    startcontroller.setAdhocRows(10);
+                    startcontroller.setPassFloors(3);
+                    startcontroller.setAdhocFloors(3);
+                    startcontroller.setPassPlaces(Integer.parseInt(places.getText()));
+                    startcontroller.setadhocplaces(Integer.parseInt(places.getText()));
+
+                    createview(primaryStage);
+                }
+            } else if ((Integer.parseInt(adhocfloor.getText()) + Integer.parseInt(passreserfloor.getText())) <= 6) {
+                startcontroller.setPassRows(10);
+                startcontroller.setAdhocRows(10);
+                startcontroller.setAdhocFloors(Integer.parseInt(adhocfloor.getText()));
+                startcontroller.setPassFloors(Integer.parseInt(passreserfloor.getText()));
+                startcontroller.setPassPlaces(40);
+                startcontroller.setadhocplaces(40);
+
+                createview(primaryStage);
+            } else {
+                startcontroller.setPassRows(10);
+                startcontroller.setAdhocRows(10);
+                startcontroller.setPassFloors(3);
+                startcontroller.setAdhocFloors(3);
+                startcontroller.setPassPlaces(40);
+                startcontroller.setadhocplaces(40);
+
+                createview(primaryStage);
+            }
+
+
+
             } catch(NumberFormatException e){
                 Dialog dialog2 = new Dialog();
                 dialog2.setHeaderText("ERROR");
@@ -113,7 +183,7 @@ public class RootView {
                 closeButton.setVisible(true);
                 dialog2.showAndWait();
             }
-        }
+           }
             else if (result.get() == defaultButtonType) {
 
                 startcontroller.setPassRows(6);

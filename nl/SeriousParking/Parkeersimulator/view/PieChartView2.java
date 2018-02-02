@@ -10,7 +10,6 @@ import nl.SeriousParking.Parkeersimulator.model.Simulator;
 public class PieChartView2 extends View<SimulatorController, Simulator> implements Runnable {
     PieChart.Data abbonementSlice;
     PieChart.Data adhocReservationSlice;
-    PieChart.Data reservationSlice;
     final double SIZE   = 100;
     boolean run         = false;
 
@@ -24,7 +23,9 @@ public class PieChartView2 extends View<SimulatorController, Simulator> implemen
 
         pieChart.getData().add(abbonementSlice);
         pieChart.getData().add(adhocReservationSlice);
-        pieChart.setLegendVisible(false);
+
+        pieChart.setLabelsVisible(false);
+        pieChart.setLegendVisible(true);
         pieChart.setClockwise(true);
         pieChart.setStartAngle(90);
 
@@ -43,8 +44,8 @@ public class PieChartView2 extends View<SimulatorController, Simulator> implemen
     @Override
     public void run() {
         while (run) {
-            Double adhocRes = model.getAdhocReservationSection().getFilledspots()/SIZE*100;
-            Double abbo     = model.getPassSection().getFilledspots()/SIZE*100;
+            double adhocRes = (model.getAdhocReservationSection().getFilledspots()/SIZE*100);
+            double abbo     = (model.getPassSection().getFilledspots()/SIZE*100);
 
             Platform.runLater(new Runnable() {
                 @Override

@@ -61,11 +61,11 @@ public class RootView {
 
         Label rowsmax = new Label("max 10");
         rowsmax.setTextFill(RED);
-        Label floormax = new Label("max 6");
+        Label floormax = new Label("total floorsmax 6");
         floormax.setTextFill(RED);
-        Label floormax2 = new Label("max 6");
+        Label floormax2 = new Label("total floors max 6");
         floormax2.setTextFill(RED);
-        Label placesmax = new Label("max 10");
+        Label placesmax = new Label("max 40");
         placesmax.setTextFill(RED);
 
         grid.add(new Label("adhoc verdiepingen:"), 0, 0);
@@ -74,12 +74,12 @@ public class RootView {
         grid.add(new Label("passhouders verdiepingen:"), 0, 1);
         grid.add(passreserfloor, 1, 1);
         grid.add(floormax2, 2, 1);
-        grid.add(new Label("places:"), 0, 2);
-        grid.add(places, 1, 2);
-        grid.add(placesmax, 2, 2);
-        grid.add(new Label("rows:"), 0, 3);
-        grid.add(rows, 1, 3);
-        grid.add(rowsmax, 2, 3);
+        grid.add(new Label("rows:"), 0, 2);
+        grid.add(rows, 1, 2);
+        grid.add(rowsmax, 2, 2);
+        grid.add(new Label("places:"), 0, 3);
+        grid.add(places, 1, 3);
+        grid.add(placesmax, 2, 3);
         grid.add(new Label("if you exceed the limit values will be reset to default"), 1, 4);
 
         dialog.initStyle(StageStyle.UTILITY);
@@ -90,7 +90,7 @@ public class RootView {
         if (result.get() == createButtonType) {
             try {
                 if (Integer.parseInt(rows.getText()) <= 10) {
-                    if (Integer.parseInt(places.getText()) <= 50) {
+                    if (Integer.parseInt(places.getText()) <= 40) {
                         if ((Integer.parseInt(adhocfloor.getText()) + Integer.parseInt(passreserfloor.getText())) <= 6) {
                             startcontroller.setPassRows(Integer.parseInt(rows.getText()));
                             startcontroller.setAdhocRows(Integer.parseInt(rows.getText()));
@@ -233,7 +233,9 @@ public class RootView {
         pie.getTabs().add(PieChart2);
 
         pie.maxWidthProperty().bind(splitPanetop.widthProperty().multiply(0.3));
-        tabPane.maxHeightProperty().bind(splitPanebottom.heightProperty().multiply(0.35));
+        pie.minWidthProperty().bind(splitPanetop.widthProperty().multiply(0.15));
+        tabPane.minHeightProperty().bind(splitPanetop.widthProperty().multiply(0.02));
+        tabPane.maxHeightProperty().bind(splitPanebottom.heightProperty().multiply(0.3));
 
         splitPanetop.getItems().addAll(view,pie);
         splitPanebottom.getItems().addAll(splitPanetop,tabPane);

@@ -10,10 +10,8 @@ import nl.SeriousParking.Parkeersimulator.model.Simulator;
 public class PieChartView extends View<SimulatorController, Simulator> implements Runnable {
     PieChart.Data parkedAdhocReservationSlice;
     PieChart.Data parkedPassSlice;
-    PieChart.Data parkedReservationSlice;
     PieChart.Data freeAdhocReservationSlice;
     PieChart.Data freePassSlice;
-    PieChart.Data freeReservationSlice;
     double size;
     boolean run = false;
 

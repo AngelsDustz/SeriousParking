@@ -4,10 +4,7 @@ import javafx.application.Platform;
 import javafx.geometry.Insets;
 
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.control.ToolBar;
+import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
 import nl.SeriousParking.Parkeersimulator.controller.RuntimeController;
@@ -29,7 +26,8 @@ public class GarageView extends View<SimulatorController,Simulator> {
         BorderPane sections = new BorderPane();
         HBox container      = new HBox();
         VBox root           = new VBox();
-        GridPane legenda        = new GridPane();
+        GridPane legenda    = new GridPane();
+        ScrollPane garage   =new ScrollPane();
         FlowPane barrs      = new FlowPane();
         FlowPane labels     = new FlowPane();
         abbores             = new ProgressBar();
@@ -133,7 +131,9 @@ public class GarageView extends View<SimulatorController,Simulator> {
         barrs.getChildren().addAll(adhoc,abbores);
         barrs.setHgap(100);
         labels.setHgap(170);
-        root.getChildren().addAll(container,barrs,labels);
+        garage.setStyle("-fx-background-color:transparent;");
+        garage.setContent(container);
+        root.getChildren().addAll(garage,barrs,labels);
         sections.setBottom(toolBar);
         sections.setRight(legenda);
         sections.setCenter(root);

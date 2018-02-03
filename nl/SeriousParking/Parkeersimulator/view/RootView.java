@@ -228,22 +228,20 @@ public class RootView {
         EventView eventView                 = new EventView(eventController, model);
 
         //Create and add events.
-        SimEvent seChristmas    = new SimEvent();
-        seChristmas.setTitle("Christmas");
-        seChristmas.setWeek(2);
-        seChristmas.setDay(1);
-
-        SimEvent seOpeningWeek      = new SimEvent();
-        seOpeningWeek.setTitle("Opening Week");
-        seOpeningWeek.setWeek(1);
-        seOpeningWeek.setDay(0);
-
         SimEvent seKoop    = new SimEvent();
         seKoop.setTitle("Koopavond");
-        seKoop.setDay(2);
+        seKoop.setDay(3);
 
-        eventController.addEvent(seOpeningWeek);
-        eventController.addEvent(seChristmas);
+        SimEvent seSat    = new SimEvent();
+        seKoop.setTitle("Zaterdag");
+        seKoop.setDay(5);
+
+        SimEvent seSun    = new SimEvent();
+        seKoop.setTitle("Zondag");
+        seKoop.setDay(6);
+
+        eventController.addEvent(seSun);
+        eventController.addEvent(seSat);
         eventController.addEvent(seKoop);
 
 

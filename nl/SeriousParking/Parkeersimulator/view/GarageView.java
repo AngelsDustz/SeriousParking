@@ -150,8 +150,8 @@ public class GarageView extends View<SimulatorController,Simulator> {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                abbores.setProgress(Garage.getNumberCarsInPassQueue());
-                adhoc.setProgress(Garage.getNumberCarsInAdhocQueue()/100);
+                abbores.setProgress((Garage.getNumberCarsInPassQueue()/SettingHandler.getMaxQueueSize()));
+                adhoc.setProgress((Garage.getNumberCarsInAdhocQueue()/SettingHandler.getMaxQueueSize()));
             }
         });
     }

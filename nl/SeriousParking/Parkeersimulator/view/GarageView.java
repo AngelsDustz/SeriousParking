@@ -151,7 +151,7 @@ public class GarageView extends View<SimulatorController,Simulator> {
             @Override
             public void run() {
 
-                double abboresValue= ( Garage.getNumberCarsInPassQueue()/(double)Garage.getNumberCarsInPassQueue());
+                double abboresValue= ( Garage.getNumberCarsInPassQueue()/(double)SettingHandler.getMaxQueueSize());
                 double adhocValue =(Garage.getNumberCarsInAdhocQueue()/(double) SettingHandler.getMaxQueueSize());
                 abbores.setProgress(abboresValue);
                 adhoc.setProgress(adhocValue);

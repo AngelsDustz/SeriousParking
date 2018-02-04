@@ -202,7 +202,7 @@ public class SettingsView extends View<SettingsController, SettingHandler> {
         fldWeekendReservationAmount.setText("" + model.getweekendReservations());
         fldQueueSize.setText("" + model.getMaxQueueSize());
         fldQueueThroughSpeed.setText("" + model.getDriveTroughSpeed());
-        flddouble.setText(""+model.getChance());
+        flddouble.setText(""+model.getChanseToParkDouble());
         fldreserch.setText(""+model.getReservationShowchance());
         oppbox.setSelected(model.getDoubleEntrance());
 

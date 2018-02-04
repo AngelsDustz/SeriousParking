@@ -30,7 +30,20 @@ public class Simulator extends Model implements Runnable {
         passSection             = new GarageSection(SettingHandler.passFloors,SettingHandler.passRows,SettingHandler.passplaces);
         ticketMachine           = new TicketMachine();
         randomGenerator         = new Random();
+
+
+
+        //Create and add events.
+        SimEvent seKoop   = new SimEvent();
+        SimEvent seSat    = new SimEvent();
+        SimEvent seSun    = new SimEvent();
+
+        addEvent(seKoop,"donderdag",0,3,100,50,20);
+        addEvent(seSat,"zatedag",0,5,200,20,30);
+        addEvent(seSun,"zondag",0,6,200,20,30);
     }
+
+
 
     public int getAdhocReservationsPassed() {
         return adhocReservationsPassed;
@@ -40,8 +53,20 @@ public class Simulator extends Model implements Runnable {
      * Adds an event.
      *
      * @param event The event to add.
+     * @param title The title of the event to add.
+     * @param week the week of the event to add.
+     * @param day the day of the event to add.
+     * @param adhocModifier the additional adhoc cars per hour of event to add.
+     * @param passCarMofifier the additional passcholder cars per hour of event to add.
+     * @param reservationCarModifier the additional reservation cars per hour of the event to add.
      */
-    public void addEvent(SimEvent event) {
+    public void addEvent(SimEvent event,String title, int week,int day, int adhocModifier,int passCarMofifier,int reservationCarModifier) {
+        event.setTitle(title);
+        event.setWeek(week);
+        event.setDay(day);
+        event.setAdhocCarModifier(adhocModifier);
+        event.setPassCarModifier(passCarMofifier);
+        event.setReservationCarModifier(reservationCarModifier);
         events.add(event);
     }
 

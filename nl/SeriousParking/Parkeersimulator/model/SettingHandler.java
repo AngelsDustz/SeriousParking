@@ -2,8 +2,7 @@ package nl.SeriousParking.Parkeersimulator.model;
 
 public class SettingHandler extends Model{
     protected static int tickPause;
-    protected static int chance;
-    protected static int reservationShowchance;
+    private static int reservationShowchance;
     protected static boolean doubleEntrance;
     protected static int chanseToParkDouble;
     protected static int weekDayArrivals; // average number of arriving cars per hour
@@ -40,16 +39,15 @@ public class SettingHandler extends Model{
     }
 
     public void defaultValue() {
-        weekDayArrivals         = 40; // average number of arriving cars per hour
+        weekDayArrivals         = 120; // average number of arriving cars per hour
         weekendArrivals         = 100; // average number of arriving cars per hour
-        weekDayPassArrivals     = 50; // average number of arriving cars per hour
+        weekDayPassArrivals     = 70; // average number of arriving cars per hour
         weekendPassArrivals     = 5; // average number of arriving cars per hour
-        weekDayReservations     = 30;
+        weekDayReservations     = 40;
         weekendReservations     = 10;
         chanseToParkDouble      = 2;
         maxQueueSize            = 10;
         tickPause               = 150;
-        chance                  = 1;
         reservationShowchance   = 80;
         doubleEntrance          = false;
         enterSpeed              = 2;
@@ -87,7 +85,7 @@ public class SettingHandler extends Model{
     }
 
     public static void setweekendReservations(int weekendReservations) {
-        weekendReservations = weekendReservations;
+        SettingHandler.weekendReservations = weekendReservations;
     }
 
     public static int getTickPause() {
@@ -103,12 +101,10 @@ public class SettingHandler extends Model{
 
     }
 
-    public static int getChance() {
-        return chance;
-    }
 
-    public static void setChance(int chance) {
-        SettingHandler.chance = chance;
+
+    public static int getChanseToParkDouble() {
+        return chanseToParkDouble;
     }
 
     public static int getWeekDayArrivals() {

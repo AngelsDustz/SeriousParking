@@ -4,7 +4,6 @@ package nl.SeriousParking.Parkeersimulator.view;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -15,7 +14,6 @@ import nl.SeriousParking.Parkeersimulator.controller.EventController;
 import nl.SeriousParking.Parkeersimulator.controller.SettingsController;
 import nl.SeriousParking.Parkeersimulator.controller.SimulatorController;
 import nl.SeriousParking.Parkeersimulator.model.SettingHandler;
-import nl.SeriousParking.Parkeersimulator.model.SimEvent;
 import nl.SeriousParking.Parkeersimulator.model.Simulator;
 
 import java.util.Optional;
@@ -227,23 +225,7 @@ public class RootView {
         EventController eventController     = new EventController(model);
         EventView eventView                 = new EventView(eventController, model);
 
-        //Create and add events.
-        SimEvent seKoop    = new SimEvent();
-        seKoop.setTitle("Koopavond");
-        seKoop.setDay(3);
 
-        SimEvent seSat    = new SimEvent();
-        seSat.setTitle("Zaterdag");
-        seSat.setDay(5);
-
-        SimEvent seSun    = new SimEvent();
-        seSun.setTitle("Zondag");
-        seSun.setDay(6);
-
-
-        eventController.addEvent(seKoop);
-        eventController.addEvent(seSat);
-        eventController.addEvent(seSun);
         //View panes?
         PieChartView piechart   = new PieChartView(controller, model);
         PieChartView2 piechart2 = new PieChartView2(controller, model);
@@ -301,7 +283,7 @@ public class RootView {
         splitPanebottom.getItems().addAll(splitPanetop,tabPane);
 
         primaryStage.setScene(scene);
-        scene.getStylesheets().add("Style.css");
+        scene.getStylesheets().add("nl/SeriousParking/Parkeersimulator/Style.css");
         primaryStage.show();
     }
 }

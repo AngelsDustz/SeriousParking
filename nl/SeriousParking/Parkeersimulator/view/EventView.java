@@ -16,25 +16,27 @@ import java.util.Optional;
 import static javafx.scene.paint.Color.RED;
 
 public class EventView extends View<EventController, Simulator> {
-    ListView listView       = new ListView();
-    FlowPane container      = new FlowPane();
-    Button   addButton      = new Button("add new event");
-    TextField fldname       = new TextField();
-    TextField fldday        = new TextField();
-    TextField fldweek       = new TextField();
-    TextField fldAdhoc      =new TextField();
-    TextField fldRes        =new TextField();
-    TextField fldPass       =new TextField();
+    private ListView<String> listView       = new ListView<>();
+
+    private TextField fldname       = new TextField();
+    private TextField fldday        = new TextField();
+    private TextField fldweek       = new TextField();
+    private TextField fldAdhoc      =new TextField();
+    private TextField fldRes        =new TextField();
+    private TextField fldPass       =new TextField();
 
     public EventView(EventController controller, Simulator model) {
         super(controller, model);
-
+        update();
+        FlowPane container      = new FlowPane();
+        Button   addButton      = new Button("add new event");
         addButton.setOnAction(new EventHandler<ActionEvent>(){
+
 
             @Override
             public void handle(ActionEvent t){
 
-                Dialog adddialog = new Dialog();
+                Dialog<ButtonType> adddialog = new Dialog<>();
                 adddialog.setTitle("Add an event");
                 adddialog.setHeaderText("Add an event");
 
@@ -81,25 +83,22 @@ public class EventView extends View<EventController, Simulator> {
                     SimEvent add = new SimEvent();
                     add.setTitle(fldname.getText());
                     try{
-                    add.setDay(Integer.parseInt(fldday.getText()));
-                    add.setAdhocCarModifier(Integer.parseInt(fldAdhoc.getText()));
-                    add.setPassCarModifier(Integer.parseInt(fldPass.getText()));
-                    add.setWeek(Integer.parseInt(fldweek.getText()));
-                    add.setReservationCarModifier(Integer.parseInt(fldRes.getText()));
-
-                    model.addEvent(add);
-                }catch (NumberFormatException e) {
-                        Dialog dialog2 = new Dialog();
-                        dialog2.setHeaderText("ERROR");
-                        dialog2.setContentText("something went Wrong \n" + e + " Please use the correct input");
-                        dialog2.getDialogPane().getButtonTypes().add(ButtonType.CLOSE);
-                        Node closeButton = dialog2.getDialogPane().lookupButton(ButtonType.CLOSE);
-                        closeButton.managedProperty().bind(closeButton.visibleProperty());
-                        closeButton.setVisible(true);
-                        dialog2.showAndWait();
-                    }}
-                else if (result.get() == ButtonType.CANCEL){
-
+                        controller.addEvent(add
+                        ,(fldname.getText()),(Integer.parseInt(fldweek.getText()))
+                        ,(Integer.parseInt(fldday.getText()))
+                        ,(Integer.parseInt(fldAdhoc.getText()))
+                        ,(Integer.parseInt(fldPass.getText()))
+                        ,(Integer.parseInt(fldRes.getText())));
+                    }catch (NumberFormatException e) {
+                            Dialog dialog2 = new Dialog();
+                            dialog2.setHeaderText("ERROR");
+                            dialog2.setContentText("something went Wrong \n" + e + " Please use the correct input");
+                            dialog2.getDialogPane().getButtonTypes().add(ButtonType.CLOSE);
+                            Node closeButton = dialog2.getDialogPane().lookupButton(ButtonType.CLOSE);
+                            closeButton.managedProperty().bind(closeButton.visibleProperty());
+                            closeButton.setVisible(true);
+                            dialog2.showAndWait();
+                    }
                 }
             }
         });

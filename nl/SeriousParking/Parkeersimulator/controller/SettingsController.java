@@ -37,7 +37,7 @@ public class SettingsController extends Controller<SettingHandler> {
      * @param speed The new exit speed of vehicles.
      */
     public void updateExitSpeed(int speed) {
-        model.setEnterSpeed(speed);
+        model.setExitSpeed(speed);
     }
 
     /**

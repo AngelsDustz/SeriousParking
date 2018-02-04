@@ -233,18 +233,17 @@ public class RootView {
         seKoop.setDay(3);
 
         SimEvent seSat    = new SimEvent();
-        seKoop.setTitle("Zaterdag");
-        seKoop.setDay(5);
+        seSat.setTitle("Zaterdag");
+        seSat.setDay(5);
 
         SimEvent seSun    = new SimEvent();
-        seKoop.setTitle("Zondag");
-        seKoop.setDay(6);
+        seSun.setTitle("Zondag");
+        seSun.setDay(6);
 
-        eventController.addEvent(seSun);
-        eventController.addEvent(seSat);
+
         eventController.addEvent(seKoop);
-
-
+        eventController.addEvent(seSat);
+        eventController.addEvent(seSun);
         //View panes?
         PieChartView piechart   = new PieChartView(controller, model);
         PieChartView2 piechart2 = new PieChartView2(controller, model);

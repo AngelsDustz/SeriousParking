@@ -14,7 +14,7 @@ public class SettingHandler extends Model{
     protected static int weekendReservations;
     protected static int enterSpeed; // number of cars that can enter per minute
     protected static int paymentSpeed; // number of cars that can pay per minute
-    protected static int maxQueueSize;
+    protected static int maxQueueSize =10;
     protected static int exitSpeed; // number of cars that can leave per minute
     protected static int driveTroughSpeed= 10;
     protected static int adhocReservationFloors = 2;

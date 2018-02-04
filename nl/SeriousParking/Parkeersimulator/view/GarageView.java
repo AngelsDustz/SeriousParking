@@ -32,8 +32,8 @@ public class GarageView extends View<SimulatorController,Simulator> {
         FlowPane labels     = new FlowPane();
         abbores             = new ProgressBar();
         adhoc               = new ProgressBar();
-        Label brlbladhoc    = new Label("adhoc queue");
-        Label brlblabbor    = new Label("reservations/pass queue");
+        Label brlbladhoc    = new Label("reservations/pass queue");
+        Label brlblabbor    = new Label("adhoc queue");
 
         Label lbladhocP   = new Label("adHoc geparkeerd");
         Label lbladhocNP  = new Label("adHoc Leeg");
@@ -150,8 +150,11 @@ public class GarageView extends View<SimulatorController,Simulator> {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                abbores.setProgress((Garage.getNumberCarsInPassQueue()/SettingHandler.getMaxQueueSize()));
-                adhoc.setProgress((Garage.getNumberCarsInAdhocQueue()/SettingHandler.getMaxQueueSize()));
+
+                double abboresValue= ( Garage.getNumberCarsInPassQueue()/(double)Garage.getNumberCarsInPassQueue());
+                double adhocValue =(Garage.getNumberCarsInAdhocQueue()/(double) SettingHandler.getMaxQueueSize());
+                abbores.setProgress(abboresValue);
+                adhoc.setProgress(adhocValue);
             }
         });
     }

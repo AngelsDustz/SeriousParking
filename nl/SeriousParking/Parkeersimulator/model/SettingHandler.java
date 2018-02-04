@@ -24,6 +24,10 @@ public class SettingHandler extends Model{
     protected static int passRows =6;
     protected static int passplaces =30;
 
+    //TODO make Settings in Startup to se this.
+    protected static int numberOfPassholders=1200;
+
+
 
 
 
@@ -221,5 +225,9 @@ public class SettingHandler extends Model{
 
     public static int getDriveTroughSpeed() {
         return driveTroughSpeed;
+    }
+
+    public static void setNumberOfPassholders(int numberOfPassholders) {
+        SettingHandler.numberOfPassholders = numberOfPassholders;
     }
 }

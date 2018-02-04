@@ -8,9 +8,11 @@ public class Garage {
     protected static Queue entrancePassReservationQueue = new Queue();
     protected static Queue entranceAdhocQueue           = new Queue();
 
-    protected static Queue drivingToExit    = new Queue();
+              static Queue drivingToExit    = new Queue();
     protected static Queue paymentCarQueue  = new Queue();
     protected static Queue exitCarQueue     = new Queue();
+
+
 
     /**
      * Calculates the amount of cars that left because of a full queue.
@@ -54,7 +56,6 @@ public class Garage {
      */
     protected static void CarsArrivingInQueue() {
         Car car;
-        int i = 0;
 
         while (arrivingCars.carsInQueue() > 0) {
             car = arrivingCars.removeCar();

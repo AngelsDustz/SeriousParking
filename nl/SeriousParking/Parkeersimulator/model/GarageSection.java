@@ -109,6 +109,23 @@ public class GarageSection extends Garage {
         return null;
     }
 
+    protected boolean findCar(int identification, Car car) {
+        for (int floor = 0; floor < floors; floor++) {
+
+            for (int row = 0; row < rows; row++) {
+
+                for (int place = 0; place < places; place++) {
+                    Location location = new Location(floor, row, place);
+
+                    if (car.getIdentification() == identification) {
+                            return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
 
     /**
      * Returns the last free location it finds.

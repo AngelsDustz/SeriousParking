@@ -1,5 +1,7 @@
 package nl.SeriousParking.Parkeersimulator.model;
 
+import java.util.Random;
+
 public class PassCar extends Car {
 
     protected PassCar() {
@@ -37,4 +39,6 @@ public class PassCar extends Car {
         setAllTransactionsComplete(true);
         return 0.0;
     }
+
+
 }

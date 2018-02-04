@@ -16,13 +16,15 @@ import java.util.Optional;
 import static javafx.scene.paint.Color.RED;
 
 public class EventView extends View<EventController, Simulator> {
-    ListView listView     = new ListView();
-    FlowPane container    = new FlowPane();
-    Button   addButton   = new Button("add new event");
-    TextField fldname        = new TextField();
-    TextField fldday         = new TextField();
-    TextField fldweek        = new TextField();
-
+    ListView listView       = new ListView();
+    FlowPane container      = new FlowPane();
+    Button   addButton      = new Button("add new event");
+    TextField fldname       = new TextField();
+    TextField fldday        = new TextField();
+    TextField fldweek       = new TextField();
+    TextField fldAdhoc      =new TextField();
+    TextField fldRes        =new TextField();
+    TextField fldPass       =new TextField();
 
     public EventView(EventController controller, Simulator model) {
         super(controller, model);
@@ -44,19 +46,33 @@ public class EventView extends View<EventController, Simulator> {
                 grid.setVgap(10);
                 grid.setPadding(new Insets(20, 150, 10, 10));
 
-                Label dayer = new Label("in numbers!");
-                Label weeker = new Label("in numbers!");
-                dayer.setTextFill(RED);
-                weeker.setTextFill(RED);
+                Label WarningDay = new Label("in numbers!");
+                Label WarningWeek= new Label("in numbers!");
+
+
+                WarningDay.setTextFill(RED);
+                WarningWeek.setTextFill(RED);
+
 
                 grid.add(new Label("Name:"), 0, 0);
                 grid.add(fldname, 1, 0);
                 grid.add(new Label("Week:"), 0, 1);
                 grid.add(fldweek, 1, 1);
-                grid.add(weeker,2,1);
+                grid.add(WarningDay,2,1);
                 grid.add(new Label("Day:"), 0, 2);
                 grid.add(fldday, 1, 2);
-                grid.add(dayer,2,2);
+                grid.add(WarningWeek,2,2);
+
+                grid.add(new Label("Number adhoc cars per hour"), 0, 3);
+                grid.add(fldAdhoc, 1, 3);
+
+                grid.add(new Label("Number passholder cars per hour"), 0, 4);
+                grid.add(fldPass, 1, 4);
+
+                grid.add(new Label("Number reservation cars per hour"), 0, 5);
+                grid.add(fldRes, 1, 5);
+
+
 
                 adddialog.getDialogPane().setContent(grid);
                 Optional<ButtonType> result = adddialog.showAndWait();
@@ -66,12 +82,16 @@ public class EventView extends View<EventController, Simulator> {
                     add.setTitle(fldname.getText());
                     try{
                     add.setDay(Integer.parseInt(fldday.getText()));
+                    add.setAdhocCarModifier(Integer.parseInt(fldAdhoc.getText()));
+                    add.setPassCarModifier(Integer.parseInt(fldPass.getText()));
                     add.setWeek(Integer.parseInt(fldweek.getText()));
+                    add.setReservationCarModifier(Integer.parseInt(fldRes.getText()));
+
                     model.addEvent(add);
                 }catch (NumberFormatException e) {
                         Dialog dialog2 = new Dialog();
                         dialog2.setHeaderText("ERROR");
-                        dialog2.setContentText("something went Wrong \n" + e + " please restart the program");
+                        dialog2.setContentText("something went Wrong \n" + e + " Please use the correct input");
                         dialog2.getDialogPane().getButtonTypes().add(ButtonType.CLOSE);
                         Node closeButton = dialog2.getDialogPane().lookupButton(ButtonType.CLOSE);
                         closeButton.managedProperty().bind(closeButton.visibleProperty());
@@ -100,6 +120,7 @@ public class EventView extends View<EventController, Simulator> {
             if (e.isActive()) {
                 controller.doEvent(e);
                 listView.getItems().add(e.getTitle()+" IS ACTIVE!");
+
             } else {
                 listView.getItems().add(e.getTitle()+" not active.");
             }

@@ -27,4 +27,5 @@ public class BadCar extends Car {
     public double PaymentMethod(double reservationCost, double pricePerHour) {
     return Double.MAX_VALUE;
     }
+
 }

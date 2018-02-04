@@ -5,9 +5,9 @@ import javafx.application.Platform;
 import java.util.*;
 
 public class Simulator extends Model implements Runnable {
-    private final int ADHOC = 1;
-    private final int PASS  = 2;
-    private final int RES   = 3;
+    public final int ADHOC = 1;
+    public final int PASS  = 2;
+    public final int RES   = 3;
     private boolean run;
     private boolean GarageIsSet;
     private boolean doubleEntrance;
@@ -140,7 +140,7 @@ public class Simulator extends Model implements Runnable {
     /**
      * Handles the entrance.
      */
-    public void handleEntrance(){
+    private void handleEntrance(){
         carsArriving();
         Garage.CarsArrivingInQueue();
 
@@ -180,15 +180,15 @@ public class Simulator extends Model implements Runnable {
 
         //Ad-hoc cars.
         numberOfCars = getNumberOfCars(SettingHandler.weekDayArrivals, SettingHandler.weekendArrivals);
-        addArrivingCars(numberOfCars, ADHOC);
+        addArrivingCars((numberOfCars), ADHOC);
 
         //Subscriber cars.
         numberOfCars = getNumberOfCars(SettingHandler.weekDayPassArrivals, SettingHandler.weekendPassArrivals);
-        addArrivingCars(numberOfCars, PASS);
+        addArrivingCars((numberOfCars), PASS);
 
         //Reservation cars.
         numberOfCars = getNumberOfCars(SettingHandler.weekDayReservations, SettingHandler.weekendReservations);
-        addArrivingCars(numberOfCars, RES);
+        addArrivingCars((numberOfCars), RES);
     }
 
     /**
@@ -220,7 +220,7 @@ public class Simulator extends Model implements Runnable {
 
 
 
-    private int getNumberOfCars(int weekDay, int weekend){
+    public int getNumberOfCars(int weekDay, int weekend){
         Random random = new Random();
 
         // Get the average number of cars that arrive per hour.
@@ -234,13 +234,38 @@ public class Simulator extends Model implements Runnable {
         return (int)Math.round(numberOfCarsPerHour / 60);
     }
 
+
+    /**
+     * This function generates an identifier to the car.
+     */
+
+    private void generateIdentification(Car car) {
+        int identifier;
+
+        if(car instanceof PassCar){
+            identifier=new Random().nextInt(SettingHandler.numberOfPassholders);
+            if(!passSection.findCar(identifier,car)){
+                car.setIdentification(identifier);
+            } else {
+                generateIdentification(car);
+            }
+        } else {
+            identifier= new Random().nextInt((Integer.MAX_VALUE-SettingHandler.numberOfPassholders));
+            if(!adhocReservationSection.findCar(identifier,car)){
+                car.setIdentification((identifier+SettingHandler.numberOfPassholders));
+            } else {
+                generateIdentification(car);
+            }
+        }
+    }
+
     /**
      * Spawns an amount of cars.
      *
      * @param numberOfCars The amount of cars to make.
      * @param type The type of cars to make.
      */
-    private void addArrivingCars(int numberOfCars, int type) {
+    public void addArrivingCars(int numberOfCars, int type) {
         // Add the cars to the back of the queue.
         for (int i = 0; i < numberOfCars; i++) {
             Car car;
@@ -272,6 +297,7 @@ public class Simulator extends Model implements Runnable {
 
             }
 
+            generateIdentification(car);
             Garage.arrivingCars.addCar(car);
         }
     }

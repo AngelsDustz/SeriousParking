@@ -8,12 +8,13 @@ import java.util.Random;
  */
 public abstract class Car extends Model {
 
-    Location        location;
-    boolean         primary;
-    boolean         allTransactionsComplete;
-    int             minutesLeft;
-    int             parkingTime;
-    boolean         ParkedDouble;
+   private Location         location;
+            boolean         primary;
+   private  boolean         allTransactionsComplete;
+   private  int             minutesLeft;
+            int             parkingTime;
+            boolean         ParkedDouble;
+   private  int             identification;
 
 
     /**
@@ -161,5 +162,26 @@ public abstract class Car extends Model {
     public void setParkingTime(int parkingTime) {
         this.parkingTime = parkingTime;
     }
-}
+
+    /**
+     * Sets the identification of a car.
+     *
+     * @param identification The new identification.
+     */
+
+    public void setIdentification(int identification) {
+        this.identification = identification;
+    }
+
+    /**
+     * Returns the identification of a car.
+     *
+     * @return The identification number of the car.
+     */
+    public int getIdentification() {
+        return identification;
+    }
+
+
+    }
 
